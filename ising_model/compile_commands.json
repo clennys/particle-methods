@@ -1,0 +1,32 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-c",
+      "-I",
+      "/opt/homebrew/include",
+      "CMakeCCompilerId.c"
+    ],
+    "directory": "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/3.31.2/CompilerIdC",
+    "file": "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/3.31.2/CompilerIdC/CMakeCCompilerId.c"
+  },
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-arch",
+      "arm64",
+      "-isysroot",
+      "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk",
+      "-v",
+      "-c",
+      "-I",
+      "/opt/homebrew/include",
+      "-o",
+      "CMakeFiles/cmTC_54c34.dir/CMakeCCompilerABI.c.o",
+      "/opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c"
+    ],
+    "directory": "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-xMAV8F",
+    "file": "/opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c",
+    "output": "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-xMAV8F/CMakeFiles/cmTC_54c34.dir/CMakeCCompilerABI.c.o"
+  }
+]

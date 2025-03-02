@@ -1,0 +1,1434 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Darwin - 24.3.0 - arm64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /opt/homebrew/bin/g++-14 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/3.31.2/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-z4Cibn"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-z4Cibn"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-z4Cibn'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7b32e/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_7b32e.dir/build.make CMakeFiles/cmTC_7b32e.dir/build
+        Building CXX object CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o
+        /opt/homebrew/bin/g++-14   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -v -Wl,-v -o CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/opt/homebrew/bin/g++-14
+        Target: aarch64-apple-darwin24
+        Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/current --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c,c++,objc,obj-c++,fortran,m2 --program-suffix=-14 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 14.2.0_1' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --with-system-zlib --build=aarch64-apple-darwin24 --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 14.2.0 (Homebrew GCC 14.2.0_1) 
+        COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0' '-asm_macosx_version_min=15.0' '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_7b32e.dir/'
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/cc1plus -quiet -v -iprefix /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/ -D__DYNAMIC__ -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -fPIC -quiet -dumpdir CMakeFiles/cmTC_7b32e.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mmacosx-version-min=15.0.0 -mcpu=apple-m1 -mlittle-endian -mabi=lp64 -version -o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//ccBCGF5l.s
+        GNU C++17 (Homebrew GCC 14.2.0_1) version 14.2.0 (aarch64-apple-darwin24)
+        	compiled by GNU C version 14.2.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.27-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../aarch64-apple-darwin24/include"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed"
+        ignoring nonexistent directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../aarch64-apple-darwin24/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/homebrew/include
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed
+         /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+        End of search list.
+        Compiler executable checksum: dedb4d749933aedf635a71afbbf3f7a6
+        COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0'  '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_7b32e.dir/'
+         as -arch arm64 -v -mmacosx-version-min=15.0 -o CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//ccBCGF5l.s
+        Apple clang version 16.0.0 (clang-1600.0.26.6)
+        Target: arm64-apple-darwin24.3.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+         "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1as -triple arm64-apple-macosx15.0.0 -target-sdk-version=15.2 -filetype obj -main-file-name ccBCGF5l.s -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +crc -target-feature +dotprod -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +lse -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sha2 -target-feature +sha3 -target-feature +neon -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -fdebug-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-z4Cibn -dwarf-debug-producer "Apple clang version 16.0.0 (clang-1600.0.26.6)" -dwarf-version=5 -mrelocation-model pic -o CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//ccBCGF5l.s
+        COMPILER_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/
+        LIBRARY_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/:/opt/homebrew/lib/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../
+        COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0'  '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_7b32e
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7b32e.dir/link.txt --verbose=1
+        Using built-in specs.
+        COLLECT_GCC=/opt/homebrew/bin/g++-14
+        COLLECT_LTO_WRAPPER=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/lto-wrapper
+        Target: aarch64-apple-darwin24
+        Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/current --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c,c++,objc,obj-c++,fortran,m2 --program-suffix=-14 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 14.2.0_1' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --with-system-zlib --build=aarch64-apple-darwin24 --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 14.2.0 (Homebrew GCC 14.2.0_1) 
+        COMPILER_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/
+        LIBRARY_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/:/opt/homebrew/lib/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../
+        COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'cmTC_7b32e' '-mmacosx-version-min=15.0.0' '-asm_macosx_version_min=15.0' '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_7b32e.'
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/collect2 -demangle -dynamic -arch arm64 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -platform_version macos 15.0.0 0.0 -o cmTC_7b32e -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14 -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc -L/opt/homebrew/lib -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../.. -lemutls_w -lheapt_w -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lgcc -lSystem -no_compact_unwind -rpath @loader_path -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14 -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc -rpath /opt/homebrew/lib -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current
+        collect2 version 14.2.0
+        /usr/bin/ld -demangle -dynamic -arch arm64 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -platform_version macos 15.0.0 0.0 -o cmTC_7b32e -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14 -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc -L/opt/homebrew/lib -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../.. -lemutls_w -lheapt_w -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lgcc -lSystem -no_compact_unwind -rpath @loader_path -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14 -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc -rpath /opt/homebrew/lib -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current
+        @(#)PROGRAM:ld PROJECT:ld-1115.7.3
+        BUILD 23:52:02 Dec  5 2024
+        configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+        will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+        LTO support using: LLVM version 16.0.0 (static support for 29, runtime is 29)
+        TAPI support using: Apple TAPI version 16.0.0 (tapi-1600.0.11.9)
+        Library search paths:
+        	/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14
+        	/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc
+        	/opt/homebrew/lib
+        	/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift
+        Framework search paths:
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+        /opt/homebrew/bin/g++-14  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_7b32e
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:113 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Effective list of requested architectures (possibly empty)  : ""
+      Effective list of architectures found in the ABI info binary: "arm64"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/opt/homebrew/include]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        end of search list found
+        collapse include dir [/opt/homebrew/include] ==> [/opt/homebrew/include]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/aarch64-apple-darwin24]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/backward]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14/include]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        implicit include dirs: [/opt/homebrew/include;/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14;/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/aarch64-apple-darwin24;/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/backward;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14/include;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-z4Cibn']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7b32e/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_7b32e.dir/build.make CMakeFiles/cmTC_7b32e.dir/build]
+        ignore line: [Building CXX object CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/opt/homebrew/bin/g++-14   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -v -Wl -v -o CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/opt/homebrew/bin/g++-14]
+        ignore line: [Target: aarch64-apple-darwin24]
+        ignore line: [Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/current --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c c++ objc obj-c++ fortran m2 --program-suffix=-14 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 14.2.0_1' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --with-system-zlib --build=aarch64-apple-darwin24 --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 14.2.0 (Homebrew GCC 14.2.0_1) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0' '-asm_macosx_version_min=15.0' '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_7b32e.dir/']
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/cc1plus -quiet -v -iprefix /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/ -D__DYNAMIC__ -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -fPIC -quiet -dumpdir CMakeFiles/cmTC_7b32e.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mmacosx-version-min=15.0.0 -mcpu=apple-m1 -mlittle-endian -mabi=lp64 -version -o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//ccBCGF5l.s]
+        ignore line: [GNU C++17 (Homebrew GCC 14.2.0_1) version 14.2.0 (aarch64-apple-darwin24)]
+        ignore line: [	compiled by GNU C version 14.2.0  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.27-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../aarch64-apple-darwin24/include"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../aarch64-apple-darwin24/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/Library/Frameworks"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/homebrew/include]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: dedb4d749933aedf635a71afbbf3f7a6]
+        ignore line: [COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0'  '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_7b32e.dir/']
+        ignore line: [ as -arch arm64 -v -mmacosx-version-min=15.0 -o CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//ccBCGF5l.s]
+        ignore line: [Apple clang version 16.0.0 (clang-1600.0.26.6)]
+        ignore line: [Target: arm64-apple-darwin24.3.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        ignore line: [ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1as -triple arm64-apple-macosx15.0.0 -target-sdk-version=15.2 -filetype obj -main-file-name ccBCGF5l.s -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +crc -target-feature +dotprod -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +lse -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sha2 -target-feature +sha3 -target-feature +neon -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -fdebug-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-z4Cibn -dwarf-debug-producer "Apple clang version 16.0.0 (clang-1600.0.26.6)" -dwarf-version=5 -mrelocation-model pic -o CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//ccBCGF5l.s]
+        ignore line: [COMPILER_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/]
+        ignore line: [LIBRARY_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/:/opt/homebrew/lib/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../]
+        ignore line: [COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0'  '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_7b32e]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7b32e.dir/link.txt --verbose=1]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/opt/homebrew/bin/g++-14]
+        ignore line: [COLLECT_LTO_WRAPPER=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/lto-wrapper]
+        ignore line: [Target: aarch64-apple-darwin24]
+        ignore line: [Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/current --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c c++ objc obj-c++ fortran m2 --program-suffix=-14 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 14.2.0_1' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --with-system-zlib --build=aarch64-apple-darwin24 --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 14.2.0 (Homebrew GCC 14.2.0_1) ]
+        ignore line: [COMPILER_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/]
+        ignore line: [LIBRARY_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/:/opt/homebrew/lib/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../]
+        ignore line: [COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'cmTC_7b32e' '-mmacosx-version-min=15.0.0' '-asm_macosx_version_min=15.0' '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_7b32e.']
+        link line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/collect2 -demangle -dynamic -arch arm64 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -platform_version macos 15.0.0 0.0 -o cmTC_7b32e -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14 -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc -L/opt/homebrew/lib -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../.. -lemutls_w -lheapt_w -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lgcc -lSystem -no_compact_unwind -rpath @loader_path -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14 -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc -rpath /opt/homebrew/lib -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current]
+          arg [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/collect2] ==> ignore
+          arg [-demangle] ==> ignore
+          arg [-dynamic] ==> ignore
+          arg [-arch] ==> ignore
+          arg [arm64] ==> ignore
+          arg [-syslibroot] ==> ignore
+          arg [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk] ==> ignore
+          arg [-platform_version] ==> ignore
+          arg [macos] ==> ignore
+          arg [15.0.0] ==> ignore
+          arg [0.0] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_7b32e] ==> ignore
+          arg [-L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14] ==> dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14]
+          arg [-L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc] ==> dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc]
+          arg [-L/opt/homebrew/lib] ==> dir [/opt/homebrew/lib]
+          arg [-L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../..] ==> dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../..]
+          arg [-lemutls_w] ==> lib [emutls_w]
+          arg [-lheapt_w] ==> lib [heapt_w]
+          arg [-search_paths_first] ==> ignore
+          arg [-headerpad_max_install_names] ==> ignore
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lSystem] ==> lib [System]
+          arg [-no_compact_unwind] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [@loader_path] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/homebrew/lib] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current] ==> ignore
+        ignore line: [collect2 version 14.2.0]
+        ignore line: [/usr/bin/ld -demangle -dynamic -arch arm64 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -platform_version macos 15.0.0 0.0 -o cmTC_7b32e -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14 -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc -L/opt/homebrew/lib -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../.. -lemutls_w -lheapt_w -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_7b32e.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lgcc -lSystem -no_compact_unwind -rpath @loader_path -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14 -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc -rpath /opt/homebrew/lib -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current]
+        linker tool for 'CXX': /usr/bin/ld
+        Library search paths: [;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc;/opt/homebrew/lib;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        Framework search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        remove lib [System]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc]
+        collapse library dir [/opt/homebrew/lib] ==> [/opt/homebrew/lib]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../..] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc]
+        collapse library dir [/opt/homebrew/lib] ==> [/opt/homebrew/lib]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        collapse framework dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        implicit libs: [emutls_w;heapt_w;stdc++;gcc]
+        implicit objs: []
+        implicit dirs: [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc;/opt/homebrew/lib;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the CXX compiler's linker: "/usr/bin/ld" "-v"
+      @(#)PROGRAM:ld PROJECT:ld-1115.7.3
+      BUILD 23:52:02 Dec  5 2024
+      configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+      will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+      LTO support using: LLVM version 16.0.0 (static support for 29, runtime is 29)
+      TAPI support using: Apple TAPI version 16.0.0 (tapi-1600.0.11.9)
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+      Compiler: /Library/Developer/CommandLineTools/usr/bin/cc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      1
+      ld: library 'System' not found
+      cc: error: linker command failed with exit code 1 (use -v to see invocation)
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /Library/Developer/CommandLineTools/usr/bin/cc 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      The C compiler identification is AppleClang, found in:
+        /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/3.31.2/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-qskvvn"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-qskvvn"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-qskvvn'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d1786/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_d1786.dir/build.make CMakeFiles/cmTC_d1786.dir/build
+        Building C object CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o
+        /Library/Developer/CommandLineTools/usr/bin/cc   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -v -Wl,-v -MD -MT CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        Apple clang version 16.0.0 (clang-1600.0.26.6)
+        Target: arm64-apple-darwin24.3.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+        cc: warning: -Wl,-v: 'linker' input unused [-Wunused-command-line-argument]
+         "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx15.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -target-sdk-version=15.2 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +crc -target-feature +dotprod -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +lse -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sha2 -target-feature +sha3 -target-feature +neon -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -target-abi darwinpcs -debugger-tuning=lldb -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-qskvvn -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/16 -dependency-file CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -I/opt/homebrew/include -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/16/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -Wno-elaborated-enum-base -Wno-reserved-identifier -Wno-gnu-folding-constant -fdebug-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-qskvvn -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        clang -cc1 version 16.0.0 (clang-1600.0.26.6) default target arm64-apple-darwin24.3.0
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/homebrew/include
+         /Library/Developer/CommandLineTools/usr/lib/clang/16/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include
+         /Library/Developer/CommandLineTools/usr/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks (framework directory)
+        End of search list.
+        Linking C executable cmTC_d1786
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d1786.dir/link.txt --verbose=1
+        Apple clang version 16.0.0 (clang-1600.0.26.6)
+        Target: arm64-apple-darwin24.3.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+         "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 15.0.0 15.2 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_d1786 -L/opt/homebrew/lib -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a
+        @(#)PROGRAM:ld PROJECT:ld-1115.7.3
+        BUILD 23:52:02 Dec  5 2024
+        configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+        will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+        LTO support using: LLVM version 16.0.0 (static support for 29, runtime is 29)
+        TAPI support using: Apple TAPI version 16.0.0 (tapi-1600.0.11.9)
+        Library search paths:
+        	/opt/homebrew/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift
+        Framework search paths:
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+        /Library/Developer/CommandLineTools/usr/bin/cc  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -o cmTC_d1786
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:113 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Effective list of requested architectures (possibly empty)  : ""
+      Effective list of architectures found in the ABI info binary: "arm64"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/opt/homebrew/include]
+          add: [/Library/Developer/CommandLineTools/usr/lib/clang/16/include]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+          add: [/Library/Developer/CommandLineTools/usr/include]
+        end of search list found
+        collapse include dir [/opt/homebrew/include] ==> [/opt/homebrew/include]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/lib/clang/16/include] ==> [/Library/Developer/CommandLineTools/usr/lib/clang/16/include]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/include] ==> [/Library/Developer/CommandLineTools/usr/include]
+        implicit include dirs: [/opt/homebrew/include;/Library/Developer/CommandLineTools/usr/lib/clang/16/include;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include;/Library/Developer/CommandLineTools/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-qskvvn']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_d1786/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_d1786.dir/build.make CMakeFiles/cmTC_d1786.dir/build]
+        ignore line: [Building C object CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/cc   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -v -Wl -v -MD -MT CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Apple clang version 16.0.0 (clang-1600.0.26.6)]
+        ignore line: [Target: arm64-apple-darwin24.3.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        ignore line: [cc: warning: -Wl -v: 'linker' input unused [-Wunused-command-line-argument]]
+        ignore line: [ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx15.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -target-sdk-version=15.2 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +crc -target-feature +dotprod -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +lse -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sha2 -target-feature +sha3 -target-feature +neon -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -target-abi darwinpcs -debugger-tuning=lldb -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-qskvvn -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/16 -dependency-file CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -I/opt/homebrew/include -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/16/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -Wno-elaborated-enum-base -Wno-reserved-identifier -Wno-gnu-folding-constant -fdebug-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-qskvvn -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang -cc1 version 16.0.0 (clang-1600.0.26.6) default target arm64-apple-darwin24.3.0]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/Library/Frameworks"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/homebrew/include]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/lib/clang/16/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks (framework directory)]
+        ignore line: [End of search list.]
+        ignore line: [Linking C executable cmTC_d1786]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d1786.dir/link.txt --verbose=1]
+        ignore line: [Apple clang version 16.0.0 (clang-1600.0.26.6)]
+        ignore line: [Target: arm64-apple-darwin24.3.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        link line: [ "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 15.0.0 15.2 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_d1786 -L/opt/homebrew/lib -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a]
+          arg [/Library/Developer/CommandLineTools/usr/bin/ld] ==> ignore
+          arg [-demangle] ==> ignore
+          arg [-lto_library] ==> ignore, skip following value
+          arg [/Library/Developer/CommandLineTools/usr/lib/libLTO.dylib] ==> skip value of -lto_library
+          arg [-dynamic] ==> ignore
+          arg [-arch] ==> ignore
+          arg [arm64] ==> ignore
+          arg [-platform_version] ==> ignore
+          arg [macos] ==> ignore
+          arg [15.0.0] ==> ignore
+          arg [15.2] ==> ignore
+          arg [-syslibroot] ==> ignore
+          arg [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk] ==> ignore
+          arg [-mllvm] ==> ignore
+          arg [-enable-linkonceodr-outlining] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_d1786] ==> ignore
+          arg [-L/opt/homebrew/lib] ==> dir [/opt/homebrew/lib]
+          arg [-search_paths_first] ==> ignore
+          arg [-headerpad_max_install_names] ==> ignore
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_d1786.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lSystem] ==> lib [System]
+          arg [/Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a] ==> lib [/Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a]
+        linker tool for 'C': /Library/Developer/CommandLineTools/usr/bin/ld
+        Library search paths: [;/opt/homebrew/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        Framework search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        remove lib [System]
+        remove lib [/Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a]
+        collapse library dir [/opt/homebrew/lib] ==> [/opt/homebrew/lib]
+        collapse library dir [/opt/homebrew/lib] ==> [/opt/homebrew/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        collapse framework dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: [/opt/homebrew/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Running the C compiler's linker: "/Library/Developer/CommandLineTools/usr/bin/ld" "-v"
+      @(#)PROGRAM:ld PROJECT:ld-1115.7.3
+      BUILD 23:52:02 Dec  5 2024
+      configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+      will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+      LTO support using: LLVM version 16.0.0 (static support for 29, runtime is 29)
+      TAPI support using: Apple TAPI version 16.0.0 (tapi-1600.0.11.9)
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/FindBLAS.cmake:379 (check_function_exists)"
+      - "/opt/homebrew/share/cmake/Modules/FindBLAS.cmake:423 (check_blas_libraries)"
+      - "/opt/homebrew/share/cmake/Modules/FindLAPACK.cmake:247 (find_package)"
+      - "/opt/homebrew/share/cmake/Modules/FindLAPACK.cmake:283 (_lapack_find_dependency)"
+      - "build/_deps/matplotplusplus-src/source/3rd_party/CMakeLists.txt:96 (find_package)"
+    checks:
+      - "Looking for sgemm_"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-fyV4pK"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-fyV4pK"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "BLAS_WORKS"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-fyV4pK'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_4c2e9/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_4c2e9.dir/build.make CMakeFiles/cmTC_4c2e9.dir/build
+        Building C object CMakeFiles/cmTC_4c2e9.dir/CheckFunctionExists.c.o
+        /Library/Developer/CommandLineTools/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sgemm_ -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -MD -MT CMakeFiles/cmTC_4c2e9.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_4c2e9.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_4c2e9.dir/CheckFunctionExists.c.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-fyV4pK/CheckFunctionExists.c
+        Linking C executable cmTC_4c2e9
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4c2e9.dir/link.txt --verbose=1
+        Undefined symbols for architecture arm64:
+          "_sgemm_", referenced from:
+              _main in CheckFunctionExists.c.o
+        ld: symbol(s) not found for architecture arm64
+        cc: error: linker command failed with exit code 1 (use -v to see invocation)
+        /Library/Developer/CommandLineTools/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sgemm_ -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_4c2e9.dir/CheckFunctionExists.c.o -o cmTC_4c2e9
+        make[1]: *** [cmTC_4c2e9] Error 1
+        make: *** [cmTC_4c2e9/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "/opt/homebrew/share/cmake/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "/opt/homebrew/share/cmake/Modules/FindBLAS.cmake:475 (find_package)"
+      - "/opt/homebrew/share/cmake/Modules/FindLAPACK.cmake:247 (find_package)"
+      - "/opt/homebrew/share/cmake/Modules/FindLAPACK.cmake:283 (_lapack_find_dependency)"
+      - "build/_deps/matplotplusplus-src/source/3rd_party/CMakeLists.txt:96 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-mENJ7q"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-mENJ7q"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-mENJ7q'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_cc9ac/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_cc9ac.dir/build.make CMakeFiles/cmTC_cc9ac.dir/build
+        Building C object CMakeFiles/cmTC_cc9ac.dir/src.c.o
+        /Library/Developer/CommandLineTools/usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -MD -MT CMakeFiles/cmTC_cc9ac.dir/src.c.o -MF CMakeFiles/cmTC_cc9ac.dir/src.c.o.d -o CMakeFiles/cmTC_cc9ac.dir/src.c.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-mENJ7q/src.c
+        Linking C executable cmTC_cc9ac
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_cc9ac.dir/link.txt --verbose=1
+        /Library/Developer/CommandLineTools/usr/bin/cc  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_cc9ac.dir/src.c.o -o cmTC_cc9ac
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/FindBLAS.cmake:379 (check_function_exists)"
+      - "/opt/homebrew/share/cmake/Modules/FindBLAS.cmake:1218 (check_blas_libraries)"
+      - "/opt/homebrew/share/cmake/Modules/FindLAPACK.cmake:247 (find_package)"
+      - "/opt/homebrew/share/cmake/Modules/FindLAPACK.cmake:283 (_lapack_find_dependency)"
+      - "build/_deps/matplotplusplus-src/source/3rd_party/CMakeLists.txt:96 (find_package)"
+    checks:
+      - "Looking for dgemm_"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-Wgr9RM"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-Wgr9RM"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "BLAS_Accelerate_WORKS"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-Wgr9RM'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_5dec2/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_5dec2.dir/build.make CMakeFiles/cmTC_5dec2.dir/build
+        Building C object CMakeFiles/cmTC_5dec2.dir/CheckFunctionExists.c.o
+        /Library/Developer/CommandLineTools/usr/bin/cc  -F/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks -DCHECK_FUNCTION_EXISTS=dgemm_ -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -MD -MT CMakeFiles/cmTC_5dec2.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_5dec2.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_5dec2.dir/CheckFunctionExists.c.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-Wgr9RM/CheckFunctionExists.c
+        Linking C executable cmTC_5dec2
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5dec2.dir/link.txt --verbose=1
+        /Library/Developer/CommandLineTools/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=dgemm_ -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_5dec2.dir/CheckFunctionExists.c.o -o cmTC_5dec2  -framework Accelerate
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/FindLAPACK.cmake:220 (check_function_exists)"
+      - "/opt/homebrew/share/cmake/Modules/FindLAPACK.cmake:399 (check_lapack_libraries)"
+      - "build/_deps/matplotplusplus-src/source/3rd_party/CMakeLists.txt:96 (find_package)"
+    checks:
+      - "Looking for cheev_"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-6udMZc"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-6udMZc"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "LAPACK_WORKS"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-6udMZc'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_026b3/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_026b3.dir/build.make CMakeFiles/cmTC_026b3.dir/build
+        Building C object CMakeFiles/cmTC_026b3.dir/CheckFunctionExists.c.o
+        /Library/Developer/CommandLineTools/usr/bin/cc  -F/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks -DCHECK_FUNCTION_EXISTS=cheev_ -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -MD -MT CMakeFiles/cmTC_026b3.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_026b3.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_026b3.dir/CheckFunctionExists.c.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-6udMZc/CheckFunctionExists.c
+        Linking C executable cmTC_026b3
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_026b3.dir/link.txt --verbose=1
+        /Library/Developer/CommandLineTools/usr/bin/cc  -DCHECK_FUNCTION_EXISTS=cheev_ -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_026b3.dir/CheckFunctionExists.c.o -o cmTC_026b3  -framework Accelerate -lm -ldl
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:238 (check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:419 (_test_compiler_hidden_visibility)"
+      - "build/_deps/matplotplusplus-src/source/matplot/CMakeLists.txt:105 (generate_export_header)"
+    checks:
+      - "Performing Test COMPILER_HAS_HIDDEN_VISIBILITY"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-N6W2Iw"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-N6W2Iw"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "COMPILER_HAS_HIDDEN_VISIBILITY"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-N6W2Iw'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_07020/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_07020.dir/build.make CMakeFiles/cmTC_07020.dir/build
+        Building CXX object CMakeFiles/cmTC_07020.dir/src.cxx.o
+        /opt/homebrew/bin/g++-14 -DCOMPILER_HAS_HIDDEN_VISIBILITY  -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -fvisibility=hidden -o CMakeFiles/cmTC_07020.dir/src.cxx.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-N6W2Iw/src.cxx
+        Linking CXX executable cmTC_07020
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_07020.dir/link.txt --verbose=1
+        /opt/homebrew/bin/g++-14  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_07020.dir/src.cxx.o -o cmTC_07020
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCompilerFlag.cmake:56 (cmake_check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:239 (check_compiler_flag)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:419 (_test_compiler_hidden_visibility)"
+      - "build/_deps/matplotplusplus-src/source/matplot/CMakeLists.txt:105 (generate_export_header)"
+    checks:
+      - "Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-IZc3u6"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-IZc3u6"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "COMPILER_HAS_HIDDEN_INLINE_VISIBILITY"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-IZc3u6'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_25212/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_25212.dir/build.make CMakeFiles/cmTC_25212.dir/build
+        Building CXX object CMakeFiles/cmTC_25212.dir/src.cxx.o
+        /opt/homebrew/bin/g++-14 -DCOMPILER_HAS_HIDDEN_INLINE_VISIBILITY  -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -fvisibility-inlines-hidden -o CMakeFiles/cmTC_25212.dir/src.cxx.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-IZc3u6/src.cxx
+        Linking CXX executable cmTC_25212
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_25212.dir/link.txt --verbose=1
+        /opt/homebrew/bin/g++-14  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_25212.dir/src.cxx.o -o cmTC_25212
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckSourceCompiles.cmake:89 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:206 (check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:263 (_check_cxx_compiler_attribute)"
+      - "/opt/homebrew/share/cmake/Modules/GenerateExportHeader.cmake:420 (_test_compiler_has_deprecated)"
+      - "build/_deps/matplotplusplus-src/source/matplot/CMakeLists.txt:105 (generate_export_header)"
+    checks:
+      - "Performing Test COMPILER_HAS_DEPRECATED_ATTR"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-ffZOYZ"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-ffZOYZ"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "COMPILER_HAS_DEPRECATED_ATTR"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-ffZOYZ'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_ea76c/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_ea76c.dir/build.make CMakeFiles/cmTC_ea76c.dir/build
+        Building CXX object CMakeFiles/cmTC_ea76c.dir/src.cxx.o
+        /opt/homebrew/bin/g++-14 -DCOMPILER_HAS_DEPRECATED_ATTR  -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -o CMakeFiles/cmTC_ea76c.dir/src.cxx.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-ffZOYZ/src.cxx
+        /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-ffZOYZ/src.cxx: In function 'int main()':
+        /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-ffZOYZ/src.cxx:2:33: warning: 'int somefunc()' is deprecated [-Wdeprecated-declarations]
+            2 |     int main() { return somefunc();}
+              |                         ~~~~~~~~^~
+        /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-ffZOYZ/src.cxx:1:37: note: declared here
+            1 | __attribute__((__deprecated__)) int somefunc() { return 0; }
+              |                                     ^~~~~~~~
+        Linking CXX executable cmTC_ea76c
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_ea76c.dir/link.txt --verbose=1
+        /opt/homebrew/bin/g++-14  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/cmTC_ea76c.dir/src.cxx.o -o cmTC_ea76c
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckSymbolExists.cmake:163 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckSymbolExists.cmake:68 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "build/_deps/matplotplusplus-src/source/matplot/CMakeLists.txt:141 (check_symbol_exists)"
+    checks:
+      - "Looking for __fbufsize"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-hNmX3R"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-hNmX3R"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/cmake"
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "HAVE_FBUFSIZE"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-hNmX3R'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3e174/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_3e174.dir/build.make CMakeFiles/cmTC_3e174.dir/build
+        Building C object CMakeFiles/cmTC_3e174.dir/CheckSymbolExists.c.o
+        /Library/Developer/CommandLineTools/usr/bin/cc   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -MD -MT CMakeFiles/cmTC_3e174.dir/CheckSymbolExists.c.o -MF CMakeFiles/cmTC_3e174.dir/CheckSymbolExists.c.o.d -o CMakeFiles/cmTC_3e174.dir/CheckSymbolExists.c.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-hNmX3R/CheckSymbolExists.c
+        /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-hNmX3R/CheckSymbolExists.c:2:10: fatal error: 'stdio_ext.h' file not found
+            2 | #include <stdio_ext.h>
+              |          ^~~~~~~~~~~~~
+        1 error generated.
+        make[1]: *** [CMakeFiles/cmTC_3e174.dir/CheckSymbolExists.c.o] Error 1
+        make: *** [cmTC_3e174/fast] Error 2
+        
+      exitCode: 2
+...
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Darwin - 24.3.0 - arm64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /opt/homebrew/bin/g++-14 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/3.31.6/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-gAOJ1V"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-gAOJ1V"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-gAOJ1V'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b432f/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_b432f.dir/build.make CMakeFiles/cmTC_b432f.dir/build
+        Building CXX object CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o
+        /opt/homebrew/bin/g++-14   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -v -Wl,-v -o CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/opt/homebrew/bin/g++-14
+        Target: aarch64-apple-darwin24
+        Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/current --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c,c++,objc,obj-c++,fortran,m2 --program-suffix=-14 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 14.2.0_1' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --with-system-zlib --build=aarch64-apple-darwin24 --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 14.2.0 (Homebrew GCC 14.2.0_1) 
+        COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0' '-asm_macosx_version_min=15.0' '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b432f.dir/'
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/cc1plus -quiet -v -iprefix /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/ -D__DYNAMIC__ -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -fPIC -quiet -dumpdir CMakeFiles/cmTC_b432f.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mmacosx-version-min=15.0.0 -mcpu=apple-m1 -mlittle-endian -mabi=lp64 -version -o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//cceG76pq.s
+        GNU C++17 (Homebrew GCC 14.2.0_1) version 14.2.0 (aarch64-apple-darwin24)
+        	compiled by GNU C version 14.2.0, GMP version 6.3.0, MPFR version 4.2.1, MPC version 1.3.1, isl version isl-0.27-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../aarch64-apple-darwin24/include"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include"
+        ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed"
+        ignoring nonexistent directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../aarch64-apple-darwin24/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/homebrew/include
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed
+         /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+        End of search list.
+        Compiler executable checksum: dedb4d749933aedf635a71afbbf3f7a6
+        COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0'  '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b432f.dir/'
+         as -arch arm64 -v -mmacosx-version-min=15.0 -o CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//cceG76pq.s
+        Apple clang version 16.0.0 (clang-1600.0.26.6)
+        Target: arm64-apple-darwin24.3.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+         "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1as -triple arm64-apple-macosx15.0.0 -target-sdk-version=15.2 -filetype obj -main-file-name cceG76pq.s -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +crc -target-feature +dotprod -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +lse -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sha2 -target-feature +sha3 -target-feature +neon -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -fdebug-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-gAOJ1V -dwarf-debug-producer "Apple clang version 16.0.0 (clang-1600.0.26.6)" -dwarf-version=5 -mrelocation-model pic -o CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//cceG76pq.s
+        COMPILER_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/
+        LIBRARY_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/:/opt/homebrew/lib/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../
+        COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0'  '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_b432f
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b432f.dir/link.txt --verbose=1
+        Using built-in specs.
+        COLLECT_GCC=/opt/homebrew/bin/g++-14
+        COLLECT_LTO_WRAPPER=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/lto-wrapper
+        Target: aarch64-apple-darwin24
+        Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/current --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c,c++,objc,obj-c++,fortran,m2 --program-suffix=-14 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 14.2.0_1' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --with-system-zlib --build=aarch64-apple-darwin24 --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 14.2.0 (Homebrew GCC 14.2.0_1) 
+        COMPILER_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/
+        LIBRARY_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/:/opt/homebrew/lib/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../
+        COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'cmTC_b432f' '-mmacosx-version-min=15.0.0' '-asm_macosx_version_min=15.0' '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_b432f.'
+         /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/collect2 -demangle -dynamic -arch arm64 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -platform_version macos 15.0.0 0.0 -o cmTC_b432f -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14 -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc -L/opt/homebrew/lib -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../.. -lemutls_w -lheapt_w -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lgcc -lSystem -no_compact_unwind -rpath @loader_path -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14 -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc -rpath /opt/homebrew/lib -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current
+        collect2 version 14.2.0
+        /usr/bin/ld -demangle -dynamic -arch arm64 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -platform_version macos 15.0.0 0.0 -o cmTC_b432f -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14 -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc -L/opt/homebrew/lib -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../.. -lemutls_w -lheapt_w -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lgcc -lSystem -no_compact_unwind -rpath @loader_path -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14 -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc -rpath /opt/homebrew/lib -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current
+        @(#)PROGRAM:ld PROJECT:ld-1115.7.3
+        BUILD 23:52:02 Dec  5 2024
+        configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+        will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+        LTO support using: LLVM version 16.0.0 (static support for 29, runtime is 29)
+        TAPI support using: Apple TAPI version 16.0.0 (tapi-1600.0.11.9)
+        Library search paths:
+        	/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14
+        	/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc
+        	/opt/homebrew/lib
+        	/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift
+        Framework search paths:
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+        /opt/homebrew/bin/g++-14  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_b432f
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:113 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Effective list of requested architectures (possibly empty)  : ""
+      Effective list of architectures found in the ABI info binary: "arm64"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/opt/homebrew/include]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include]
+          add: [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        end of search list found
+        collapse include dir [/opt/homebrew/include] ==> [/opt/homebrew/include]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/aarch64-apple-darwin24]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/backward]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14/include]
+        collapse include dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        implicit include dirs: [/opt/homebrew/include;/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14;/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/aarch64-apple-darwin24;/opt/homebrew/Cellar/gcc/14.2.0_1/include/c++/14/backward;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14/include;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-gAOJ1V']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b432f/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_b432f.dir/build.make CMakeFiles/cmTC_b432f.dir/build]
+        ignore line: [Building CXX object CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/opt/homebrew/bin/g++-14   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -v -Wl -v -o CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/opt/homebrew/bin/g++-14]
+        ignore line: [Target: aarch64-apple-darwin24]
+        ignore line: [Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/current --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c c++ objc obj-c++ fortran m2 --program-suffix=-14 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 14.2.0_1' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --with-system-zlib --build=aarch64-apple-darwin24 --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 14.2.0 (Homebrew GCC 14.2.0_1) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0' '-asm_macosx_version_min=15.0' '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b432f.dir/']
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/cc1plus -quiet -v -iprefix /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/ -D__DYNAMIC__ -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp -fPIC -quiet -dumpdir CMakeFiles/cmTC_b432f.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mmacosx-version-min=15.0.0 -mcpu=apple-m1 -mlittle-endian -mabi=lp64 -version -o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//cceG76pq.s]
+        ignore line: [GNU C++17 (Homebrew GCC 14.2.0_1) version 14.2.0 (aarch64-apple-darwin24)]
+        ignore line: [	compiled by GNU C version 14.2.0  GMP version 6.3.0  MPFR version 4.2.1  MPC version 1.3.1  isl version isl-0.27-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../aarch64-apple-darwin24/include"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include"]
+        ignore line: [ignoring duplicate directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/../../../../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../aarch64-apple-darwin24/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/Library/Frameworks"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/homebrew/include]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/aarch64-apple-darwin24]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../../../../include/c++/14/backward]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include]
+        ignore line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/include-fixed]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        ignore line: [End of search list.]
+        ignore line: [Compiler executable checksum: dedb4d749933aedf635a71afbbf3f7a6]
+        ignore line: [COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0'  '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b432f.dir/']
+        ignore line: [ as -arch arm64 -v -mmacosx-version-min=15.0 -o CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//cceG76pq.s]
+        ignore line: [Apple clang version 16.0.0 (clang-1600.0.26.6)]
+        ignore line: [Target: arm64-apple-darwin24.3.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        ignore line: [ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1as -triple arm64-apple-macosx15.0.0 -target-sdk-version=15.2 -filetype obj -main-file-name cceG76pq.s -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +crc -target-feature +dotprod -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +lse -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sha2 -target-feature +sha3 -target-feature +neon -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -fdebug-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-gAOJ1V -dwarf-debug-producer "Apple clang version 16.0.0 (clang-1600.0.26.6)" -dwarf-version=5 -mrelocation-model pic -o CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o /var/folders/xf/60vm2j4d1634tnwsj0x3xc_m0000gn/T//cceG76pq.s]
+        ignore line: [COMPILER_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/]
+        ignore line: [LIBRARY_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/:/opt/homebrew/lib/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../]
+        ignore line: [COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-mmacosx-version-min=15.0.0'  '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_b432f]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b432f.dir/link.txt --verbose=1]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/opt/homebrew/bin/g++-14]
+        ignore line: [COLLECT_LTO_WRAPPER=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/lto-wrapper]
+        ignore line: [Target: aarch64-apple-darwin24]
+        ignore line: [Configured with: ../configure --prefix=/opt/homebrew/opt/gcc --libdir=/opt/homebrew/opt/gcc/lib/gcc/current --disable-nls --enable-checking=release --with-gcc-major-version-only --enable-languages=c c++ objc obj-c++ fortran m2 --program-suffix=-14 --with-gmp=/opt/homebrew/opt/gmp --with-mpfr=/opt/homebrew/opt/mpfr --with-mpc=/opt/homebrew/opt/libmpc --with-isl=/opt/homebrew/opt/isl --with-zstd=/opt/homebrew/opt/zstd --with-pkgversion='Homebrew GCC 14.2.0_1' --with-bugurl=https://github.com/Homebrew/homebrew-core/issues --with-system-zlib --build=aarch64-apple-darwin24 --with-sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX15.sdk]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 14.2.0 (Homebrew GCC 14.2.0_1) ]
+        ignore line: [COMPILER_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/]
+        ignore line: [LIBRARY_PATH=/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/:/opt/homebrew/lib/:/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../../]
+        ignore line: [COLLECT_GCC_OPTIONS='-isysroot' '/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk' '-v' '-o' 'cmTC_b432f' '-mmacosx-version-min=15.0.0' '-asm_macosx_version_min=15.0' '-nodefaultexport' '-mcpu=apple-m1' '-mlittle-endian' '-mabi=lp64' '-dumpdir' 'cmTC_b432f.']
+        link line: [ /opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/collect2 -demangle -dynamic -arch arm64 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -platform_version macos 15.0.0 0.0 -o cmTC_b432f -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14 -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc -L/opt/homebrew/lib -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../.. -lemutls_w -lheapt_w -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lgcc -lSystem -no_compact_unwind -rpath @loader_path -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14 -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc -rpath /opt/homebrew/lib -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current]
+          arg [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../libexec/gcc/aarch64-apple-darwin24/14/collect2] ==> ignore
+          arg [-demangle] ==> ignore
+          arg [-dynamic] ==> ignore
+          arg [-arch] ==> ignore
+          arg [arm64] ==> ignore
+          arg [-syslibroot] ==> ignore
+          arg [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk] ==> ignore
+          arg [-platform_version] ==> ignore
+          arg [macos] ==> ignore
+          arg [15.0.0] ==> ignore
+          arg [0.0] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_b432f] ==> ignore
+          arg [-L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14] ==> dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14]
+          arg [-L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc] ==> dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc]
+          arg [-L/opt/homebrew/lib] ==> dir [/opt/homebrew/lib]
+          arg [-L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../..] ==> dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../..]
+          arg [-lemutls_w] ==> lib [emutls_w]
+          arg [-lheapt_w] ==> lib [heapt_w]
+          arg [-search_paths_first] ==> ignore
+          arg [-headerpad_max_install_names] ==> ignore
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lSystem] ==> lib [System]
+          arg [-no_compact_unwind] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [@loader_path] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/homebrew/lib] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current] ==> ignore
+        ignore line: [collect2 version 14.2.0]
+        ignore line: [/usr/bin/ld -demangle -dynamic -arch arm64 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -platform_version macos 15.0.0 0.0 -o cmTC_b432f -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14 -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc -L/opt/homebrew/lib -L/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../.. -lemutls_w -lheapt_w -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_b432f.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lgcc -lSystem -no_compact_unwind -rpath @loader_path -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14 -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc -rpath /opt/homebrew/lib -rpath /opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current]
+        linker tool for 'CXX': /usr/bin/ld
+        Library search paths: [;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc;/opt/homebrew/lib;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        Framework search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        remove lib [System]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc]
+        collapse library dir [/opt/homebrew/lib] ==> [/opt/homebrew/lib]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/bin/../lib/gcc/current/gcc/aarch64-apple-darwin24/14/../../..] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc]
+        collapse library dir [/opt/homebrew/lib] ==> [/opt/homebrew/lib]
+        collapse library dir [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current] ==> [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        collapse framework dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        implicit libs: [emutls_w;heapt_w;stdc++;gcc]
+        implicit objs: []
+        implicit dirs: [/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc/aarch64-apple-darwin24/14;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current/gcc;/opt/homebrew/lib;/opt/homebrew/Cellar/gcc/14.2.0_1/lib/gcc/current;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the CXX compiler's linker: "/usr/bin/ld" "-v"
+      @(#)PROGRAM:ld PROJECT:ld-1115.7.3
+      BUILD 23:52:02 Dec  5 2024
+      configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+      will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+      LTO support using: LLVM version 16.0.0 (static support for 29, runtime is 29)
+      TAPI support using: Apple TAPI version 16.0.0 (tapi-1600.0.11.9)
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" failed.
+      Compiler: /Library/Developer/CommandLineTools/usr/bin/cc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      1
+      ld: library 'System' not found
+      cc: error: linker command failed with exit code 1 (use -v to see invocation)
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /Library/Developer/CommandLineTools/usr/bin/cc 
+      Build flags: 
+      Id flags: -c 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      The C compiler identification is AppleClang, found in:
+        /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/3.31.6/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-aHS8ty"
+      binary: "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-aHS8ty"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_OSX_ARCHITECTURES: ""
+      CMAKE_OSX_DEPLOYMENT_TARGET: ""
+      CMAKE_OSX_SYSROOT: "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-aHS8ty'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_37f56/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_37f56.dir/build.make CMakeFiles/cmTC_37f56.dir/build
+        Building C object CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o
+        /Library/Developer/CommandLineTools/usr/bin/cc   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -v -Wl,-v -MD -MT CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        Apple clang version 16.0.0 (clang-1600.0.26.6)
+        Target: arm64-apple-darwin24.3.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+        cc: warning: -Wl,-v: 'linker' input unused [-Wunused-command-line-argument]
+         "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx15.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -target-sdk-version=15.2 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +crc -target-feature +dotprod -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +lse -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sha2 -target-feature +sha3 -target-feature +neon -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -target-abi darwinpcs -debugger-tuning=lldb -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-aHS8ty -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/16 -dependency-file CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -I/opt/homebrew/include -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/16/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -Wno-elaborated-enum-base -Wno-reserved-identifier -Wno-gnu-folding-constant -fdebug-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-aHS8ty -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        clang -cc1 version 16.0.0 (clang-1600.0.26.6) default target arm64-apple-darwin24.3.0
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include"
+        ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/Library/Frameworks"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/homebrew/include
+         /Library/Developer/CommandLineTools/usr/lib/clang/16/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include
+         /Library/Developer/CommandLineTools/usr/include
+         /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks (framework directory)
+        End of search list.
+        Linking C executable cmTC_37f56
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_37f56.dir/link.txt --verbose=1
+        Apple clang version 16.0.0 (clang-1600.0.26.6)
+        Target: arm64-apple-darwin24.3.0
+        Thread model: posix
+        InstalledDir: /Library/Developer/CommandLineTools/usr/bin
+         "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 15.0.0 15.2 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_37f56 -L/opt/homebrew/lib -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a
+        @(#)PROGRAM:ld PROJECT:ld-1115.7.3
+        BUILD 23:52:02 Dec  5 2024
+        configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+        will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+        LTO support using: LLVM version 16.0.0 (static support for 29, runtime is 29)
+        TAPI support using: Apple TAPI version 16.0.0 (tapi-1600.0.11.9)
+        Library search paths:
+        	/opt/homebrew/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift
+        Framework search paths:
+        	/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks
+        /Library/Developer/CommandLineTools/usr/bin/cc  -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names  -v -Wl,-v CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -o cmTC_37f56
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:113 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Effective list of requested architectures (possibly empty)  : ""
+      Effective list of architectures found in the ABI info binary: "arm64"
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/opt/homebrew/include]
+          add: [/Library/Developer/CommandLineTools/usr/lib/clang/16/include]
+          add: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+          add: [/Library/Developer/CommandLineTools/usr/include]
+        end of search list found
+        collapse include dir [/opt/homebrew/include] ==> [/opt/homebrew/include]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/lib/clang/16/include] ==> [/Library/Developer/CommandLineTools/usr/lib/clang/16/include]
+        collapse include dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+        collapse include dir [/Library/Developer/CommandLineTools/usr/include] ==> [/Library/Developer/CommandLineTools/usr/include]
+        implicit include dirs: [/opt/homebrew/include;/Library/Developer/CommandLineTools/usr/lib/clang/16/include;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include;/Library/Developer/CommandLineTools/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-aHS8ty']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_37f56/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_37f56.dir/build.make CMakeFiles/cmTC_37f56.dir/build]
+        ignore line: [Building C object CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/cc   -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk   -v -Wl -v -MD -MT CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Apple clang version 16.0.0 (clang-1600.0.26.6)]
+        ignore line: [Target: arm64-apple-darwin24.3.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        ignore line: [cc: warning: -Wl -v: 'linker' input unused [-Wunused-command-line-argument]]
+        ignore line: [ "/Library/Developer/CommandLineTools/usr/bin/clang" -cc1 -triple arm64-apple-macosx15.0.0 -Wundef-prefix=TARGET_OS_ -Wdeprecated-objc-isa-usage -Werror=deprecated-objc-isa-usage -Werror=implicit-function-declaration -emit-obj -mrelax-all -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -mframe-pointer=non-leaf -fno-strict-return -ffp-contract=on -fno-rounding-math -funwind-tables=1 -fobjc-msgsend-selector-stubs -target-sdk-version=15.2 -fvisibility-inlines-hidden-static-local-var -fno-modulemap-allow-subdirectory-search -target-cpu apple-m1 -target-feature +v8.5a -target-feature +aes -target-feature +crc -target-feature +dotprod -target-feature +fp-armv8 -target-feature +fp16fml -target-feature +lse -target-feature +ras -target-feature +rcpc -target-feature +rdm -target-feature +sha2 -target-feature +sha3 -target-feature +neon -target-feature +zcm -target-feature +zcz -target-feature +fullfp16 -target-abi darwinpcs -debugger-tuning=lldb -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-aHS8ty -resource-dir /Library/Developer/CommandLineTools/usr/lib/clang/16 -dependency-file CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o.d -skip-unused-modulemap-deps -MT CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -sys-header-deps -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -I/opt/homebrew/include -internal-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include -internal-isystem /Library/Developer/CommandLineTools/usr/lib/clang/16/include -internal-externc-isystem /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include -internal-externc-isystem /Library/Developer/CommandLineTools/usr/include -Wno-reorder-init-list -Wno-implicit-int-float-conversion -Wno-c99-designator -Wno-final-dtor-non-final-class -Wno-extra-semi-stmt -Wno-misleading-indentation -Wno-quoted-include-in-framework-header -Wno-implicit-fallthrough -Wno-enum-enum-conversion -Wno-enum-float-conversion -Wno-elaborated-enum-base -Wno-reserved-identifier -Wno-gnu-folding-constant -fdebug-compilation-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/CMakeScratch/TryCompile-aHS8ty -ferror-limit 19 -stack-protector 1 -fstack-check -mdarwin-stkchk-strong-link -fblocks -fencode-extended-block-signature -fregister-global-dtors-with-atexit -fgnuc-version=4.2.1 -fmax-type-align=16 -fcommon -clang-vendor-feature=+disableNonDependentMemberExprInCurrentInstantiation -fno-odr-hash-protocols -clang-vendor-feature=+enableAggressiveVLAFolding -clang-vendor-feature=+revert09abecef7bbf -clang-vendor-feature=+thisNoAlignAttr -clang-vendor-feature=+thisNoNullAttr -clang-vendor-feature=+disableAtImportPrivateFrameworkInImplementationError -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang -cc1 version 16.0.0 (clang-1600.0.26.6) default target arm64-apple-darwin24.3.0]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/Library/Frameworks"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/homebrew/include]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/lib/clang/16/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/usr/include]
+        ignore line: [ /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks (framework directory)]
+        ignore line: [End of search list.]
+        ignore line: [Linking C executable cmTC_37f56]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_37f56.dir/link.txt --verbose=1]
+        ignore line: [Apple clang version 16.0.0 (clang-1600.0.26.6)]
+        ignore line: [Target: arm64-apple-darwin24.3.0]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /Library/Developer/CommandLineTools/usr/bin]
+        link line: [ "/Library/Developer/CommandLineTools/usr/bin/ld" -demangle -lto_library /Library/Developer/CommandLineTools/usr/lib/libLTO.dylib -dynamic -arch arm64 -platform_version macos 15.0.0 15.2 -syslibroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -mllvm -enable-linkonceodr-outlining -o cmTC_37f56 -L/opt/homebrew/lib -search_paths_first -headerpad_max_install_names -v CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o -lSystem /Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a]
+          arg [/Library/Developer/CommandLineTools/usr/bin/ld] ==> ignore
+          arg [-demangle] ==> ignore
+          arg [-lto_library] ==> ignore, skip following value
+          arg [/Library/Developer/CommandLineTools/usr/lib/libLTO.dylib] ==> skip value of -lto_library
+          arg [-dynamic] ==> ignore
+          arg [-arch] ==> ignore
+          arg [arm64] ==> ignore
+          arg [-platform_version] ==> ignore
+          arg [macos] ==> ignore
+          arg [15.0.0] ==> ignore
+          arg [15.2] ==> ignore
+          arg [-syslibroot] ==> ignore
+          arg [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk] ==> ignore
+          arg [-mllvm] ==> ignore
+          arg [-enable-linkonceodr-outlining] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_37f56] ==> ignore
+          arg [-L/opt/homebrew/lib] ==> dir [/opt/homebrew/lib]
+          arg [-search_paths_first] ==> ignore
+          arg [-headerpad_max_install_names] ==> ignore
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_37f56.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lSystem] ==> lib [System]
+          arg [/Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a] ==> lib [/Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a]
+        linker tool for 'C': /Library/Developer/CommandLineTools/usr/bin/ld
+        Library search paths: [;/opt/homebrew/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        Framework search paths: [;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        remove lib [System]
+        remove lib [/Library/Developer/CommandLineTools/usr/lib/clang/16/lib/darwin/libclang_rt.osx.a]
+        collapse library dir [/opt/homebrew/lib] ==> [/opt/homebrew/lib]
+        collapse library dir [/opt/homebrew/lib] ==> [/opt/homebrew/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib]
+        collapse library dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        collapse framework dir [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks] ==> [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: [/opt/homebrew/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib;/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/lib/swift]
+        implicit fwks: [/Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/System/Library/Frameworks]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "build/_deps/matplotplusplus-src/CMakeLists.txt:7 (project)"
+    message: |
+      Running the C compiler's linker: "/Library/Developer/CommandLineTools/usr/bin/ld" "-v"
+      @(#)PROGRAM:ld PROJECT:ld-1115.7.3
+      BUILD 23:52:02 Dec  5 2024
+      configured to support archs: armv6 armv7 armv7s arm64 arm64e arm64_32 i386 x86_64 x86_64h armv6m armv7k armv7m armv7em
+      will use ld-classic for: armv6 armv7 armv7s i386 armv6m armv7k armv7m armv7em
+      LTO support using: LLVM version 16.0.0 (static support for 29, runtime is 29)
+      TAPI support using: Apple TAPI version 16.0.0 (tapi-1600.0.11.9)
+...
