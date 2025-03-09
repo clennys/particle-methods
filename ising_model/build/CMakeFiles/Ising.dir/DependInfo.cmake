@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/ising.cc" "CMakeFiles/Ising.dir/src/ising.cc.o" "gcc" "CMakeFiles/Ising.dir/src/ising.cc.o.d"
-  "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/lattice.cc" "CMakeFiles/Ising.dir/src/lattice.cc.o" "gcc" "CMakeFiles/Ising.dir/src/lattice.cc.o.d"
-  "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/main.cc" "CMakeFiles/Ising.dir/src/main.cc.o" "gcc" "CMakeFiles/Ising.dir/src/main.cc.o.d"
+  "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/ising.cc" "CMakeFiles/Ising.dir/src/ising.cc.o" "gcc" "CMakeFiles/Ising.dir/src/ising.cc.o.d"
+  "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/lattice.cc" "CMakeFiles/Ising.dir/src/lattice.cc.o" "gcc" "CMakeFiles/Ising.dir/src/lattice.cc.o.d"
+  "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/main.cc" "CMakeFiles/Ising.dir/src/main.cc.o" "gcc" "CMakeFiles/Ising.dir/src/main.cc.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

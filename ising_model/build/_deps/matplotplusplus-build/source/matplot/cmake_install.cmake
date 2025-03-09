@@ -1,4 +1,4 @@
-# Install script for directory: /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/source/matplot
+# Install script for directory: /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-src/source/matplot
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -12,7 +12,7 @@ if(NOT DEFINED CMAKE_INSTALL_CONFIG_NAME)
     string(REGEX REPLACE "^[^A-Za-z0-9_]+" ""
            CMAKE_INSTALL_CONFIG_NAME "${BUILD_TYPE}")
   else()
-    set(CMAKE_INSTALL_CONFIG_NAME "")
+    set(CMAKE_INSTALL_CONFIG_NAME "DEBUG")
   endif()
   message(STATUS "Install configuration: \"${CMAKE_INSTALL_CONFIG_NAME}\"")
 endif()
@@ -38,12 +38,12 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/matplot/detail" TYPE FILE FILES "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-build/source/matplot/matplot/detail/exports.h")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include/matplot/detail" TYPE FILE FILES "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-build/source/matplot/matplot/detail/exports.h")
 endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
 if(CMAKE_INSTALL_LOCAL_ONLY)
-  file(WRITE "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-build/source/matplot/install_local_manifest.txt"
+  file(WRITE "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-build/source/matplot/install_local_manifest.txt"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

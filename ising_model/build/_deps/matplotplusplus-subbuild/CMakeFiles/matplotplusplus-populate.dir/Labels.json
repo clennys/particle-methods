@@ -2,37 +2,37 @@
 	"sources" : 
 	[
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/CMakeFiles/matplotplusplus-populate"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/CMakeFiles/matplotplusplus-populate"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/CMakeFiles/matplotplusplus-populate.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/CMakeFiles/matplotplusplus-populate.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/CMakeFiles/matplotplusplus-populate-complete.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/CMakeFiles/matplotplusplus-populate-complete.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-build.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-build.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-configure.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-configure.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-download.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-download.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-install.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-install.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-mkdir.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-mkdir.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-patch.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-patch.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-test.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-test.rule"
 		},
 		{
-			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-update.rule"
+			"file" : "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-subbuild/matplotplusplus-populate-prefix/src/matplotplusplus-populate-stamp/matplotplusplus-populate-update.rule"
 		}
 	],
 	"target" : 

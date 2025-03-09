@@ -10,6 +10,8 @@ public:
   ~Ising();
 
   void simulate(int Ntherm, int Nsample, int Nsubsweep);
+  double markov_avg_energy();
+  double markov_avg_magnet();
 
 private:
   Lattice lat;
@@ -24,8 +26,6 @@ private:
   void metropolis_sweep(int Nsubsweep);
   double avg_magnetization();
   double overall_energy();
-  double markov_avg_energy();
-  double markov_avg_magnet();
 };
 
 #endif // ISING_HPP_

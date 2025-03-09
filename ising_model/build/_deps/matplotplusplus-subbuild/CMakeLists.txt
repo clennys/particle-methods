@@ -28,8 +28,8 @@ set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
 include(ExternalProject)
 ExternalProject_Add(matplotplusplus-populate
                      "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/alandefreitas/matplotplusplus" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR" "GIT_TAG" "origin/master"
-                    SOURCE_DIR          "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src"
-                    BINARY_DIR          "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-build"
+                    SOURCE_DIR          "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-src"
+                    BINARY_DIR          "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

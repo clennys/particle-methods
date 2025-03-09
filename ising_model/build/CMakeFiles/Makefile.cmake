@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/CMakeLists.txt"
+  "/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/CMakeLists.txt"
   "CMakeFiles/3.31.6/CMakeCCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeSystem.cmake"
@@ -53,6 +53,7 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake"
   "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake"
   "/opt/homebrew/share/cmake/Modules/CMakeTestCompilerCommon.cmake"
+  "/opt/homebrew/share/cmake/Modules/CMakeUnixFindMake.cmake"
   "/opt/homebrew/share/cmake/Modules/CheckCCompilerFlag.cmake"
   "/opt/homebrew/share/cmake/Modules/CheckCSourceCompiles.cmake"
   "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake"

@@ -1,0 +1,27 @@
+\section*{Part 1}
+Given the Hamiltonian, which is the total energy of the system in a given configuration
+\begin{equation}
+	E=\mathcal{H}(\{\sigma\})=-J \sum_{\langle i, j\rangle} \sigma_i \sigma_j
+\end{equation}
+the goal is to compute $\Delta E = E(Y) - E(X)$ where the difference between the configurations $X$ and $Y$ is that one spin changed sign.
+$J$ is the coupling constant and each spin is coupled to four of its neighbors (up, down, left, right). \newline
+\newline
+The total Energy for the configuration $X$ can be written as
+\begin{equation}
+	E(X)=-J \sum_{\langle i, j\rangle} \sigma_i \sigma_j
+\end{equation}
+If we assume that spin $\sigma_i$ is flipped  to $(-\sigma_i)$ in configuration $Y$, the total energy is then given by
+\begin{equation}
+	E(Y)=-J \sum_{\langle i, j\rangle} (-\sigma_i) \sigma_j = J \sum_{\langle i, j\rangle} \sigma_i \sigma_j
+\end{equation}
+The difference between the system can therefore be written as
+\begin{equation}
+	\Delta E = E(Y) - E(X) = J \sum_{\langle i, j\rangle} \sigma_i \sigma_j - (-J \sum_{\langle i, j\rangle} \sigma_i \sigma_j) =  2J \sum_{\langle i, j\rangle} \sigma_i \sigma_j  
+\end{equation}
+we can now define the neighbor field as $h_i = \sum_{\langle i, j\rangle} \sigma_j$ by factoring out $\sigma_i$ since it's constant with respect to the summation resulting in the following equation
+\begin{equation}
+	\Delta E = 2J\sigma_i h_i.
+\end{equation}
+Now in our Ising model we flip the spin if $\Delta E \leq 0$, otherwise accept the configuration with probability $\exp \left[ - \displaystyle\frac{\Delta E}{k_B T}\right]$. 
+
+\section*{Part 3}

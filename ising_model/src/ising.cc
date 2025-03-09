@@ -29,15 +29,16 @@ void Ising::metropolis_sweep(int Nsubsweep) {
     metropolis_step();
   }
 }
+double Ising::markov_avg_energy() {
+  double sum = std::accumulate(this->energy_markov_chain.begin(),
+                               this->energy_markov_chain.end(), 0.0);
+  return sum / static_cast<double>(this->energy_markov_chain.size());
+}
 
-void Ising::metropolis_step() {
-  int rd_row = this->dist_lat(gen), rd_col = this->dist_lat(gen);
-  int sum_neighbors = this->lat.sum_of_neighbors(rd_row, rd_col);
-  int energy_change = 2 * this->lat.L[rd_row][rd_col] * sum_neighbors;
-  if (energy_change <= 0 ||
-      this->dist_flip(gen) < std::exp(-1 / this->temp * energy_change)) {
-    this->lat.L[rd_row][rd_col] *= -1;
-  }
+double Ising::markov_avg_magnet() {
+  double sum = std::accumulate(this->magnet_markov_chain.begin(),
+                               this->magnet_markov_chain.end(), 0.0);
+  return sum / static_cast<double>(this->magnet_markov_chain.size());
 }
 
 double Ising::avg_magnetization() {
@@ -48,8 +49,17 @@ double Ising::avg_magnetization() {
       sum += this->lat.L[i][j];
     }
   }
+  return sum / (dim * dim);
+}
 
-  return 1 / (dim * dim) * sum;
+void Ising::metropolis_step() {
+  int rd_row = this->dist_lat(gen), rd_col = this->dist_lat(gen);
+  int sum_neighbors = this->lat.sum_of_neighbors(rd_row, rd_col);
+  int energy_change = 2 * this->lat.L[rd_row][rd_col] * sum_neighbors;
+  if (energy_change <= 0 ||
+      this->dist_flip(gen) < std::exp(-energy_change / this->temp)) {
+    this->lat.L[rd_row][rd_col] *= -1;
+  }
 }
 
 double Ising::overall_energy() {
@@ -58,21 +68,10 @@ double Ising::overall_energy() {
 
   for (int i = 0; i < dim; i++) {
     for (int j = 0; j < dim; j++) {
-      energy += -this->lat.L[i][j] + this->lat.sum_of_neighbors(i, j);
+      energy += -this->lat.L[i][j] * this->lat.sum_of_neighbors(i, j);
     }
   }
   return energy / 2.;
-}
-
-double Ising::markov_avg_energy() {
-  int sum = std::accumulate(this->energy_markov_chain.begin(),
-                            this->energy_markov_chain.end(), 0);
-  return (1 / (double)this->energy_markov_chain.size()) * sum;
-}
-double Ising::markov_avg_magnet() {
-  int sum = std::accumulate(this->magnet_markov_chain.begin(),
-                            this->magnet_markov_chain.end(), 0);
-  return (1 / (double)this->magnet_markov_chain.size()) * sum;
 }
 
 Ising::~Ising() {}

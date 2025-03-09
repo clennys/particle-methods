@@ -54,10 +54,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model
+CMAKE_SOURCE_DIR = /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build
+CMAKE_BINARY_DIR = /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -167,14 +167,14 @@ CMakeFiles/Ising.dir/all: _deps/matplotplusplus-build/source/3rd_party/CMakeFile
 CMakeFiles/Ising.dir/all: _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ising.dir/build.make CMakeFiles/Ising.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ising.dir/build.make CMakeFiles/Ising.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=1,2,3,4 "Built target Ising"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=1,2,3,4 "Built target Ising"
 .PHONY : CMakeFiles/Ising.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Ising.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles 48
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles 48
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Ising.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles 0
 .PHONY : CMakeFiles/Ising.dir/rule
 
 # Convenience name for target.
@@ -184,7 +184,7 @@ Ising: CMakeFiles/Ising.dir/rule
 # codegen rule for target.
 CMakeFiles/Ising.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Ising.dir/build.make CMakeFiles/Ising.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=1,2,3,4 "Finished codegen for target Ising"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=1,2,3,4 "Finished codegen for target Ising"
 .PHONY : CMakeFiles/Ising.dir/codegen
 
 # clean rule for target.
@@ -199,14 +199,14 @@ CMakeFiles/Ising.dir/clean:
 _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/all:
 	$(MAKE) $(MAKESILENT) -f _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/build.make _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/depend
 	$(MAKE) $(MAKESILENT) -f _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/build.make _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=43,44,45,46,47,48 "Built target nodesoup"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=43,44,45,46,47,48 "Built target nodesoup"
 .PHONY : _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/all
 
 # Build rule for subdir invocation for target.
 _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles 0
 .PHONY : _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/rule
 
 # Convenience name for target.
@@ -216,7 +216,7 @@ nodesoup: _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/r
 # codegen rule for target.
 _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/build.make _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=43,44,45,46,47,48 "Finished codegen for target nodesoup"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=43,44,45,46,47,48 "Finished codegen for target nodesoup"
 .PHONY : _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/codegen
 
 # clean rule for target.
@@ -231,14 +231,14 @@ _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/clean:
 _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/all: _deps/matplotplusplus-build/source/3rd_party/CMakeFiles/nodesoup.dir/all
 	$(MAKE) $(MAKESILENT) -f _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/build.make _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/depend
 	$(MAKE) $(MAKESILENT) -f _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/build.make _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42 "Built target matplot"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42 "Built target matplot"
 .PHONY : _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/all
 
 # Build rule for subdir invocation for target.
 _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles 44
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles 44
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles 0
 .PHONY : _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/rule
 
 # Convenience name for target.
@@ -248,7 +248,7 @@ matplot: _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/rule
 # codegen rule for target.
 _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/build.make _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42 "Finished codegen for target matplot"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42 "Finished codegen for target matplot"
 .PHONY : _deps/matplotplusplus-build/source/matplot/CMakeFiles/matplot.dir/codegen
 
 # clean rule for target.

@@ -4,9 +4,9 @@
 # compile CXX with /opt/homebrew/bin/g++-14
 CXX_DEFINES = -D_USE_MATH_DEFINES
 
-CXX_INCLUDES = -I/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/_deps/matplotplusplus-src/source/3rd_party/nodesoup/include
+CXX_INCLUDES = -I/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/_deps/matplotplusplus-src/source/3rd_party/nodesoup/include
 
-CXX_FLAGSarm64 = -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -fvisibility=hidden
+CXX_FLAGSarm64 =  -g -O0 -Wall -Wextra -g -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -fvisibility=hidden
 
-CXX_FLAGS = -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -fvisibility=hidden
+CXX_FLAGS =  -g -O0 -Wall -Wextra -g -std=gnu++20 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -fvisibility=hidden
 

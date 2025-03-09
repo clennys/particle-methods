@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model
+CMAKE_SOURCE_DIR = /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build
+CMAKE_BINARY_DIR = /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Ising.dir/depend.make
@@ -73,46 +73,46 @@ CMakeFiles/Ising.dir/codegen:
 .PHONY : CMakeFiles/Ising.dir/codegen
 
 CMakeFiles/Ising.dir/src/ising.cc.o: CMakeFiles/Ising.dir/flags.make
-CMakeFiles/Ising.dir/src/ising.cc.o: /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/ising.cc
+CMakeFiles/Ising.dir/src/ising.cc.o: /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/ising.cc
 CMakeFiles/Ising.dir/src/ising.cc.o: CMakeFiles/Ising.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Ising.dir/src/ising.cc.o"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Ising.dir/src/ising.cc.o -MF CMakeFiles/Ising.dir/src/ising.cc.o.d -o CMakeFiles/Ising.dir/src/ising.cc.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/ising.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Ising.dir/src/ising.cc.o"
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Ising.dir/src/ising.cc.o -MF CMakeFiles/Ising.dir/src/ising.cc.o.d -o CMakeFiles/Ising.dir/src/ising.cc.o -c /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/ising.cc
 
 CMakeFiles/Ising.dir/src/ising.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Ising.dir/src/ising.cc.i"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/ising.cc > CMakeFiles/Ising.dir/src/ising.cc.i
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/ising.cc > CMakeFiles/Ising.dir/src/ising.cc.i
 
 CMakeFiles/Ising.dir/src/ising.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Ising.dir/src/ising.cc.s"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/ising.cc -o CMakeFiles/Ising.dir/src/ising.cc.s
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/ising.cc -o CMakeFiles/Ising.dir/src/ising.cc.s
 
 CMakeFiles/Ising.dir/src/lattice.cc.o: CMakeFiles/Ising.dir/flags.make
-CMakeFiles/Ising.dir/src/lattice.cc.o: /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/lattice.cc
+CMakeFiles/Ising.dir/src/lattice.cc.o: /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/lattice.cc
 CMakeFiles/Ising.dir/src/lattice.cc.o: CMakeFiles/Ising.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Ising.dir/src/lattice.cc.o"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Ising.dir/src/lattice.cc.o -MF CMakeFiles/Ising.dir/src/lattice.cc.o.d -o CMakeFiles/Ising.dir/src/lattice.cc.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/lattice.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Ising.dir/src/lattice.cc.o"
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Ising.dir/src/lattice.cc.o -MF CMakeFiles/Ising.dir/src/lattice.cc.o.d -o CMakeFiles/Ising.dir/src/lattice.cc.o -c /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/lattice.cc
 
 CMakeFiles/Ising.dir/src/lattice.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Ising.dir/src/lattice.cc.i"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/lattice.cc > CMakeFiles/Ising.dir/src/lattice.cc.i
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/lattice.cc > CMakeFiles/Ising.dir/src/lattice.cc.i
 
 CMakeFiles/Ising.dir/src/lattice.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Ising.dir/src/lattice.cc.s"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/lattice.cc -o CMakeFiles/Ising.dir/src/lattice.cc.s
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/lattice.cc -o CMakeFiles/Ising.dir/src/lattice.cc.s
 
 CMakeFiles/Ising.dir/src/main.cc.o: CMakeFiles/Ising.dir/flags.make
-CMakeFiles/Ising.dir/src/main.cc.o: /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/main.cc
+CMakeFiles/Ising.dir/src/main.cc.o: /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/main.cc
 CMakeFiles/Ising.dir/src/main.cc.o: CMakeFiles/Ising.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Ising.dir/src/main.cc.o"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Ising.dir/src/main.cc.o -MF CMakeFiles/Ising.dir/src/main.cc.o.d -o CMakeFiles/Ising.dir/src/main.cc.o -c /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/main.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Ising.dir/src/main.cc.o"
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Ising.dir/src/main.cc.o -MF CMakeFiles/Ising.dir/src/main.cc.o.d -o CMakeFiles/Ising.dir/src/main.cc.o -c /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/main.cc
 
 CMakeFiles/Ising.dir/src/main.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Ising.dir/src/main.cc.i"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/main.cc > CMakeFiles/Ising.dir/src/main.cc.i
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/main.cc > CMakeFiles/Ising.dir/src/main.cc.i
 
 CMakeFiles/Ising.dir/src/main.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Ising.dir/src/main.cc.s"
-	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/src/main.cc -o CMakeFiles/Ising.dir/src/main.cc.s
+	/opt/homebrew/bin/g++-14 $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/src/main.cc -o CMakeFiles/Ising.dir/src/main.cc.s
 
 # Object files for target Ising
 Ising_OBJECTS = \
@@ -145,7 +145,7 @@ Ising: /opt/homebrew/lib/libfftw3f_omp.dylib
 Ising: /opt/homebrew/lib/libfftw3l_omp.dylib
 Ising: _deps/matplotplusplus-build/source/3rd_party/libnodesoup.a
 Ising: CMakeFiles/Ising.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Ising"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable Ising"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Ising.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -157,6 +157,6 @@ CMakeFiles/Ising.dir/clean:
 .PHONY : CMakeFiles/Ising.dir/clean
 
 CMakeFiles/Ising.dir/depend:
-	cd /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build /Users/dennyshuber/University/EUMaster4HPC/particle_methods/ising_model/build/CMakeFiles/Ising.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build /Users/dennyshuber/University/EUMaster4HPC/particle-methods/ising_model/build/CMakeFiles/Ising.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/Ising.dir/depend
 
