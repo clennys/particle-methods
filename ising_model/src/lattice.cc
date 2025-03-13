@@ -34,7 +34,8 @@ void Lattice::plot() {
   std::string frame = format_number(this->frame++);
   title("Ising model at frame " + frame);
   image(this->L, true);
-  save("img/lattice_" + frame + ".png");
+  save("anim/lattice_" + frame + ".png");
+	std::cout << "Frame: " << frame << " done." << std::endl;
   hold(false); // Ensure it updates properly
   // show();
 }

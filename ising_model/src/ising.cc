@@ -1,17 +1,17 @@
 #include "../include/ising.hpp"
 #include <cmath>
+#include <map>
 #include <random>
 #include <unistd.h>
-#include <map>
 
 Ising::Ising(int size, double T)
     : lat(size), temp(T), dist_lat(0, size - 1), dist_flip(0.0, 1.0) {
   std::random_device rd;
   this->gen = std::mt19937(rd());
-	std::vector<int> pos_delta_en = {-8, -4, -2, 0, 2, 4, 8};
-	for(int p: pos_delta_en){
-			this->exp_map[p] = std::exp(-p / this->temp);
-	}
+  std::vector<int> pos_delta_en = {-8, -4, -2, 0, 2, 4, 8};
+  for (int p : pos_delta_en) {
+    this->exp_map[p] = std::exp(-p / this->temp);
+  }
 }
 
 void Ising::simulate(int Ntherm, int Nsample, int Nsubsweep) {
@@ -22,6 +22,14 @@ void Ising::simulate(int Ntherm, int Nsample, int Nsubsweep) {
     metropolis_sweep(Nsubsweep);
     energy_markov_chain.push_back(overall_energy());
     magnet_markov_chain.push_back(avg_magnetization());
+  }
+}
+
+void Ising::animate(int frames) {
+  double dim = this->lat.get_dim();
+  for (int i = 0; i < frames; i++) {
+    metropolis_sweep(dim);
+		this->lat.plot();
   }
 }
 

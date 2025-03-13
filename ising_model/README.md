@@ -17,8 +17,18 @@ The project can then be compiled using the following command:
 cmake --build build
 ```
 ## Run
-The project can then be simply run with following command
-```bash
-./build/Ising
-```
+The project can then be simply run with following commands:
+- For the plots from the exercises
+    ```bash
+    ./build/Ising -e
+    ```
 The resulting plots can then be found in the './img/' folder.
+- For an animation (2000 frames on a 25x25 lattice) at a specific temperature
+    ```bash
+    ./build/Ising -a -T 0.2
+    ```
+    - The images of the grid can be found in the './anim/' folder.
+    - Using the following ffmpeg command you can create the animation
+    ```bash
+    ffmpeg -framerate 60 -i anim/lattice_%03d.png -c:v libx264 -pix_fmt yuv420p -r 60 lattice_animation.mp4
+    ```

@@ -16,6 +16,7 @@ public:
   std::vector<double> magnet_markov_chain;
   std::vector<double> energy_markov_chain;
   double std_dev(const double &avg, const std::vector<double> &vec, bool abs=false);
+	void animate(int frames);
 
 private:
   Lattice lat;

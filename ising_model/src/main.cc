@@ -5,11 +5,12 @@
 #include <string>
 #include <vector>
 
-int main() {
+void run_exercise() {
   std::vector<int> L = {5, 10, 15};
   std::vector<double> temp = {0.01, 1.0, 1.5, 2.0, 2.1,
                               2.2,  2.3, 2.4, 2.5, 3.0};
   int ntherm = 100000, n_sample = 5000;
+
   auto fig = matplot::figure(true);
   fig->quiet_mode(true);
   fig->backend()->run_command("unset warnings");
@@ -20,7 +21,8 @@ int main() {
     std::string lat_size = std::to_string(l);
     for (double t : temp) {
       Ising model(l, t);
-      std::cout << "Start simulation with lattice size: [" << l << "x" << l << "] and Temperature: " << t << std::endl;
+      std::cout << "Start simulation with lattice size: [" << l << "x" << l
+                << "] and Temperature: " << t << std::endl;
       model.simulate(ntherm, n_sample, l * l);
       double avg_en = model.markov_avg_energy();
       double avg_mag = model.markov_avg_magnet();
@@ -72,4 +74,56 @@ int main() {
     }
     std::cout << std::string(50, '#') << std::endl;
   }
+}
+
+void run_animation(double tval) {
+  auto fig = matplot::figure(true);
+  fig->quiet_mode(true);
+  fig->backend()->run_command("unset warnings");
+  Ising model(25, tval);
+	model.animate(2000);
+}
+
+int main(int argc, char *argv[]) {
+  bool flag_e = false;
+  bool flag_a = false;
+  double T_value = -1;
+
+  for (int i = 1; i < argc; ++i) {
+    std::string arg = argv[i];
+    if (arg == "-e") {
+      flag_e = true;
+    } else if (arg == "-a") {
+      flag_a = true;
+    } else if (arg == "-T") {
+      if (i + 1 < argc) {
+        try {
+          T_value = std::stoi(argv[++i]);
+        } catch (const std::exception &) {
+          std::cerr << "Error: -T must be followed by a valid double value."
+                    << std::endl;
+          return 1;
+        }
+      } else {
+        std::cerr << "Error: -T must be followed by a value." << std::endl;
+        return 1;
+      }
+    } else {
+      std::cerr << "Error: Unknown flag '" << arg
+                << "'. Usage: -e or -a with -T <value>." << std::endl;
+      return 1;
+    }
+  }
+
+  if (flag_e && !flag_a && T_value == -1) {
+    run_exercise();
+  } else if (flag_a && T_value != -1) {
+    run_animation(T_value);
+  } else if (flag_a || T_value != -1) {
+    std::cerr << "Error: -a must be used in combination with -T <value>."
+              << std::endl;
+    return 1;
+  }
+
+  return 0;
 }

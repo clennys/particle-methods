@@ -1,18 +1,19 @@
 \section*{Part 3}
-The Figure \ref{fig:avg_em} shows the relationship of temperature with two the key properties of magnetization and energy for different sizes of square lattices.
-The left columns shows the average absolute magnetization vs. temperature for each lattices size, the following observation can be made in regards to magnetization:
+Figure \ref{fig:avg_em} illustrates the relationship between temperature and two key properties magnetization and energy for different sizes of square lattices in the 2D Ising model.\\
+\\
+The left column presents the average absolute magnetization as a function of temperature. In each plot, we observe that the steepest change in magnetization, indicating the phase transition, occurs near the critical temperature, $T_c \approx 2.269$\\
+\\
+Furthere observations on Magnetization are:
 \begin{itemize}
-	\item All three lattice size show an identical pattern, where at low temperature $T < 1$, we have high and stable magnetization (all spins point in the same direction). This is followed by a decreasing trend when increasing the temperature.
-	\item The most dramatic drop in magnetization can be observed in the critical region between $2.0$ and $2.5$ for all lattice sizes. This is also where the critical temperature at $T_c = 2.27$ is located. Furthermore we can observe a steeper drop for larger lattice sizes.
-	\item For temperature higher than $2.5$ the magnetization continues to decrease, but does not reach zero.
-\end{itemize}
-If we shift our attention to the right column, there we can make the following observations about the average energy vs. temperature plots:
-\begin{itemize}
-	\item For $T < 1$ all systems remain constant at minimum energy.
-	\item When increasing the energy $T > 1.5$, the spins start to break the alignment with its neighbors, caused by the atoms gaining kinetic energy as temperature increases and overcoming the exchange coupling $J$.
-	\item For higher temperature the system then gradually approaches to maximum disorder.
-\end{itemize}
-The data clearly shows a phase transition in the system around the critical temperature, which demonstrate classical behaviour of a 2D Ising model, which transitions from low temperature ordered state to a high temperature disordered state.
+	\item All three lattice sizes exhibit a similar pattern: for low temperatures $T<1$, the system remains in an ordered state with high and stable magnetization, as most spins align in the same direction.
+	\item The most significant drop in magnetization occurs in the critical region between $T= 2.0$and $T= 2.5$ for all lattice sizes, aligning with the expected phase transition at $T_c$. The transition becomes steeper for larger lattices, indicating a sharper phase transition as the system size increases. 
+	\item For temperatures $T>2.5$, magnetization continues to decrease but at a much slower rate. As $T$ increases beyond $3.0$, the system approaches complete randomness, leading to near-zero magnetization. \end{itemize}
+The right column displays the average energy as a function of temperature. We can make the following observations on Energy:
+\begin{itemize} 
+	\item For $T<1$, all systems remain at their minimum energy state, corresponding to a highly ordered configuration.
+	\item As temperature increases $T>1.5$, the spins start to misalign with their neighbors due to increased thermal fluctuations. This occurs as thermal energy begins to overcome the exchange coupling $J$, leading to the disruption of ordered spin states. 
+	\item At even higher temperatures, the system gradually approaches maximum disorder, with energy increasing toward zero. \end{itemize}
+The data clearly demonstrates a phase transition near the critical temperature, showcasing the classical behavior of the 2D Ising model. As the system transitions from a low-temperature ordered state to a high-temperature disordered state, we observe a sharp drop in magnetization and a corresponding increase in energy, particularly for larger lattice sizes.
 \begin{figure}[t]
 	\centering
 	\begin{subfigure}{0.5\textwidth}
@@ -94,12 +95,13 @@ The data clearly shows a phase transition in the system around the critical temp
 	}
 	\label{fig:mag_time}
 \end{figure}
-The plots in Figure~\ref{fig:mag_time} show the Ising model simulated on a $5 \times 5$ lattice at different temperatures. (Note that every system was initialized randomly, thus sign between subplots can change as seen in Subfigure \ref{sfig:p3} compared to \ref{sfig:p1} or \ref{sfig:p2}).
-We can observe the following behaviour in regards to magnetization sign flips:
+The plots in Figure~\ref{fig:mag_time} depict the evolution of magnetization over time for an $5 \times 5$ Ising model lattice at different temperatures. Each system was initialized randomly, meaning the overall sign of magnetization may vary between subfigures (e.g., Subfigure~\ref{sfig:p3} compared to \ref{sfig:p1} or \ref{sfig:p2}).
+The following key observation can be made on Magnetization and Sign Flipping:
+
 \begin{itemize}
-	\item Subfigure~\ref{sfig:p1} At temperature close to zero the magnetization is at $-1$ with no sign-flips. All the signs are aligned and there's not enough thermal energy overcome the exchange interaction.
-	\item Subfigure~\ref{sfig:p2} The system maintains mostly a magnetization of $-1$, but we can observe occasional small deviations. No sign flips can be seen.
-	\item Subfigure~\ref{sfig:p3} More significant deviations appear, yet no sign flips appear. 
-	\item Subfigure~\ref{sfig:p4}. \ref{sfig:p5} and \ref{sfig:p6} here we can clearly see sign flips and when increasing the temperature and approach the $T_c$ the sign flips occur more frequently.
+	\item Subfigure~\ref{sfig:p1} ($T=0.01$): At temperatures very close to zero, the system is fully ordered, with magnetization staying at $-1$ (or $1$) throughout the entire simulation. No sign flips occur, as thermal energy is insufficient to disrupt spin alignment.
+\item Subfigure~\ref{sfig:p2} ($T=1.0$): The system remains predominantly magnetized in one direction, but small fluctuations appear. However, no full sign flips are observed.
+\item Subfigure~\ref{sfig:p3} ($T=1.5$): Larger deviations in magnetization occur, yet the system still retains a dominant direction. No complete sign flips are observed, though fluctuations increase.
+\item Subfigures~\ref{sfig:p4}, \ref{sfig:p5}, and \ref{sfig:p6} ($T=2.0,2.1,2.2$): As temperature increases and approaches the critical temperature $T_c$, magnetization fluctuates more violently. Frequent sign flips occur, indicating the system oscillates between states with positive and negative magnetization due to increasing thermal energy. These fluctuations become more pronounced closer to $T_c$, as thermal agitation competes with spin alignment.
 \end{itemize}
 
