@@ -46,7 +46,9 @@ bool Agent::replication_success(double repl_prop) {
   static std::mt19937 gen(rd());
   static std::uniform_real_distribution<double> prob_dist(0.0, 1.0);
 
-  if (prob_dist(gen) < repl_prop) {
+  double p = prob_dist(gen);
+  if (p < repl_prop) {
+    // std::cout << p << "<" << repl_prop << std::endl;
     return true;
   }
   return false;

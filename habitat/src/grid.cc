@@ -82,6 +82,9 @@ Subgrid::pred_eat(const std::unique_ptr<Agent> &predator_ptr, double rc) {
 
   double pred_x = predator->x;
   double pred_y = predator->y;
+  static std::random_device rd;
+  static std::mt19937 gen(rd());
+  static std::uniform_real_distribution<double> prob_dist(0.0, 1.0);
 
   const double pe = 0.02; // Probability of eating
 
@@ -109,11 +112,12 @@ Subgrid::pred_eat(const std::unique_ptr<Agent> &predator_ptr, double rc) {
                                   std::pow(pred_y - prey_y, 2));
 
       if (distance <= rc) {
-				// TODO: (dhub) change random functions
-        double random_value = static_cast<double>(std::rand()) / RAND_MAX;
+        // TODO: (dhub) change random functions
+        double random_value = prob_dist(gen);
         if (random_value <= pe) {
+          // std::cout << "Prey eaten" << std::endl;
           indices_to_remove.push_back(i);
-					predator->lives = predator->max_ls;
+          predator->lives = predator->max_ls;
         }
       }
     }
@@ -225,6 +229,20 @@ void Grid::extract_agent_positions(std::vector<double> &pred_x,
     }
   }
 }
+void Grid::number_of_pred_prey(int &count_prey, int &count_pred) {
+  count_prey = 0;
+  count_pred = 0;
+  for (const auto &subgrid : this->domain) { // Loop over all subgrids
+    for (const auto &agent :
+         subgrid->agents) { // Loop over agents in the subgrid
+      if (util::instanceof<Predator>(agent.get())) {
+        count_pred++;
+      } else if (util::instanceof<Prey>(agent.get())) {
+        count_prey++;
+      }
+    }
+  }
+}
 
 void Grid::plot() {
   using namespace matplot;
@@ -332,12 +350,14 @@ void Grid::perform_agent_action(double pred_repl_prob, double prey_repl_prob,
       if (auto prey = dynamic_cast<Prey *>(agent.get())) {
         if (prey->exceeded_lifespan()) {
           indices_to_remove.push_back(i);
+          // std::cout << "Prey died " << prey->lives << std::endl;
           continue; // Skip replication for dead agents
         }
 
         // Handle Prey replication
         std::unique_ptr<Agent> new_agent = prey->replicate(prey_repl_prob);
         if (new_agent) {
+          // std::cout << "New Prey " << std::endl;
           new_agents.push_back(std::move(new_agent));
         }
       }
@@ -345,6 +365,7 @@ void Grid::perform_agent_action(double pred_repl_prob, double prey_repl_prob,
       // for Prey
       else if (auto predator = dynamic_cast<Predator *>(agent.get())) {
         if (predator->exceeded_lifespan()) {
+          std::cout << "Pred died " << predator->lives << std::endl;
           indices_to_remove.push_back(i);
           continue; // Skip replication for dead agents
         }
@@ -358,6 +379,7 @@ void Grid::perform_agent_action(double pred_repl_prob, double prey_repl_prob,
           std::unique_ptr<Agent> new_agent =
               predator->replicate(pred_repl_prob);
           if (new_agent) {
+            std::cout << "New Pred " << std::endl;
             new_agents.push_back(std::move(new_agent));
           }
         }
@@ -368,13 +390,19 @@ void Grid::perform_agent_action(double pred_repl_prob, double prey_repl_prob,
     std::sort(indices_to_remove.rbegin(), indices_to_remove.rend());
     for (size_t idx : indices_to_remove) {
       if (idx < subgrid->agents.size()) {
+        // std::cout << "B: Remove dead agents: " << subgrid->agents.size()
+        // << std::endl;
         subgrid->agents.erase(subgrid->agents.begin() + idx);
+        // std::cout << "A: Remove dead agents: " << subgrid->agents.size()
+        // << std::endl;
       }
     }
 
     // Add all new agents to the subgrid
     for (auto &new_agent : new_agents) {
+      // std::cout << "B: Add agents: " << subgrid->agents.size() << std::endl;
       subgrid->add_agent(std::move(new_agent));
+      // std::cout << "A: Add agents: " << subgrid->agents.size() << std::endl;
     }
   }
 }

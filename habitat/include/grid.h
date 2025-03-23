@@ -46,6 +46,7 @@ public:
   void plot();
   void move_agents(double step_size);
   void perform_agent_action();
+  void number_of_pred_prey(int &count_prey, int &count_pred);
   ~Grid();
 };
 
