@@ -9,8 +9,8 @@ public:
   ~Prey() = default;
 
   std::unique_ptr<Agent> clone() const override;
-  std::unique_ptr<Prey> replicate(double repl_prob);
-	int max_ls;
+  std::unique_ptr<Agent> replicate(double repl_prob) override;
+	void action() override;
 };
 
 #endif // INCLUDE_INCLUDE_PREY_H_

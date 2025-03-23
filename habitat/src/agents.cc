@@ -1,8 +1,9 @@
 #include "../include/agents.h"
-#include <random>
 #include <iostream>
+#include <random>
 
-Agent::Agent(double p_x, double p_y, int i) : x(p_x), y(p_y), id(i) {}
+Agent::Agent(double p_x, double p_y, int i, int lifespan)
+    : x(p_x), y(p_y), id(i), lives(lifespan), max_ls(lifespan) {}
 
 void Agent::random_direction(double &dx, double &dy) {
   static std::random_device rd;
@@ -22,7 +23,8 @@ double Agent::random_step_size(double mean, double std_dev) {
   return step_dist(gen);
 }
 
-void Agent::move(double mean, double std_dev, double pb_width, double pb_height) {
+void Agent::move(double mean, double std_dev, double pb_width,
+                 double pb_height) {
   double dx, dy;
   this->random_direction(dx, dy);
   double step_size = this->random_step_size(mean, std_dev);
@@ -50,26 +52,4 @@ bool Agent::replication_success(double repl_prop) {
   return false;
 }
 
-std::unique_ptr<Agent> Agent::replicate(double repl_prob) {
-  // Check if replication should occur based on probability
-  if (this->replication_success(repl_prob)) {
-    // Create a new prey with the same properties as this one
-    // but reset lives to max value
-    return std::make_unique<Agent>(this->x, this->y, 0, this->max_ls);
-  }
-  return nullptr; 
-}
-
-
-
 bool Agent::exceeded_lifespan() { return this->lives < 0; }
-
-bool Agent::death() {
-  // agents.erase(std::remove_if(agents.begin(), agents.end(),
-  //                             [this](const std::unique_ptr<Agent> &agent) {
-  //                               return agent.get() == this;
-  //                             }),
-  //              agents.end());
-  //
-  return exceeded_lifespan();
-}

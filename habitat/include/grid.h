@@ -22,6 +22,8 @@ public:
   std::array<double, 2> anchor_point;
   std::array<std::weak_ptr<Subgrid>, 4> neighbors;
   std::array<int, 2> coords;
+  std::vector<std::unique_ptr<Agent>>
+  pred_eat(const std::unique_ptr<Agent> &predator_ptr, double rc);
 };
 
 class Grid {
@@ -39,9 +41,11 @@ public:
                                std::vector<double> &pred_y,
                                std::vector<double> &prey_x,
                                std::vector<double> &prey_y);
+  void perform_agent_action(double pred_repl_prob, double prey_repl_prob,
+                            double eat_dist);
   void plot();
   void move_agents(double step_size);
-	void perform_agent_action();
+  void perform_agent_action();
   ~Grid();
 };
 
