@@ -108,9 +108,14 @@ Subgrid::pred_eat(const std::unique_ptr<Agent> &predator_ptr, double rc) {
 
       double prey_x = prey->x;
       double prey_y = prey->y;
-      double distance = std::sqrt(std::pow(pred_x - prey_x, 2) +
-                                  std::pow(pred_y - prey_y, 2));
-
+      double domain_size = 10.0;
+      double dx = std::min(std::abs(pred_x - prey_x),
+                           std::min(std::abs(pred_x - prey_x - domain_size),
+                                    std::abs(pred_x - prey_x + domain_size)));
+      double dy = std::min(std::abs(pred_y - prey_y),
+                           std::min(std::abs(pred_y - prey_y - domain_size),
+                                    std::abs(pred_y - prey_y + domain_size)));
+      double distance = std::sqrt(dx * dx + dy * dy);
       if (distance <= rc) {
         // TODO: (dhub) change random functions
         double random_value = prob_dist(gen);
