@@ -23,4 +23,20 @@ The classic Lotka-Volterra model is in this scenario a rather poor approximation
 	}
 	\label{fig:ex03}
 \end{figure}
+\section*{Conclusion}
+This agent-based simulation of the predator-prey dynamics showed several significant insights that extend beyond the classical the Lotka-Volterra models. The incorporation of spatial heterogeneity, stochastic movement, and interactions on an individual level, we observed wide variety of behaviors across different configurations.
+\newline
+\newline
+In Scenario A, we observed the expected patterns with a phase difference between predator and prey populations. However, the spatial component of our model caused a  more complex dynamics compared to what the  differential equations would predict. This included non-uniform oscillations and extreme population counts after the 2500-time step mark. \newline
+By reducing the rabbit lifespan in Scenario B, we were able to observe the critical importance of prey longevity to ecosystem stability. Rather than oscillations, the system experienced a complete collapse. This highlights the importance of threshold effects and critical population densities.\newline
+Perhaps most interesting result were obtained in Scenario C, where we observed extreme peaks and crashes of rabbit populations, by reducing the mobility. By creating "safe zones", where prey can multiply unchecked until eventually intruded by predators, leading to boom-bust cycles on an order of magnitude more extreme than in Scenario A.
+\newline
+\newline
+The most important findings can be boiled down to the following points:
 
+\begin{itemize}
+	\item Spatial dynamics and the movement of individual agents highly influence population stability, probably even more than reproduction or mortality rates.
+	\item There is a high parameter sensitivity in predator-prey, small changes can cause regime shifts from stable oscillations to extinction or extreme fluctuations.
+	\item The addition of spatial heterogeneity reveals dynamics that which are not present in traditional Lotka-Volterra models, clearly points out  the importance of agent-based approaches.
+\end{itemize}
+For future work this rather simple simulation could be extend by incorporating multiple ecological complexities. This could include food for rabbits that grows and depletes, terrain heterogeneity, introducing sexes for mating, adapting behaviour of agents among others. These extensions would further bridge the gap between theoretical models and the complex dynamics observed in the real world.

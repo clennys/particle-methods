@@ -83,4 +83,4 @@ if __name__ == "__main__":
     #     rabbit_repl_prob=rabbit_repl_prob,
     #     n_subgrids=n_subgrids
     # )
-    # new_sim.run(time_steps=500, plot_interval=5)
+    # new_sim.run(time_steps=500, plot_interval=1)

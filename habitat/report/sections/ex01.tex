@@ -2,6 +2,19 @@
 This homework centers around the predator-prey dynamic, which is one of the most fundamental ecological interaction model in nature.
 This report presents the implementation of a two-dimensional particle-based simulation modelling the interaction between rabbits (prey) and wolves (predator) in a habitat with periodic boundary conditions.
 The simulation uses a agent based approach, where the agents follow a stochastic movement patterns and interact according to probabilistic rules for reproduction and predation.
+
+\subsection*{Default Simulation Setup}
+The baseline simulation uses the following configuration:
+\begin{itemize}
+\item \textbf{Domain}: A square habitat of size $L = 10$ with periodic boundary conditions.
+\item \textbf{Initial populations}: 900 rabbits and 100 wolves distributed uniform randomly across the domain.
+\item \textbf{Movement}: Both species move with a Gaussian step size distribution with standard deviation $\sigma = 0.5$.
+\item \textbf{Predation}: Wolves can eat each rabbit within a radius of 0.5 with probability 0.02 per time step.
+\item \textbf{Reproduction}: Rabbits reproduce with probability 0.02 per time step.
+\item \textbf{Mortality}: Rabbits die after reaching a maximum age of $t_d^r = 100$.
+\item \textbf{Starvation}: Wolves die after 50 time steps without eating.
+\item \textbf{Spatial indexing}: The domain is divided into $20 \times 20$ grid cells, 
+\end{itemize}
 Further information regarding the implementation can be found in the README.md file in the root folder of the project.
 
 \section{Scenario A: Standard Case}

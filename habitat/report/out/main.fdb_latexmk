@@ -1,5 +1,5 @@
 # Fdb version 4
-["pdflatex"] 1742827245.01239 "main.tex" "out/main.pdf" "main" 1742827245.59853 0
+["pdflatex"] 1742982802.40379 "main.tex" "out/main.pdf" "main" 1742982802.98783 0
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -94,11 +94,11 @@
   "media/population_dynamics_ex01.png" 1742807149.54641 42117 b9bf5d5aebc4f004a1c9f3bdcacb012e ""
   "media/population_dynamics_ex02.png" 1742807149.54687 32106 509c34219c291c23416aea70959b956c ""
   "media/population_dynamics_ex03.png" 1742807149.54729 47695 45289ce9627a227092b47ed6c6846eb7 ""
-  "out/main.aux" 1742827245.55452 1374 59b511ea32bc774df37ab2f8df82166f "pdflatex"
-  "out/main.out" 1742827245.55508 407 f8d45a77d272a52397e3a4966553aba0 "pdflatex"
-  "sections/ex01.tex" 1742827243.47448 3397 0c71ba482a15427323c059ac6af4903c ""
+  "out/main.aux" 1742982802.94371 1374 f78ab92457222bfc8709735e3c752af2 "pdflatex"
+  "out/main.out" 1742982802.94439 407 f8d45a77d272a52397e3a4966553aba0 "pdflatex"
+  "sections/ex01.tex" 1742979581.8569 4294 94901c5ff2cbc50f9498f3748f4f5a3d ""
   "sections/ex02.tex" 1742827194.9428 1799 88632879217936ce41a7d7c184d9267b ""
-  "sections/ex03.tex" 1742827157.14007 2051 821a9daa6d3e5367511b424c5454886b ""
+  "sections/ex03.tex" 1742982801.69457 4449 a64304347d931eaf832b7a763c85de16 ""
   (generated)
   "out/main.aux"
   "out/main.log"
