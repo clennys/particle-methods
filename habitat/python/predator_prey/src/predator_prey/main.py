@@ -12,7 +12,8 @@ if __name__ == "__main__":
     eat_prob = 0.02
     rabbit_repl_prob = 0.02
     n_subgrids = 20
-    
+
+    # Scenario A
     sim = Simulation(
         domain_size=domain_size,
         initial_rabbits=initial_rabbits,
@@ -23,14 +24,15 @@ if __name__ == "__main__":
         capture_radius=capture_radius,
         eat_prob=eat_prob,
         rabbit_repl_prob=rabbit_repl_prob,
-        n_subgrids=n_subgrids
+        n_subgrids=n_subgrids,
     )
 
     sim.run(time_steps=4000)
     sim.plot_population_dynamics("ex01")
 
     rabbit_max_age = 50
-    
+
+    # Scenario B
     sim1 = Simulation(
         domain_size=domain_size,
         initial_rabbits=initial_rabbits,
@@ -41,7 +43,7 @@ if __name__ == "__main__":
         capture_radius=capture_radius,
         eat_prob=eat_prob,
         rabbit_repl_prob=rabbit_repl_prob,
-        n_subgrids=n_subgrids
+        n_subgrids=n_subgrids,
     )
 
     sim1.run(time_steps=4000)
@@ -51,6 +53,7 @@ if __name__ == "__main__":
     step_std = 0.05
     domain_size = 8
 
+    # Scenario C
     sim2 = Simulation(
         domain_size=domain_size,
         initial_rabbits=initial_rabbits,
@@ -61,14 +64,12 @@ if __name__ == "__main__":
         capture_radius=capture_radius,
         eat_prob=eat_prob,
         rabbit_repl_prob=rabbit_repl_prob,
-        n_subgrids=n_subgrids
+        n_subgrids=n_subgrids,
     )
 
     sim2.run(time_steps=4000)
     sim2.plot_population_dynamics("ex03")
-    
 
-    
     # Optional: Run with visualization
     # new_sim = Simulation(
     #     domain_size=domain_size,
