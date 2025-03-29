@@ -42,7 +42,12 @@ private:
   std::array<int, 3> num_cells_;
   std::array<double, 3> cell_size_;
 
-  // Head-of-chain cell list
+  // NOTE: (dhub): Example for this data structure
+  // 1. head_of_chain_[0] = 0 means the first particle in cell 0 is particle 0
+  // 2. linked_list_[0] = 3 means after particle 0, the next particle in the
+  // same cell is particle 3
+  // 3. linked_list_[3] = -1 means there are no more particles in this cell
+  // after particle 3
   std::vector<int> head_of_chain_; // First particle in each cell
   std::vector<int> linked_list_;   // Next particle in same cell
 

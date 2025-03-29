@@ -17,17 +17,17 @@ public:
                          const std::array<double, 3> &box_size) const;
 
   // Rescale velocities to match target temperature
-  virtual void rescale_velocities(Particles &particles,
-                                  double target_temperature) const;
+  // virtual void rescale_velocities(Particles &particles,
+                                  // double target_temperature) const;
 
   // Initialize velocities from Maxwell-Boltzmann distribution
-  virtual void initialize_velocities(Particles &particles,
-                                     double temperature) const;
+  // virtual void initialize_velocities(Particles &particles,
+                                     // double temperature) const;
 };
 
-class EulerIntegrator : public Integrator {
+class SemiImplicitEuler : public Integrator {
 public:
-  EulerIntegrator() = default;
+  SemiImplicitEuler() = default;
 
   void integrate(Particles &particles, double dt) const override;
 };
@@ -40,10 +40,10 @@ public:
   void integrate(Particles &particles, double dt) const override;
 
   // First half of integration step (update positions and half-step velocities)
-  void firstHalf(Particles &particles, double dt) const;
+  void first_half_step(Particles &particles, double dt) const;
 
   // Second half of integration step (update velocities with new forces)
-  void secondHalf(Particles &particles, double dt) const;
+  void second_half_step(Particles &particles, double dt) const;
 };
 
 } // namespace integrator
