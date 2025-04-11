@@ -1,0 +1,24 @@
+[project]
+name = "molecular-dynamics"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Dennys Huber",email = "dennys.huber@proton.me"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy (>=2.2.4,<3.0.0)",
+    "matplotlib (>=3.10.1,<4.0.0)",
+    "black (>=25.1.0,<26.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "molecular_dynamics", from = "src"}]
+package-mode = false
+
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
