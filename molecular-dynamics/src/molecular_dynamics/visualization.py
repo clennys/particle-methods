@@ -1,5 +1,5 @@
 """
-Visualization module for Lennard-Jones simulation with cell grid display
+Visualization module for Lennard-Jones simulation with momentum in title
 """
 
 import numpy as np
@@ -31,6 +31,7 @@ class Visualizer:
         self.ax_sim = None
         self.scatter = None
         self.cell_patches = []
+        self.rdf_line = None
 
     def setup(self):
         """Set up the visualization plot with two-row layout and cell grid"""
@@ -47,7 +48,11 @@ class Visualizer:
         self.ax_sim.set_ylim(0, self.sim.L)
         self.ax_sim.set_xlabel("x", fontsize=12)
         self.ax_sim.set_ylabel("y", fontsize=12)
-        self.ax_sim.set_title(f"N={self.sim.N}, T={self.sim.temperature:.2f}", fontsize=14)
+        
+        # Calculate momentum magnitude for initial title
+        momentum_mag = np.linalg.norm(self.sim.total_momentum)
+        self.ax_sim.set_title(f"N={self.sim.N}, T={self.sim.temperature:.3f}, |P|={momentum_mag:.6f}", 
+                             fontsize=14)
         self.ax_sim.set_aspect("equal")
         
         # Draw cell grid
@@ -55,7 +60,7 @@ class Visualizer:
         
         # Draw particles with smaller size
         self.scatter = self.ax_sim.scatter(
-            self.sim.positions[:, 0], self.sim.positions[:, 1], c="b", alpha=0.7, s=30
+            self.sim.positions[:, 0], self.sim.positions[:, 1], c="b", alpha=0.7, s=25
         )
         
         # Bottom row: Three plots side by side
@@ -84,6 +89,9 @@ class Visualizer:
         self.ax_rdf.set_xlabel("r", fontsize=12)
         self.ax_rdf.set_ylabel("g(r)", fontsize=12)
         self.ax_rdf.set_title("Radial Distribution Function", fontsize=14)
+        (self.rdf_line,) = self.ax_rdf.plot([], [], "b-")
+        self.ax_rdf.set_xlim(0, self.sim.L/2)
+        self.ax_rdf.set_ylim(0, 2.5)
         self.ax_rdf.grid(True, alpha=0.3)
 
         plt.tight_layout(rect=[0, 0, 1, 0.95])
@@ -124,8 +132,12 @@ class Visualizer:
         # Update particle positions
         self.scatter.set_offsets(self.sim.positions)
 
-        # Update plot title with current temperature
-        self.ax_sim.set_title(f"N={self.sim.N}, T={self.sim.temperature:.3f}", fontsize=14)
+        # Calculate momentum magnitude
+        momentum_mag = np.linalg.norm(self.sim.total_momentum)
+        
+        # Update plot title with current temperature and momentum
+        self.ax_sim.set_title(f"N={self.sim.N}, T={self.sim.temperature:.3f}, |P|={momentum_mag:.6f}", 
+                             fontsize=14)
 
         # Update energy plots
         times = self.sim.time_history
@@ -160,6 +172,24 @@ class Visualizer:
                 tmin = min(temps) - 0.1 * abs(min(temps))
                 tmax = max(temps) + 0.1 * abs(max(temps))
                 self.ax_temp.set_ylim(max(0, tmin), tmax)
+    
+        # Update RDF plot - calculate and update in real-time
+        self.sim.calculate_rdf(num_bins=50, max_samples=1)
+        if hasattr(self.sim, "rdf") and hasattr(self.sim, "rdf_r"):
+            if self.rdf_line:
+                self.rdf_line.set_data(self.sim.rdf_r, self.sim.rdf)
+            else:
+                (self.rdf_line,) = self.ax_rdf.plot(self.sim.rdf_r, self.sim.rdf, "b-")
+                
+            # Update RDF title with current time
+            self.ax_rdf.set_title(f"RDF (t={self.sim.time:.2f})", fontsize=14)
+            
+            # Adjust y-axis if needed
+            if len(self.sim.rdf) > 0:
+                max_g = np.max(self.sim.rdf)
+                if max_g > 0:
+                    ymax = max(2.5, max_g * 1.1)
+                    self.ax_rdf.set_ylim(0, ymax)
 
         # Draw updates
         self.fig.canvas.draw_idle()
@@ -167,19 +197,30 @@ class Visualizer:
 
     def plot_rdf(self):
         """Plot the radial distribution function"""
+        # Calculate RDF with improved method
+        self.sim.calculate_rdf(num_bins=50, max_samples=1)
+        
         if hasattr(self.sim, "rdf") and hasattr(self.sim, "rdf_r"):
-            self.ax_rdf.clear()
-            self.ax_rdf.plot(self.sim.rdf_r, self.sim.rdf, "b-")
-            self.ax_rdf.set_xlabel("r", fontsize=12)
-            self.ax_rdf.set_ylabel("g(r)", fontsize=12)
-            self.ax_rdf.set_title("Radial Distribution Function", fontsize=14)
-            self.ax_rdf.grid(True, alpha=0.3)
-
-            # Fix RDF y-axis limits
+            # Update RDF plot
+            if self.rdf_line:
+                self.rdf_line.set_data(self.sim.rdf_r, self.sim.rdf)
+            else:
+                (self.rdf_line,) = self.ax_rdf.plot(self.sim.rdf_r, self.sim.rdf, "b-")
+            
+            # Update RDF plot limits
+            self.ax_rdf.set_xlim(0, self.sim.L/2)
+            
+            # Set y-limit based on data with some margin
             if len(self.sim.rdf) > 0:
-                ymax = max(3.0, np.max(self.sim.rdf) * 1.1)
-                self.ax_rdf.set_ylim(0, ymax)
-
+                max_g = np.max(self.sim.rdf)
+                if max_g > 0:
+                    ymax = max(2.5, max_g * 1.1)
+                    self.ax_rdf.set_ylim(0, ymax)
+                    
+            # Add title with current time
+            self.ax_rdf.set_title(f"Radial Distribution Function (t={self.sim.time:.2f})", fontsize=14)
+            
+            # Redraw
             self.fig.canvas.draw_idle()
 
     def plot_energies(self):
@@ -210,6 +251,10 @@ class Visualizer:
         self.ax_temp.set_ylabel("Temperature", fontsize=12)
         self.ax_temp.set_title("Temperature vs Time", fontsize=14)
         self.ax_temp.grid(True, alpha=0.3)
+        
+        # One final RDF calculation with more samples for better statistics
+        self.sim.calculate_rdf(num_bins=50, max_samples=5)
+        self.plot_rdf()
 
         self.fig.canvas.draw_idle()
 

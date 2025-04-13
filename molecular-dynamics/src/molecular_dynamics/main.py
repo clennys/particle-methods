@@ -27,7 +27,10 @@ def parse_arguments():
         "--rdf_bins", type=int, default=50, help="Number of bins for RDF"
     )
     parser.add_argument(
-        "--thermostat", action="store_true", default=False, help="Enable Berendsen thermostat"
+        "--thermostat",
+        action="store_true",
+        default=False,
+        help="Enable Berendsen thermostat",
     )
     parser.add_argument(
         "--tau_factor",
@@ -81,6 +84,7 @@ def main():
         if step % args.vis_steps == 0:
             vis.update()
 
+
         # Print status periodically
         if step % 100 == 0:
             momentum = np.linalg.norm(sim.total_momentum)
@@ -96,7 +100,7 @@ def main():
     )
 
     # Calculate and plot RDF at the end
-    sim.calculate_rdf(bins=args.rdf_bins)
+    sim.calculate_rdf()
     vis.plot_energies()
     vis.plot_rdf()
 

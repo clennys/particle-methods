@@ -94,7 +94,7 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
     # Keep visualization window open
     vis.show()
 
-        # Calculate statistics
+    # Calculate statistics
     energy_data = np.array(sim.total_energy_history)
     initial_energy = energy_data[0]
     mean_energy = np.mean(energy_data)

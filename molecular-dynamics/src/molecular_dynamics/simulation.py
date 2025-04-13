@@ -1,5 +1,5 @@
 """
-Simulation module for Lennard-Jones 2D particles
+Simulation module for Lennard-Jones 2D particles with improved RDF calculation
 """
 
 import numpy as np
@@ -50,6 +50,7 @@ class Simulation:
         self.target_temp = initial_temp
         self.use_thermostat = use_thermostat
         self.tau_factor = tau_factor
+
         # Initialize energy variables
         self.kinetic_energy = 0.0
         self.potential_energy = 0.0
@@ -60,7 +61,7 @@ class Simulation:
         # Initialize cell list
         self.cell_list = CellList(L, rc)
         self.update_cell_list()
-        #
+
         # Lennard-Jones potential at cutoff (for energy shift)
         self.u_rc = 4.0 * ((1.0 / self.rc) ** 12 - (1.0 / self.rc) ** 6)
 
@@ -71,6 +72,10 @@ class Simulation:
         self.temperature_history = []
         self.time_history = []
         self.time = 0.0
+
+        # For RDF
+        self.rdf = None
+        self.rdf_r = None
 
         # Calculate initial forces and energies
         self.forces = np.zeros((N, 2))
@@ -159,10 +164,10 @@ class Simulation:
         self.forces = np.zeros((self.N, 2))
         potential_energy = 0.0
 
-        # Loop over all pairs of particles
+        # Get potential pairs from cell list
         pairs = self.cell_list.get_potential_pairs()
-        # for i in range(self.N - 1):
-            # for j in range(i + 1, self.N):
+
+        # Loop over potential pairs of particles
         for i, j in pairs:
             # Calculate displacement vector (respecting periodic boundary conditions)
             dr = self.positions[i] - self.positions[j]
@@ -171,6 +176,10 @@ class Simulation:
 
             # Calculate squared distance
             r2 = np.sum(dr**2)
+
+            # Add safety check to prevent numerical instability
+            if r2 < 1e-10:
+                r2 = 1e-10  # Avoid division by zero
 
             # Only calculate force if particles are within cutoff
             if r2 < self.rc2:
@@ -219,20 +228,20 @@ class Simulation:
         """Get total momentum"""
         return np.sum(self.velocities, axis=0)
 
-    # def apply_thermostat(self):
-    #     """Apply Berendsen thermostat"""
-    #     if not self.use_thermostat:
-    #         return
-    #
-    #     current_temp = self.get_temperature()
-    #     if current_temp < 1e-10:  # Avoid division by zero
-    #         return
-    #
-    #     # Scale factor for Berendsen thermostat
-    #     lambda_factor = np.sqrt(
-    #         1.0 + self.tau_factor * (self.target_temp / current_temp - 1.0)
-    #     )
-    #     self.velocities *= lambda_factor
+    def apply_thermostat(self):
+        """Apply Berendsen thermostat"""
+        if not self.use_thermostat:
+            return
+
+        current_temp = self.get_temperature()
+        if current_temp < 1e-10:  # Avoid division by zero
+            return
+
+        # Scale factor for Berendsen thermostat
+        lambda_factor = np.sqrt(
+            1.0 + self.tau_factor * (self.target_temp / current_temp - 1.0)
+        )
+        self.velocities *= lambda_factor
 
     def step(self):
         """Perform one time step using velocity-Verlet algorithm"""
@@ -258,15 +267,19 @@ class Simulation:
         self.velocities += 0.5 * self.dt * self.forces
 
         # Apply thermostat if enabled
-        # self.apply_thermostat()
-
-        # Ensure momentum conservation in NVE ensemble - NEW FIX
-        if not self.use_thermostat:
+        if self.use_thermostat:
+            self.apply_thermostat()
+        else:
+            # Ensure momentum conservation in NVE ensemble
             total_momentum = np.sum(self.velocities, axis=0)
             self.velocities -= total_momentum / self.N
 
         # Calculate kinetic energy with updated velocities
         self.calculate_kinetic_energy()
+
+        # Check for numerical instability
+        if abs(self.total_energy) > 1e10 or np.isnan(self.total_energy):
+            raise RuntimeError("Simulation becoming unstable, reduce time step.")
 
         # Record measurements
         self.record_measurements()
@@ -288,50 +301,68 @@ class Simulation:
         self.time_history = []
         self.time = 0.0
 
-    def calculate_rdf(self, bins=50, r_max=None):
+    def calculate_rdf(self, num_bins=50, max_samples=1):
         """
         Calculate radial distribution function g(r)
 
         Parameters:
         -----------
-        bins : int
+        num_bins : int
             Number of bins for RDF calculation
-        r_max : float
-            Maximum distance for RDF (default: half box size)
+        max_samples : int
+            Maximum number of samples to collect
         """
-        if r_max is None:
-            r_max = self.L / 2.0
+        # Maximum distance is half the box length (to avoid double counting)
+        r_max = self.L / 2.0
+        # Initialize
+        bin_size = r_max / num_bins
+        g_r = np.zeros(num_bins)
+        sample_count = 0
 
-        # Create histogram bins
-        self.rdf_bins = np.linspace(0, r_max, bins + 1)
-        dr = self.rdf_bins[1] - self.rdf_bins[0]
-        self.rdf_r = self.rdf_bins[:-1] + 0.5 * dr
+        # Sample (can be called periodically during simulation)
+        def sample():
+            nonlocal sample_count
+            sample_count += 1
+            # Loop over all pairs
+            for i in range(self.N - 1):
+                for j in range(i + 1, self.N):
+                    # Calculate displacement with periodic boundary conditions
+                    dr = self.positions[i] - self.positions[j]
+                    dr = dr - self.L * np.round(dr / self.L)
+                    r = np.sqrt(np.sum(dr**2))
+                    # Only count pairs within half the box length
+                    if r < r_max:
+                        # Determine bin index
+                        bin_idx = int(r / bin_size)
+                        if bin_idx < num_bins:
+                            # Count 2 for both i,j and j,i
+                            g_r[bin_idx] += 2
 
-        # Initialize histogram
-        hist = np.zeros(bins)
+        # Collect samples
+        for _ in range(max_samples):
+            sample()
 
-        # Calculate all pairwise distances
-        for i in range(self.N):
-            for j in range(i + 1, self.N):
-                rij = self.positions[j] - self.positions[i]
+        # Calculate final g(r)
+        # Generate r values at bin centers
+        r_values = np.array([bin_size * (i + 0.5) for i in range(num_bins)])
 
-                # Apply minimum image convention
-                rij = rij - self.L * np.round(rij / self.L)
+        # Calculate normalization for 2D system
+        # In 2D: volume element = 2πr dr, instead of 4πr²dr for 3D
+        rho = self.N / (self.L**2)  # Number density
 
-                r = np.sqrt(np.sum(rij**2))
-                if r < r_max:
-                    # Find the bin index
-                    bin_idx = int(r / dr)
-                    if bin_idx < bins:
-                        hist[bin_idx] += 2  # Count each pair twice
+        normalized_g_r = np.zeros(num_bins)
+        # Calculate normalization factors (area of circular shell * density)
+        for i in range(num_bins):
+            r = r_values[i]
+            # Volume (area) of this shell: 2π*r*dr for 2D
+            v_shell = 2 * np.pi * r * bin_size
+            # Ideal gas number in this shell
+            n_id = rho * v_shell * self.N
+            # Normalize - avoid division by zero
+            if n_id > 0 and sample_count > 0:
+                normalized_g_r[i] = g_r[i] / (sample_count * n_id)
 
-        # Normalize
-        # Volume element in 2D: 2πr dr
-        # Number density: rho = N / L^2
-        rho = self.N / (self.L**2)
-        norm = 2 * np.pi * self.rdf_r * dr * rho * self.N
-
-        # Calculate g(r)
-        self.rdf = hist / norm
+        self.rdf_r = r_values
+        self.rdf = normalized_g_r
 
         return self.rdf_r, self.rdf
