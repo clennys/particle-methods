@@ -1,17 +1,43 @@
 #!/usr/bin/env python3
 """
-NVE simulation script that runs a complete analysis
-of energy conservation with different parameters
+NVE simulation script that runs a complete analysis of energy conservation
+with different parameters, using the existing visualization module.
+
+This script implements part (a) of the homework assignment.
 """
 import numpy as np
 import matplotlib.pyplot as plt
 from simulation import Simulation
 import time
 import os
+import argparse
 from visualization import Visualizer
 
 
-def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
+def parse_arguments():
+    """Parse command line arguments"""
+    parser = argparse.ArgumentParser(
+        description="2D Lennard-Jones NVE Simulation"
+    )
+    parser.add_argument("--N", type=int, default=100, help="Number of particles")
+    parser.add_argument("--L", type=float, default=30.0, help="Box size")
+    parser.add_argument("--dt", type=float, default=0.01, help="Time step")
+    parser.add_argument(
+        "--steps", type=int, default=1000, help="Number of simulation steps"
+    )
+    parser.add_argument("--temp", type=float, default=0.5, help="Initial temperature")
+    parser.add_argument("--rc", type=float, default=2.5, help="Cutoff radius")
+    parser.add_argument(
+        "--vis_steps", type=int, default=10, help="Visualization update frequency"
+    )
+    parser.add_argument(
+        "--case", type=str, choices=["single", "dt", "size"], default="single",
+        help="Which case to run (single run, time step comparison, or system size comparison)"
+    )
+    return parser.parse_args()
+
+
+def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5, vis_steps=10):
     """
     Run an NVE simulation and analyze energy conservation.
 
@@ -29,6 +55,8 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
         Initial temperature
     rc : float
         Cutoff radius
+    vis_steps : int
+        Visualization update frequency
 
     Returns:
     --------
@@ -36,12 +64,15 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
     """
     print(f"Running NVE simulation with N={N}, dt={dt}, steps={steps}")
 
-    # Initialize simulation
-    sim = Simulation(N=N, L=L, dt=dt, rc=rc, initial_temp=temp, use_thermostat=False)
-
-    # Track energy drift
-    initial_energy = sim.total_energy
-    vis_steps = 10
+    # Initialize simulation with NVE ensemble (no thermostat)
+    sim = Simulation(
+        N=N, 
+        L=L, 
+        dt=dt, 
+        rc=rc, 
+        initial_temp=temp, 
+        use_thermostat=False
+    )
 
     # Setup visualization
     vis = Visualizer(sim, update_interval=vis_steps)
@@ -57,6 +88,7 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
                 f"Warmup step {step}/{warmup_steps}, T={sim.temperature:.3f}, "
                 f"E_tot={sim.total_energy:.5f}"
             )
+            vis.update()
 
     # Reset statistics after warmup
     sim.reset_measurements()
@@ -87,12 +119,9 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
     )
 
     # Calculate and plot RDF at the end
-    sim.calculate_rdf(bins=50)
+    sim.calculate_rdf(num_bins=50, max_samples=5)
     vis.plot_energies()
     vis.plot_rdf()
-
-    # Keep visualization window open
-    vis.show()
 
     # Calculate statistics
     energy_data = np.array(sim.total_energy_history)
@@ -103,10 +132,7 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
     rel_drift = (energy_data[-1] - energy_data[0]) / abs(energy_data[0])
 
     # Print summary
-    print(
-        f"\nSimulation completed in {elapsed:.2f} seconds ({steps_per_sec:.1f} steps/sec)"
-    )
-    print(f"Energy conservation statistics:")
+    print(f"\nEnergy conservation statistics:")
     print(f"  Initial energy:    {initial_energy:.6f}")
     print(f"  Final energy:      {energy_data[-1]:.6f}")
     print(f"  Mean energy:       {mean_energy:.6f}")
@@ -114,11 +140,13 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
     print(f"  Relative fluct:    {rel_fluctuation:.6%}")
     print(f"  Relative drift:    {rel_drift:.6%}")
 
-    # Calculate RDF
-    # sim.calculate_rdf(bins=50)
+    # Keep visualization window open
+    vis.show()
 
     # Return results
     return {
+        "positions": sim.positions.copy(),
+        "velocities": sim.velocities.copy(),
         "time_history": sim.time_history,
         "total_energy": sim.total_energy_history,
         "kinetic_energy": sim.kinetic_energy_history,
@@ -127,8 +155,9 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
         "rdf_r": sim.rdf_r,
         "rdf": sim.rdf,
         "stats": {
-            "steps": steps,
+            "N": N,
             "dt": dt,
+            "steps": steps,
             "initial_energy": initial_energy,
             "final_energy": energy_data[-1],
             "mean_energy": mean_energy,
@@ -141,7 +170,7 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5):
     }
 
 
-def plot_results(results, title=None, output_dir="results"):
+def plot_results(results, title=None, output_dir="nve_results"):
     """Plot simulation results"""
     # Create output directory if it doesn't exist
     if not os.path.exists(output_dir):
@@ -163,7 +192,7 @@ def plot_results(results, title=None, output_dir="results"):
     plt.title(f"NVE Energy vs Time - {title}")
     plt.legend()
     plt.grid(True, alpha=0.3)
-    plt.savefig(f"{output_dir}/energy_{title.replace(' ', '_')}.png", dpi=150)
+    plt.savefig(f"{output_dir}/energy_{title.replace(' ', '_').replace('=', '')}.png", dpi=150)
 
     # Temperature plot
     plt.figure(figsize=(10, 6))
@@ -172,7 +201,7 @@ def plot_results(results, title=None, output_dir="results"):
     plt.ylabel("Temperature")
     plt.title(f"Temperature vs Time - {title}")
     plt.grid(True, alpha=0.3)
-    plt.savefig(f"{output_dir}/temperature_{title.replace(' ', '_')}.png", dpi=150)
+    plt.savefig(f"{output_dir}/temperature_{title.replace(' ', '_').replace('=', '')}.png", dpi=150)
 
     # RDF plot
     plt.figure(figsize=(10, 6))
@@ -181,21 +210,31 @@ def plot_results(results, title=None, output_dir="results"):
     plt.ylabel("g(r)")
     plt.title(f"Radial Distribution Function - {title}")
     plt.grid(True, alpha=0.3)
-    plt.savefig(f"{output_dir}/rdf_{title.replace(' ', '_')}.png", dpi=150)
+    plt.savefig(f"{output_dir}/rdf_{title.replace(' ', '_').replace('=', '')}.png", dpi=150)
 
     plt.close("all")
 
 
 def compare_time_steps(N=100, steps=1000, time_steps=[0.001, 0.005, 0.01, 0.02]):
     """Compare energy conservation with different time steps"""
+    # Create output directory
+    output_dir = "nve_results"
+    os.makedirs(output_dir, exist_ok=True)
+    
     results = {}
 
     for dt in time_steps:
         print(f"\n=== Testing dt={dt} ===\n")
-        results[dt] = run_nve_simulation(N=N, dt=dt, steps=steps)
+        # Run simulation with visualization for the first time step only
+        # to avoid multiple visualization windows
+        if dt == time_steps[0]:
+            results[dt] = run_nve_simulation(N=N, dt=dt, steps=steps)
+        else:
+            # Disable visualization by setting vis_steps to a very large number
+            results[dt] = run_nve_simulation(N=N, dt=dt, steps=steps, vis_steps=steps+1)
 
         # Plot individual results
-        plot_results(results[dt], title=f"N={N}, dt={dt}")
+        plot_results(results[dt], title=f"N={N}, dt={dt}", output_dir=output_dir)
 
     # Create comparison plots
     plt.figure(figsize=(12, 8))
@@ -209,7 +248,25 @@ def compare_time_steps(N=100, steps=1000, time_steps=[0.001, 0.005, 0.01, 0.02])
     plt.title(f"NVE Energy Conservation Comparison for N={N}")
     plt.legend()
     plt.grid(True, alpha=0.3)
-    plt.savefig(f"results/dt_comparison_N{N}.png", dpi=150)
+    plt.savefig(f"{output_dir}/dt_comparison_N{N}.png", dpi=150)
+
+    # Create relative energy error plot (more informative for comparing timesteps)
+    plt.figure(figsize=(12, 8))
+    for dt in time_steps:
+        e_initial = results[dt]["total_energy"][0]
+        rel_error = [(e - e_initial)/abs(e_initial) for e in results[dt]["total_energy"]]
+        plt.plot(
+            results[dt]["time_history"], 
+            rel_error,
+            label=f"dt={dt}"
+        )
+
+    plt.xlabel("Time")
+    plt.ylabel("Relative Energy Error")
+    plt.title(f"NVE Energy Error Comparison for N={N}")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.savefig(f"{output_dir}/dt_error_comparison_N{N}.png", dpi=150)
 
     # Print comparison table
     print("\n=== Energy Conservation Comparison ===\n")
@@ -221,25 +278,48 @@ def compare_time_steps(N=100, steps=1000, time_steps=[0.001, 0.005, 0.01, 0.02])
         print(
             f"{dt:<10} {stats['rel_fluctuation']:<15.6%} {stats['rel_drift']:<15.6%} {stats['steps_per_sec']:<10.1f}"
         )
+    
+    # Display the comparison plots
+    plt.figure(figsize=(12, 8))
+    for dt in time_steps:
+        plt.plot(
+            results[dt]["time_history"], results[dt]["total_energy"], label=f"dt={dt}"
+        )
+
+    plt.xlabel("Time")
+    plt.ylabel("Total Energy")
+    plt.title(f"NVE Energy Conservation Comparison for N={N}")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.show()
 
 
 def compare_system_sizes(dt=0.01, steps=1000, sizes=[100, 225, 400, 625, 900]):
     """Compare energy conservation with different system sizes"""
+    # Create output directory
+    output_dir = "nve_results"
+    os.makedirs(output_dir, exist_ok=True)
+    
     results = {}
 
     for N in sizes:
         print(f"\n=== Testing N={N} ===\n")
-        results[N] = run_nve_simulation(N=N, dt=dt, steps=steps)
+        # Run simulation with visualization for the first size only
+        if N == sizes[0]:
+            results[N] = run_nve_simulation(N=N, dt=dt, steps=steps)
+        else:
+            # Disable visualization by setting vis_steps to a very large number
+            results[N] = run_nve_simulation(N=N, dt=dt, steps=steps, vis_steps=steps+1)
 
         # Plot individual results
-        plot_results(results[N], title=f"N={N}, dt={dt}")
+        plot_results(results[N], title=f"N={N}, dt={dt}", output_dir=output_dir)
 
-    # Create comparison plots
+    # Create comparison plots - normalized by particle number
     plt.figure(figsize=(12, 8))
     for N in sizes:
         plt.plot(
             results[N]["time_history"],
-            results[N]["total_energy"] / N,  # Normalize by system size
+            [e/N for e in results[N]["total_energy"]],  # Normalize by system size
             label=f"N={N}",
         )
 
@@ -248,7 +328,25 @@ def compare_system_sizes(dt=0.01, steps=1000, sizes=[100, 225, 400, 625, 900]):
     plt.title(f"NVE Energy Conservation Comparison with dt={dt}")
     plt.legend()
     plt.grid(True, alpha=0.3)
-    plt.savefig(f"results/size_comparison_dt{dt}.png", dpi=150)
+    plt.savefig(f"{output_dir}/size_comparison_dt{dt}.png", dpi=150)
+
+    # Create relative energy error plot 
+    plt.figure(figsize=(12, 8))
+    for N in sizes:
+        e_initial = results[N]["total_energy"][0]
+        rel_error = [(e - e_initial)/abs(e_initial) for e in results[N]["total_energy"]]
+        plt.plot(
+            results[N]["time_history"], 
+            rel_error,
+            label=f"N={N}"
+        )
+
+    plt.xlabel("Time")
+    plt.ylabel("Relative Energy Error")
+    plt.title(f"NVE Energy Error Comparison for different system sizes (dt={dt})")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.savefig(f"{output_dir}/size_error_comparison_dt{dt}.png", dpi=150)
 
     # Print comparison table
     print("\n=== Energy Conservation Comparison ===\n")
@@ -262,18 +360,61 @@ def compare_system_sizes(dt=0.01, steps=1000, sizes=[100, 225, 400, 625, 900]):
         print(
             f"{N:<12} {stats['rel_fluctuation']:<15.6%} {stats['rel_drift']:<15.6%} {stats['steps_per_sec']:<10.1f}"
         )
+    
+    # Display the comparison plots
+    plt.figure(figsize=(12, 8))
+    for N in sizes:
+        plt.plot(
+            results[N]["time_history"],
+            [e/N for e in results[N]["total_energy"]],  # Normalize by system size
+            label=f"N={N}",
+        )
+
+    plt.xlabel("Time")
+    plt.ylabel("Total Energy per Particle")
+    plt.title(f"NVE Energy Conservation Comparison with dt={dt}")
+    plt.legend()
+    plt.grid(True, alpha=0.3)
+    plt.show()
 
 
 if __name__ == "__main__":
-    # Part a: Basic NVE simulation with different parameters
-    print("\n=== Part (a): Testing NVE ensemble with different parameters ===\n")
-
-    # Compare different time steps
-    print("\n=== Comparing different time steps ===\n")
-    compare_time_steps(N=100, steps=1000, time_steps=[0.001, 0.005, 0.01, 0.02])
-
-    # Compare different system sizes
-    print("\n=== Comparing different system sizes ===\n")
-    compare_system_sizes(dt=0.01, steps=1000, sizes=[100, 400, 900])
-
-    print("\nAll tests completed. Results saved to 'results' directory.")
+    # Parse arguments
+    args = parse_arguments()
+    
+    # Create output directory
+    os.makedirs("nve_results", exist_ok=True)
+    
+    # Select which case to run
+    if args.case == "single":
+        # Run a single simulation with visualization
+        print(f"\n=== Running single NVE simulation ===\n")
+        run_nve_simulation(
+            N=args.N, 
+            L=args.L, 
+            dt=args.dt, 
+            steps=args.steps, 
+            temp=args.temp, 
+            rc=args.rc,
+            vis_steps=args.vis_steps
+        )
+        
+    elif args.case == "dt":
+        # Compare different time steps
+        print(f"\n=== Comparing different time steps ===\n")
+        compare_time_steps(
+            N=args.N, 
+            steps=args.steps, 
+            time_steps=[0.001, 0.005, 0.01, 0.02]
+        )
+        
+    elif args.case == "size":
+        # Compare different system sizes
+        print(f"\n=== Comparing different system sizes ===\n")
+        compare_system_sizes(
+            dt=args.dt, 
+            steps=args.steps, 
+            sizes=[100, 225, 400, 625]  # Reduced set for faster execution
+        )
+    
+    print("\nAll tests completed. Results saved to 'nve_results' directory.")
