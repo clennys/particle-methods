@@ -14,7 +14,7 @@ def parse_arguments():
     )
     parser.add_argument("--N", type=int, default=100, help="Number of particles")
     parser.add_argument("--L", type=float, default=30.0, help="Box size")
-    parser.add_argument("--dt", type=float, default=0.01, help="Time step")
+    parser.add_argument("--dt", type=float, default=0.001, help="Time step")
     parser.add_argument(
         "--steps", type=int, default=1000, help="Number of simulation steps"
     )
@@ -27,7 +27,7 @@ def parse_arguments():
         "--rdf_bins", type=int, default=50, help="Number of bins for RDF"
     )
     parser.add_argument(
-        "--thermostat", action="store_true", help="Enable Berendsen thermostat"
+        "--thermostat", action="store_true", default=False, help="Enable Berendsen thermostat"
     )
     parser.add_argument(
         "--tau_factor",

@@ -58,9 +58,9 @@ class Simulation:
         self.setup_particles()
 
         # Initialize cell list
-        # self.cell_list = CellList(L, rc)
-        # self.update_cell_list()
-
+        self.cell_list = CellList(L, rc)
+        self.update_cell_list()
+        #
         # Lennard-Jones potential at cutoff (for energy shift)
         self.u_rc = 4.0 * ((1.0 / self.rc) ** 12 - (1.0 / self.rc) ** 6)
 
@@ -149,9 +149,9 @@ class Simulation:
             # Position at previous time step for Verlet algorithm
             self.prev_positions[i] = self.positions[i] - self.velocities[i] * self.dt
 
-    # def update_cell_list(self):
-    #     """Update the cell list with current particle positions"""
-    #     self.cell_list.update(self.positions)
+    def update_cell_list(self):
+        """Update the cell list with current particle positions"""
+        self.cell_list.update(self.positions)
 
     def calculate_forces_and_potential(self):
         """Calculate forces and potential energy using cell list"""
@@ -160,31 +160,33 @@ class Simulation:
         potential_energy = 0.0
 
         # Loop over all pairs of particles
-        for i in range(self.N - 1):
-            for j in range(i + 1, self.N):
-                # Calculate displacement vector (respecting periodic boundary conditions)
-                dr = self.positions[i] - self.positions[j]
-                # Apply minimum image convention
-                dr = dr - self.L * np.round(dr / self.L)
+        pairs = self.cell_list.get_potential_pairs()
+        # for i in range(self.N - 1):
+            # for j in range(i + 1, self.N):
+        for i, j in pairs:
+            # Calculate displacement vector (respecting periodic boundary conditions)
+            dr = self.positions[i] - self.positions[j]
+            # Apply minimum image convention
+            dr = dr - self.L * np.round(dr / self.L)
 
-                # Calculate squared distance
-                r2 = np.sum(dr**2)
+            # Calculate squared distance
+            r2 = np.sum(dr**2)
 
-                # Only calculate force if particles are within cutoff
-                if r2 < self.rc2:
-                    r2i = 1.0 / r2
-                    r6i = r2i**3
+            # Only calculate force if particles are within cutoff
+            if r2 < self.rc2:
+                r2i = 1.0 / r2
+                r6i = r2i**3
 
-                    # Force magnitude * r
-                    ff = 48.0 * r2i * r6i * (r6i - 0.5)
+                # Force magnitude * r
+                ff = 48.0 * r2i * r6i * (r6i - 0.5)
 
-                    # Update forces (vector calculation)
-                    force_vec = ff * dr
-                    self.forces[i] += force_vec
-                    self.forces[j] -= force_vec
+                # Update forces (vector calculation)
+                force_vec = ff * dr
+                self.forces[i] += force_vec
+                self.forces[j] -= force_vec
 
-                    # Update potential energy
-                    potential_energy += 4.0 * r6i * (r6i - 1.0) - self.u_rc
+                # Update potential energy
+                potential_energy += 4.0 * r6i * (r6i - 1.0) - self.u_rc
 
         # Store the potential energy
         self.potential_energy = potential_energy
@@ -247,7 +249,7 @@ class Simulation:
         self.positions = np.mod(self.positions, self.L)
 
         # Update cell list with new positions
-        # self.update_cell_list()
+        self.update_cell_list()
 
         # Calculate new forces
         self.calculate_forces_and_potential()
@@ -265,7 +267,6 @@ class Simulation:
 
         # Calculate kinetic energy with updated velocities
         self.calculate_kinetic_energy()
-
 
         # Record measurements
         self.record_measurements()

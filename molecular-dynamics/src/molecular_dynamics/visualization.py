@@ -1,16 +1,17 @@
 """
-Visualization module for Lennard-Jones simulation with two-row layout
+Visualization module for Lennard-Jones simulation with cell grid display
 """
 
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from matplotlib.gridspec import GridSpec
+from matplotlib.patches import Rectangle
 
 
 class Visualizer:
     """
-    Class for visualizing the Lennard-Jones simulation with a two-row layout
+    Class for visualizing the Lennard-Jones simulation with cell grid
     """
 
     def __init__(self, simulation, update_interval=10):
@@ -29,9 +30,10 @@ class Visualizer:
         self.fig = None
         self.ax_sim = None
         self.scatter = None
+        self.cell_patches = []
 
     def setup(self):
-        """Set up the visualization plot with two-row layout"""
+        """Set up the visualization plot with two-row layout and cell grid"""
         # Create figure with two rows
         self.fig = plt.figure(figsize=(14, 10))
         self.fig.suptitle("Lennard-Jones 2D Simulation", fontsize=18)
@@ -47,6 +49,9 @@ class Visualizer:
         self.ax_sim.set_ylabel("y", fontsize=12)
         self.ax_sim.set_title(f"N={self.sim.N}, T={self.sim.temperature:.2f}", fontsize=14)
         self.ax_sim.set_aspect("equal")
+        
+        # Draw cell grid
+        self.draw_cell_grid()
         
         # Draw particles with smaller size
         self.scatter = self.ax_sim.scatter(
@@ -84,6 +89,32 @@ class Visualizer:
         plt.tight_layout(rect=[0, 0, 1, 0.95])
         plt.ion()  # Interactive mode on
         plt.show(block=False)
+
+    def draw_cell_grid(self):
+        """Draw the cell grid on the simulation plot"""
+        # Clear existing cell patches
+        for patch in self.cell_patches:
+            if patch in self.ax_sim.patches:
+                patch.remove()
+        self.cell_patches = []
+        
+        # Draw new cell grid
+        cell_size = self.sim.cell_list.cell_size
+        num_cells = self.sim.cell_list.num_cells
+        
+        for i in range(num_cells):
+            for j in range(num_cells):
+                rect = Rectangle(
+                    (i * cell_size, j * cell_size),
+                    cell_size,
+                    cell_size,
+                    fill=False,
+                    linestyle="--",
+                    edgecolor="gray",
+                    alpha=0.3,
+                )
+                self.ax_sim.add_patch(rect)
+                self.cell_patches.append(rect)
 
     def update(self):
         """Update the visualization with current simulation state"""
