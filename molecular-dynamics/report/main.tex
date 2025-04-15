@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ top=20mm,
+ }
+\usepackage{graphicx}
+\usepackage{titling}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{booktabs} % For professional table formatting
+\usepackage{appendix}
+\usepackage{pdfpages} % Package to include PDF pages
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Intro DS},
+    pdfpagemode=FullScreen,
+    }
+
+\urlstyle{same}
+
+
+\title{Molecular Dynamics: Lennard Jones Simulations}
+\author{Dennys Huber}
+\date{\today}
+ 
+ \usepackage{fancyhdr}
+\fancypagestyle{plain}{%  the preset of fancyhdr 
+    \fancyhf{} % clear all header and footer fields
+    \fancyfoot[C]{\thepage}
+    % \fancyfoot[L]{\thedate}
+    \fancyhead[L]{Particle Methods}
+    \fancyhead[R]{\theauthor}
+}
+\pagestyle{plain}% Set page style to plain.
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \null
+  \vskip 1em%
+  \begin{center}%
+  \let \footnote \thanks
+    {\LARGE \@title \par}%
+    \vskip 1em%
+    {\large \@author}%
+    \vskip 1em%
+    {\large \@date}%
+  \end{center}%
+  \par
+  \vskip 1em}
+\makeatother
+
+
+\begin{document}
+
+\maketitle
+
+\input{sections/ex01.tex}
+\input{sections/ex02.tex}
+
+\end{document}

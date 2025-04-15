@@ -3,7 +3,8 @@
 import argparse
 import numpy as np
 import time
-from numba_simulation import SimulationNumba as Simulation
+# from numba_simulation import SimulationNumba as Simulation
+from simulation import Simulation
 from visualization import Visualizer
 
 
