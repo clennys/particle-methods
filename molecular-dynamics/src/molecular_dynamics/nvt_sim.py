@@ -40,7 +40,7 @@ def run_nvt_simulation(N, T, L=30.0, steps=2000, rc=2.5, tau_factor=0.0025):
     sim = Simulation(
         N=N, 
         L=L, 
-        dt=0.01,  # Reasonable timestep based on part (a)
+        dt=0.001,  # Reasonable timestep based on part (a)
         rc=rc, 
         initial_temp=T, 
         use_thermostat=True,
@@ -53,7 +53,9 @@ def run_nvt_simulation(N, T, L=30.0, steps=2000, rc=2.5, tau_factor=0.0025):
 
     # Warmup phase to reach target temperature
     print("Starting warmup...")
-    warmup_steps = max(1000, steps // 5)
+    w_steps = 1500 if N == 900 else 1000
+    # w_steps = 1000
+    warmup_steps = max(w_steps, steps // 5)
     for step in range(warmup_steps):
         sim.step()
         if step % 20 == 0:
@@ -64,7 +66,7 @@ def run_nvt_simulation(N, T, L=30.0, steps=2000, rc=2.5, tau_factor=0.0025):
             vis.update()
 
     # Reset statistics after warmup
-    sim.reset_measurements()
+    # sim.reset_measurements()
 
     # Main simulation loop
     print(f"Starting main simulation for {steps} steps...")

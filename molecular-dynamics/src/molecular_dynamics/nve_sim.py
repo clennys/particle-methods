@@ -67,7 +67,7 @@ def run_nve_simulation(N, L=30.0, dt=0.01, steps=1000, temp=0.5, rc=2.5, vis_ste
             vis.update()
 
     # Reset statistics after warmup
-    sim.reset_measurements()
+    # sim.reset_measurements()
 
     # Main simulation loop
     print(f"Starting main simulation for {steps} steps...")
