@@ -1,0 +1,85 @@
+\section{Temperature-Regulated Dynamics: The NVT Ensemble}
+% The canonical ensemble (NVT), on the other hand, maintains constant number of particles (N), volume (V), and temperature (T) through the use of a thermostat—in our case, the Berendsen thermostat.
+For the NVT simulation we use the Berendsen thermostat with a relaxation time parameter of $\frac{dt}{\tau} = 0.0025$ to maintain constant temperature using various number of particles and target temperatures. In order to analyze the results we use the temperature evolution plots (Figure~\ref{fig:nvt_temperature}), which show how the system reaches its target temperature. Furthermore we plot the radial distribution function, shown in Figure~\ref{fig:nvt_rdf} at the final time step, showing how density varies as a function of distance.
+\subsection{Temperature Regulation}
+In Figure~\ref{fig:nvt_temperature} the plot show the application of the Berendsen thermostat across different configurations, the following observation can be made for each individual plot:
+\begin{itemize}
+	\item For $N=100$ and $T=0.1$ in Subfigure~\ref{sfig:nvt_temp_N100_T01} we observe that the thermostat fails to precisely maintain the target temperature, instead having an equilibrium at roughly $0.12$ with very large oscillations. This shows that the Berendsen thermostat struggles to control the temperature in small systems at low temperatures. This could suggest to adjust the relaxation parameter, so the thermostat can more effectively handle the temperature.
+	\item For $N=100$ and $T=1.0$ in Subfigure~\ref{sfig:nvt_temp_N100_T10} the system shows initially temperature higher than the target temperature and then afterwards it approaches the target temperature and starts oscillating around it. These oscillations are rather high indicating the challenge of precise temperature control in small systems.
+	\item For $N=625$ and $T=1.0$ in Subfigure~\ref{sfig:nvt_temp_N625_T10} similar to the previous case we can observe a similar pattern of initial equilibration phase and then an oscillation around the target temperature, but in this case the system has reduced fluctuations amplitudes. This indicates that an increasing number of particles improves the temperature stability.
+	\item For $N=900$ and $T=1.0$ in Subfigure~\ref{sfig:nvt_temp_N900_T10} we can observe that the system starts at a significantly higher temperature than the target temperature and then gradually decreases until it reaches the target temperature. In comparison to the other cases this cooling process is rather smooth, which highlights the stability of system with a higher number of particles.
+\end{itemize}
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/temp_N100_T0.1.png}
+		\caption{N=100 particles with T=0.1}
+		\label{sfig:nvt_temp_N100_T01}
+	\end{subfigure}%
+	~
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/temp_N100_T1.0.png}
+		\caption{N=100 particles with T=1.0}
+		\label{sfig:nvt_temp_N100_T10}
+	\end{subfigure}%
+	\\
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/temp_N625_T1.0.png}
+		\caption{N=625 particles with T=1.0}
+		\label{sfig:nvt_temp_N625_T10}
+	\end{subfigure}%
+	~
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/temp_N900_T1.0.png}
+		\caption{N=900 particles with T=1.0}
+		\label{sfig:nvt_temp_N900_T10}
+	\end{subfigure}%
+	\caption{\textbf{Temperature Regulation in NVT Ensemble}
+		Temperature evolution for different system configurations using the Berendsen thermostat.}
+	\label{fig:nvt_temperature}
+\end{figure}
+\subsection{Radial Distribution Analysis}
+Figure~\ref{fig:nvt_rdf} shows the radial distribution function, after equilibration for each of the system configurations. This reveals crucial insight into of the organization of the particles and even allows us to identify the physical state of the matter.
+\begin{itemize}
+	\item For $N=100$ and $T=0.1$ in Subfigure~\ref{sfig:nvt_rdf_N100_T01} the RDF shows strong oscillations with distinct peaks extending to large distances. This indicates a solid crystalline structure, where the particles maintain a shell like structure of neighbors at specific distances. Due to the low temperature the movement of the particle is severely impaired, resulting in an order structure with long range correlation.
+	\item For $N=100$ and $T=1.0$ in Subfigure~\ref{sfig:nvt_rdf_N100_T10} the RDF presents a clear pronounced peak around 1.1, afterwards we can observe less defined peaks. This would indicate either a low-density liquid or possibly a dense gas.
+	\item For $N=625$ and $T=1.0$ in Subfigure~\ref{sfig:nvt_rdf_N625_T10} the RDF again shows a clear peak, followed by a smooth approach towards unity at larger distances. This is characteristic behavior for a liquid phase with moderate density.
+	\item For $N=900$ and $T=1.0$ in Subfigure~\ref{sfig:nvt_rdf_N900_T10} the RDF exhibits a well defined structure with multiple distinguishable peaks even for large distances. The higher number of particles leads to a high compressed liquid or a dense amorphous state. The system shows enhanced structural organization, due to its high density, placing it closer to liquid-solid phase.
+\end{itemize}
+Another important observation is the across all the RDFs the first peak occurs around $r=1.1$, which corresponds closely to the expected minimum of the Lennard-Jones Potential, giving further insurance to the validity of the simulations.
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/rdf_N100_T0.1.png}
+		\caption{N=100 particles with T=0.1}
+		\label{sfig:nvt_rdf_N100_T01}
+	\end{subfigure}%
+	~
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/rdf_N100_T1.0.png}
+		\caption{N=100 particles with T=1.0}
+		\label{sfig:nvt_rdf_N100_T10}
+	\end{subfigure}%
+	\\
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/rdf_N625_T1.0.png}
+		\caption{N=625 particles with T=1.0}
+		\label{sfig:nvt_rdf_N625_T10}
+	\end{subfigure}%
+	~
+	\begin{subfigure}{0.5\textwidth}
+		\includegraphics[width=\textwidth]{media/rdf_N900_T1.0.png}
+		\caption{N=900 particles with T=1.0}
+		\label{sfig:nvt_rdf_N900_T10}
+	\end{subfigure}%
+	\caption{\textbf{Radial Distribution Functions in NVT Ensemble}
+		Radial distribution functions for different system configurations}
+	\label{fig:nvt_rdf}
+\end{figure}
+
+\section*{Conclusion}
+This study showed that the Lennard-Jones systems in NVE and NVT ensemble revealed multiple key findings. The NVE simulations with energy conservation was strongly depending on the step size with smaller steps yielding a better conservation.
+Furthermore the systems with a larger number of particles show greater stability and faster equilibration.\\
+\\
+In NVT simulation, the Berendsen thermostat effectively regulated the temperature with different degrees of precision depending on the system configuration. The phase showed different behaviour depending on the number of particles and target temperature. Furthermore the RDF provided a very valuable insight to determine these states, with the peaks serving as sort of fingerprint to identify the state.
+

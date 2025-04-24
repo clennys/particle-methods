@@ -1,0 +1,57 @@
+\section{Boids Flocking Algorithm}
+I propose to implement Reynolds' original Boids algorithm \cite{reynolds_flocks_1987}, which simulates the flocking behavior of birds through three simple steering behaviors:
+%
+\begin{itemize}
+	\item \textit{Separation}: Avoid crowding nearby flockmates
+	\item \textit{Alignment}: Steer towards the average heading of nearby flockmates
+	\item \textit{Cohesion}: Steer towards the average position of nearby flockmates
+\end{itemize}%
+%
+Each boid will be modeled as a particle as follows:
+\begin{itemize}
+	\item Position, velocity and acceleration vector.
+	\item Max. Speed and steering force limitations.
+	\item A radius for defining which other boids it can "see".
+\end{itemize}
+For each time step of the simulation the following steps would be computed:
+\begin{enumerate}
+	\item Compute seperation, alignment and cohesion
+	\item Apply weights to each force
+	\item Update velocity and position using time integration.
+	\item Handling periodic boundary condition.
+	\item Render simulation state.
+\end{enumerate}
+the following parameters could than be systematically change to explore the systems behavior:
+\begin{itemize}
+	\item Neighborhood radius
+	\item Weights of forces
+	\item Flock size
+\end{itemize}
+\subsection{Extensions}
+I propose the following possible extension(s) to the basic implementation
+\begin{itemize}
+	\item \textit{Obstacle Avoidance and other Environmental Factors}
+		\begin{itemize}
+			\item Add obstacle avoidance steering behavior.
+			\item Add wind or similar effects that influences movement.
+			\item Create a food source.
+		\end{itemize}
+	\item \textit{Leadership Dynamics}
+		\begin{itemize}
+			\item Implement a "follow the leader" steering behavior.
+			\item Different types of leadership (fixed, emergent, rotating).
+		\end{itemize}
+	\item \textit{Predator-Prey Dynamics}
+		\begin{itemize}
+			\item Implement a predator with different movement pattern.
+			\item Give the flock a mechanism to avoid the predator.
+			\item How does flocking provide a protection against predation.
+		\end{itemize}
+	\item \textit{Advanced Perception Model}
+		\begin{itemize}
+			\item Replace simple radius-based perception with vision cones
+			\item Implement occlusion (boids can't see through others)
+		\end{itemize}
+\end{itemize}
+
+
