@@ -35,18 +35,21 @@ def parse_arguments():
     )
     return parser.parse_args()
 
-
 def setup_test_simulation():
     print("Setting up test simulation with only fluid particles")
     
+    gamma = 4.5
+    kBT = 1.0
+    sigma = np.sqrt(2 * gamma * kBT)  # = 3.0 for gamma=4.5, kBT=1.0
+    
     sim = DPDSimulation(
-        L=15.0,        # Box size
-        density=4.0,    # Density
-        dt=0.01,        # Time step
-        rc=1.0,         # Cutoff radius
-        sigma=1.0,      # Random force coefficient
-        gamma=4.5,      # Dissipative force coefficient
-        kBT=1.0,        # Temperature
+        L=15.0,          # Box size
+        density=4.0,      # Density
+        dt=0.01,          # Time step
+        rc=1.0,           # Cutoff radius
+        sigma=sigma,      # Random force coefficient (calculated to satisfy thermostat relation)
+        gamma=gamma,      # Dissipative force coefficient
+        kBT=kBT,          # Temperature
     )
     
     # Default a_ij = 25 for fluid-fluid interactions
