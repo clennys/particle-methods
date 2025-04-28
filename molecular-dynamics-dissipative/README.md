@@ -26,38 +26,26 @@ You can install this package using either Conda or Poetry.
 
 ### Using Conda
 
-1. Clone the repository:
-```bash
-git clone https://github.com/username/molecular-dynamics-dissipative.git
-cd molecular-dynamics-dissipative
-```
-
-2. Create a new conda environment from the provided `environment.yml` file:
+1. Create a new conda environment from the provided `environment.yml` file:
 ```bash
 conda env create -f environment.yml
 ```
 
-3. Activate the environment:
+2. Activate the environment:
 ```bash
 conda activate mol_dyn
 ```
 
 ### Using Poetry
 
-1. Clone the repository:
-```bash
-git clone https://github.com/username/molecular-dynamics-dissipative.git
-cd molecular-dynamics-dissipative
-```
-
-2. Install dependencies using Poetry:
+1. Install dependencies using Poetry:
 ```bash
 poetry install
 ```
 
-3. Activate the poetry environment:
+2. Activate the poetry environment:
 ```bash
-poetry shell
+eval $(poetry env activate)
 ```
 
 ## Usage
