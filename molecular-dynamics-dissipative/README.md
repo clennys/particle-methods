@@ -1,19 +1,24 @@
-# Molecular Dynamics Simulation
+# Dissipative Particle Dynamics Simulation
 
-A 2D Lennard-Jones particle simulation for studying molecular dynamics in NVE (microcanonical) and NVT (canonical) ensembles.
+A 2D molecular dynamics simulation implementing Dissipative Particle Dynamics (DPD) for studying complex fluid phenomena, including Couette flow, Poiseuille flow, and behavior of polymer chains and ring molecules.
 
 ## Features
 
-- 2D molecular dynamics simulation of particles interacting through Lennard-Jones potential
-- Support for both NVE (constant energy) and NVT (constant temperature) ensembles
-- Efficient neighbor list implementation using cell lists for performance
-- Real-time visualization of:
-  - Particle positions
-  - Energy components (kinetic, potential, total)
+- 2D DPD simulation with support for multiple particle types
+- Efficient neighbor search using cell lists algorithm
+- Support for various flow scenarios:
+  - Test case with pure fluid particles
+  - Couette flow with chain molecules
+  - Poiseuille flow with ring molecules
+- Comprehensive visualization of:
+  - Particle positions and types
+  - Bonds between particles
   - Temperature evolution
-  - Radial Distribution Function (RDF)
-- Statistical analysis of simulation results (energy conservation, temperature control)
-- Configurable parameters (particle count, time step, temperature, etc.)
+  - Velocity profiles
+  - Density profiles
+  - Energy components
+- Real-time visualization during simulation
+- Detailed final state analysis with exportable plots
 
 ## Installation
 
@@ -21,128 +26,131 @@ You can install this package using either Conda or Poetry.
 
 ### Using Conda
 
-1. Create a new conda environment from the provided `environment.yml` file:
+1. Clone the repository:
+```bash
+git clone https://github.com/username/molecular-dynamics-dissipative.git
+cd molecular-dynamics-dissipative
+```
+
+2. Create a new conda environment from the provided `environment.yml` file:
 ```bash
 conda env create -f environment.yml
 ```
 
-2. Activate the environment:
+3. Activate the environment:
 ```bash
 conda activate mol_dyn
 ```
 
 ### Using Poetry
 
-1. Install dependencies using Poetry:
+1. Clone the repository:
+```bash
+git clone https://github.com/username/molecular-dynamics-dissipative.git
+cd molecular-dynamics-dissipative
+```
+
+2. Install dependencies using Poetry:
 ```bash
 poetry install
 ```
 
-2. Activate the poetry environment:
+3. Activate the poetry environment:
 ```bash
-eval $(poetry env activate)
+poetry shell
 ```
 
 ## Usage
 
-The package includes several simulation scripts for different purposes:
+The package includes several simulation scenarios:
 
-### Main Simulation
+### Test Simulation
 
-Run the main simulation with default parameters:
+Run a simple test simulation with only fluid particles:
 
 ```bash
-python -m molecular_dynamics.main
+python -m molecular_dynamics.main --scenario test --steps 5000 --dt 0.01
 ```
 
-With custom parameters:
+### Couette Flow Simulation
+
+Simulate Couette flow with chain molecules (polymer chains):
 
 ```bash
-python -m molecular_dynamics.main --N 400 --L 40.0 --dt 0.005 --steps 2000 --temp 0.5 --rc 2.5 --vis_steps 10
+python -m molecular_dynamics.main --scenario couette --steps 5000 --dt 0.01
 ```
 
-### NVE Simulation (Constant Energy)
+### Poiseuille Flow Simulation
 
-For studying energy conservation with different time steps and system sizes:
-
-```bash
-python -m molecular_dynamics.nve_sim
-```
-
-### NVT Simulation (Constant Temperature)
-
-For studying phase behavior at different temperatures:
+Simulate Poiseuille flow with ring molecules:
 
 ```bash
-python -m molecular_dynamics.nvt_sim
+python -m molecular_dynamics.main --scenario poiseuille --steps 5000 --dt 0.001
 ```
 
 ## Command Line Arguments
 
 The main simulation script supports the following arguments:
 
-- `--N`: Number of particles (default: 100)
-- `--L`: Box size (default: 30.0)
-- `--dt`: Time step (default: 0.001)
-- `--steps`: Number of simulation steps (default: 1000)
-- `--temp`: Initial temperature (default: 0.5)
-- `--rc`: Cutoff radius for interactions (default: 2.5)
+- `--scenario`: Simulation scenario to run (choices: "test", "couette", "poiseuille", default: "test")
+- `--dt`: Time step (default: 0.01)
+- `--steps`: Number of simulation steps (default: 5000)
 - `--vis_steps`: Visualization update frequency (default: 10)
-- `--rdf_bins`: Number of bins for RDF calculation (default: 50)
-- `--thermostat`: Enable Berendsen thermostat (flag)
-- `--tau_factor`: dt/τ factor for Berendsen thermostat (default: 0.0025)
+- `--output`: Output directory for results (default: "dpd_results")
+- `--no_vis`: Disable visualization (for batch runs)
 
-## Performance Notes
+## Theoretical Background
 
-The simulation employs cell lists to efficiently calculate forces, which significantly improves performance for large systems. However, the visualization can become slow and laggy when simulating large numbers of particles (N > 400). This is due to the overhead of updating the matplotlib plots in real-time.
+### Dissipative Particle Dynamics (DPD)
 
-If you need to run simulations with large particle counts, consider:
-- Reducing the visualization update frequency (increase `--vis_steps`)
-- Disabling visualization entirely for production runs by modifying the code
-- Using the specialized scripts that save plots instead of displaying them in real-time
+DPD is a mesoscopic simulation technique that bridges the gap between microscopic methods (like Molecular Dynamics) and macroscopic methods (like Computational Fluid Dynamics). It represents fluid parcels as soft particles that interact through three types of forces:
 
-## Theory
+1. **Conservative Force** (F^C):
+   - Repulsive force that prevents particle overlap
+   - Given by: F^C = a_ij (1 - r/r_c) r̂ for r < r_c, where a_ij is the maximum repulsion between particles i and j
 
-### Lennard-Jones Potential
+2. **Dissipative Force** (F^D):
+   - Friction force that reduces relative velocity between particles
+   - Given by: F^D = -γ w^D(r) (r̂ · v_ij) r̂, where γ is the friction coefficient
 
-This simulation uses the Lennard-Jones potential to model particle interactions:
+3. **Random Force** (F^R):
+   - Thermal noise that maintains system temperature
+   - Given by: F^R = σ w^R(r) ξ_ij r̂, where σ is the noise amplitude and ξ_ij is a random number
 
-$$U(r) = 4\epsilon \left[ \left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^6 \right]$$
+The weight functions w^D and w^R are related by w^D(r) = [w^R(r)]² to satisfy the fluctuation-dissipation theorem. The noise amplitude and friction coefficient are related by σ² = 2γk_BT to ensure proper thermal equilibrium.
 
-Where:
-- $\epsilon$ is the depth of the potential well
-- $\sigma$ is the distance at which the potential is zero
-- $r$ is the distance between particles
-
-In the simulation, reduced units are used with $\epsilon = 1$ and $ \sigma = 1$.
-
-### Velocity Verlet Algorithm
+### Integration Algorithm
 
 The simulation uses the velocity Verlet algorithm for time integration:
 
-1. Update velocities by half a time step: $v(t + \Delta t/2) = v(t) + (F(t)/m)(\Delta t/2)$
-2. Update positions for a full time step: $r(t + \Delta t) = r(t) + v(t + \Delta t/2)\Delta t$
-3. Calculate forces at the new positions: $F(t + \Delta t)$
-4. Complete velocity update: $v(t + \Delta t) = v(t + \Delta t/2) + (F(t + \Delta t)/m)(\Delta t/2)$
-
-### Berendsen Thermostat
-
-For NVT simulations, the Berendsen thermostat is used to maintain constant temperature by scaling velocities:
-
-$$\lambda = \sqrt{1 + \frac{\Delta t}{\tau}\left(\frac{T_0}{T} - 1\right)}$$
-
-Where:
-- $\lambda$ is the scaling factor
-- $T_0$ is the target temperature
-- $T$ is the current temperature
-- $\tau$ is the coupling parameter
+1. Update velocities by half a time step: v(t + Δt/2) = v(t) + (F(t)/m)(Δt/2)
+2. Update positions for a full time step: r(t + Δt) = r(t) + v(t + Δt/2)Δt
+3. Calculate forces at the new positions: F(t + Δt)
+4. Complete velocity update: v(t + Δt) = v(t + Δt/2) + (F(t + Δt)/m)(Δt/2)
 
 ## Project Structure
 
 - `src/molecular_dynamics/`
-  - `main.py`: Main entry point for simulation
-  - `simulation.py`: Core simulation engine
+  - `main.py`: Main entry point and scenario configuration
+  - `simulation.py`: Core DPD simulation engine
   - `cell_list.py`: Efficient neighbor search implementation
+  - `forces.py`: Implementation of DPD forces and bond forces
   - `visualization.py`: Real-time visualization tools
-  - `nve_sim.py`: NVE ensemble analysis script
-  - `nvt_sim.py`: NVT ensemble analysis script
+
+## Flow Scenarios
+
+### Couette Flow
+
+Simulates fluid between two parallel plates where one plate moves relative to the other, creating a shear flow. The simulation includes chain molecules (A-A-B-B-B-B-B) to study polymer behavior in shear flow.
+
+### Poiseuille Flow
+
+Simulates pressure-driven flow through a channel, implemented as a body force applied to fluid particles. The simulation includes ring molecules to study their behavior in Poiseuille flow.
+
+## Output
+
+Simulation results are saved to the specified output directory, including:
+- Temperature evolution plots
+- Velocity profiles
+- Density profiles
+- Final state visualization
