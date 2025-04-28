@@ -4,6 +4,7 @@ from matplotlib.patches import Rectangle, Circle
 import matplotlib.lines as mlines
 import matplotlib.collections as mcollections
 from matplotlib.gridspec import GridSpec
+import os
 
 
 class DPDVisualizer:
@@ -201,7 +202,7 @@ class DPDVisualizer:
         self.fig.canvas.draw_idle()
         self.fig.canvas.flush_events()
 
-    def plot_final_results(self):
+    def plot_final_results(self, args):
         final_fig = plt.figure(figsize=(15, 12))
         gs = GridSpec(3, 2, figure=final_fig)
 
@@ -326,6 +327,10 @@ class DPDVisualizer:
                 ax_molecules.grid(True, alpha=0.3)
 
         plt.tight_layout()
+
+        plots_dir = os.path.join(args.output, args.scenario)
+        final_vis_path = os.path.join(plots_dir, "final_visualization.png")
+        plt.savefig(final_vis_path, dpi=150, bbox_inches='tight')
 
         final_fig.canvas.draw_idle()
 

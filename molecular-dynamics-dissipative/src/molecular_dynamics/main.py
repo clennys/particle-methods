@@ -80,7 +80,7 @@ def setup_couette_flow():
         density=4.0,  # Density
         dt=0.01,  # Time step
         rc=1.0,  # Cutoff radius
-        sigma=3.0,  # Random force coefficient
+        sigma=1.0,  # Random force coefficient
         gamma=4.5,  # Dissipative force coefficient
         kBT=1.0,  # Temperature
         a_matrix=a_matrix,  # Conservative force coefficients
@@ -134,7 +134,7 @@ def setup_poiseuille_flow():
         density=4.0,  # Density
         dt=0.01,  # Time step
         rc=1.0,  # Cutoff radius
-        sigma=3.0,  # Random force coefficient
+        sigma=1.0,  # Random force coefficient
         gamma=4.5,  # Dissipative force coefficient
         kBT=1.0,  # Temperature
         a_matrix=extended_a_matrix,  # Conservative force coefficients
@@ -221,7 +221,7 @@ def run_simulation(sim, args):
     save_results(sim, args)
 
     if vis:
-        vis.plot_final_results()
+        vis.plot_final_results(args)
         vis.show()
 
     return sim
