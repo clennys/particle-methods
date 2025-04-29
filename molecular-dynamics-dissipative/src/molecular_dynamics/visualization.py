@@ -330,7 +330,7 @@ class DPDVisualizer:
 
         plots_dir = os.path.join(args.output, args.scenario)
         final_vis_path = os.path.join(plots_dir, "final_visualization.png")
-        plt.savefig(final_vis_path, dpi=150, bbox_inches='tight')
+        plt.savefig(final_vis_path, dpi=300, bbox_inches='tight')
 
         final_fig.canvas.draw_idle()
 
