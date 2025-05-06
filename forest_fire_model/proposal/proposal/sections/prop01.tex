@@ -1,0 +1,82 @@
+\section{Boids Flocking Algorithm}
+I propose to implement Reynolds' original Boids algorithm \cite{reynolds_flocks_1987}, which simulates the flocking behavior of birds through three simple steering behaviors:
+%
+\begin{itemize}
+	\item \textit{Separation}: Avoid crowding nearby flockmates
+	\item \textit{Alignment}: Steer towards the average heading of nearby flockmates
+	\item \textit{Cohesion}: Steer towards the average position of nearby flockmates
+\end{itemize}%
+%
+Each boid will be modeled as a particle as follows:
+\begin{itemize}
+	\item Position, velocity and acceleration vector.
+	\item Max. Speed and steering force limitations.
+	\item A radius for defining which other boids it can "see".
+\end{itemize}
+For each time step of the simulation the following steps would be computed:
+\begin{enumerate}
+	\item Compute seperation, alignment and cohesion
+	\item Apply weights to each force
+	\item Update velocity and position using time integration.
+	\item Handling periodic boundary condition.
+	\item Render simulation state.
+\end{enumerate}
+the following parameters could than be systematically change to explore the systems behavior:
+\begin{itemize}
+	\item Neighborhood radius
+	\item Weights of forces
+	\item Flock size
+\end{itemize}
+\subsection{Implementation Plan}
+\begin{enumerate}
+	\item \textbf{Basic Model Implementation}
+	      \begin{itemize}
+		      \item Create a particle class with position, velocity, acceleration vectors, and perception radius
+		      \item Implement the three core steering behaviors:
+		            \begin{itemize}
+			            \item Separation: Avoid crowding nearby flockmates
+			            \item Alignment: Steer towards the average heading of nearby flockmates
+			            \item Cohesion: Steer towards the average position of nearby flockmates
+		            \end{itemize}
+		      \item Apply force limitations (max. speed and steering force)
+		      \item Implement periodic boundary conditions for continuous movement
+		      \item Develop a visualization system to render boids with directional indicators
+	      \end{itemize}
+
+	\item \textbf{Parameter Exploration}
+	      \begin{itemize}
+		      \item Systematically vary and document the effects of:
+		            \begin{itemize}
+			            \item Neighborhood radius (perception distance)
+			            \item Relative weights of each steering force
+			            \item Flock size and density
+			            \item Time step size for numerical integration
+		            \end{itemize}
+		      \item Record emergent patterns and phase transitions between different flocking behaviors
+	      \end{itemize}
+	\item \textbf{Extensions and Analysis}\\
+	      These are possible extensions, where I would implement a subset of them:
+	      \begin{itemize}
+		      \item \textbf{Obstacle Avoidance and Environmental Factors}
+		            \begin{itemize}
+			            \item Add obstacle avoidance steering behavior
+			            \item Add wind or similar effects that influence movement
+			            \item Create a food source that attracts the flock
+		            \end{itemize}
+		      \item \textbf{Leadership Dynamics}
+		            \begin{itemize}
+			            \item Implement a ``follow the leader'' steering behavior
+			            \item Explore different types of leadership (fixed, emergent, rotating)
+		            \end{itemize}
+		      \item \textbf{Predator-Prey Dynamics}
+		            \begin{itemize}
+			            \item Implement a predator with different movement patterns
+			            \item Give the flock a mechanism to avoid the predator
+			            \item Analyze how flocking provides protection against predation
+		            \end{itemize}
+		      \item \textbf{Advanced Perception Model}
+		            \begin{itemize}
+			            \item Replace simple radius-based perception with vision cones
+		            \end{itemize}
+	      \end{itemize}
+\end{enumerate}

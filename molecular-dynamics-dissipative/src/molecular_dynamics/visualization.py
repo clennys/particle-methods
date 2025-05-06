@@ -17,13 +17,12 @@ class DPDVisualizer:
         self.update_interval = update_interval
         self.fig = None
         self.ax_sim = None
-        self.scatters = {}  # Dict of scatter plots for each particle type
+        self.scatters = {}
         self.bonds_collection = None
         self.cell_patches = []
 
     def setup(self):
         """Set up the visualization plot with particle types and bonds"""
-        # Create figure with grid layout
         self.fig = plt.figure(figsize=(15, 10))
         gs = GridSpec(2, 3, figure=self.fig, height_ratios=[1.5, 1])
 
@@ -206,7 +205,6 @@ class DPDVisualizer:
         final_fig = plt.figure(figsize=(15, 12))
         gs = GridSpec(3, 2, figure=final_fig)
 
-        # Simulation snapshot (top left)
         ax_snapshot = final_fig.add_subplot(gs[0, 0])
         ax_snapshot.set_xlim(0, self.sim.L)
         ax_snapshot.set_ylim(0, self.sim.L)
@@ -310,7 +308,7 @@ class DPDVisualizer:
             molecule_centers_y = []
 
             for molecule in self.sim.molecules:
-                # Calculate center of mass for this molecule
+                # Calculate center of mass
                 molecule_positions = np.array(
                     [self.sim.positions[idx] for idx in molecule]
                 )
@@ -330,7 +328,7 @@ class DPDVisualizer:
 
         plots_dir = os.path.join(args.output, args.scenario)
         final_vis_path = os.path.join(plots_dir, "final_visualization.png")
-        plt.savefig(final_vis_path, dpi=300, bbox_inches='tight')
+        plt.savefig(final_vis_path, dpi=300, bbox_inches="tight")
 
         final_fig.canvas.draw_idle()
 

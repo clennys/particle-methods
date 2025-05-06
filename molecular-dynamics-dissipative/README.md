@@ -73,7 +73,7 @@ python -m molecular_dynamics.main --scenario couette --steps 5000 --dt 0.01
 Simulate Poiseuille flow with ring molecules:
 
 ```bash
-python -m molecular_dynamics.main --scenario poiseuille --steps 5000 --dt 0.001
+python -m molecular_dynamics.main --scenario poiseuille --steps 5000 --dt 0.01
 ```
 
 ## Command Line Arguments

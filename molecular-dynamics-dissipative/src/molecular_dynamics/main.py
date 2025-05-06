@@ -44,13 +44,13 @@ def setup_test_simulation():
     sigma = np.sqrt(2 * gamma * kBT)  # = 3.0 for gamma=4.5, kBT=1.0
 
     sim = DPDSimulation(
-        L=15.0,  # Box size
-        density=4.0,  # Density
-        dt=0.01,  # Time step
-        rc=1.0,  # Cutoff radius
-        sigma=sigma,  # Random force coefficient (calculated to satisfy thermostat relation)
-        gamma=gamma,  # Dissipative force coefficient
-        kBT=kBT,  # Temperature
+        L=15.0,
+        density=4.0,
+        dt=0.01,
+        rc=1.0,
+        sigma=sigma,
+        gamma=gamma,
+        kBT=kBT,
     )
 
     # Default a_ij = 25 for fluid-fluid interactions
@@ -63,9 +63,6 @@ def setup_test_simulation():
 def setup_couette_flow():
     print("Setting up Couette flow simulation with chain molecules")
 
-    # Conservative force coefficient matrix for different particle types
-    # F: fluid, W: wall, A: type A, B: type B
-    # a_ij matrix from homework 4 part (b)
     a_matrix = np.array(
         [
             [25, 200, 25, 300],  # F (row) interactions with F, W, A, B (columns)
@@ -76,16 +73,16 @@ def setup_couette_flow():
     )
 
     sim = DPDSimulation(
-        L=15.0,  # Box size
-        density=4.0,  # Density
-        dt=0.01,  # Time step
-        rc=1.0,  # Cutoff radius
-        sigma=1.0,  # Random force coefficient
-        gamma=4.5,  # Dissipative force coefficient
-        kBT=1.0,  # Temperature
-        a_matrix=a_matrix,  # Conservative force coefficients
-        K_S=100.0,  # Bond spring constant
-        r_S=0.1,  # Equilibrium bond length
+        L=15.0,
+        density=4.0,
+        dt=0.01,
+        rc=1.0,
+        sigma=1.0,
+        gamma=4.5,
+        kBT=1.0,
+        a_matrix=a_matrix,
+        K_S=100.0,
+        r_S=0.1,
     )
 
     # Create chain molecules (A-A-B-B-B-B-B)
@@ -93,7 +90,7 @@ def setup_couette_flow():
 
     sim.create_walls(thickness=1.0, positions=["y=0", "y=L"])
 
-    sim.set_wall_velocity([5.0, 0.0])  # Bottom wall moves in positive x-direction
+    sim.set_wall_velocity([5.0, 0.0])
 
     bottom_wall = np.where((sim.types == sim.WALL) & (sim.positions[:, 1] < sim.rc))[0]
     top_wall = np.where(
@@ -113,9 +110,6 @@ def setup_couette_flow():
 def setup_poiseuille_flow():
     print("Setting up Poiseuille flow simulation with ring molecules")
 
-    # Conservative force coefficient matrix for different particle types
-    # F: fluid, W: wall, A: type A
-    # a_ij matrix from homework 4 part (c)
     a_matrix = np.array(
         [
             [25, 200, 25],  # F (row) interactions with F, W, A (columns)
@@ -124,23 +118,21 @@ def setup_poiseuille_flow():
         ]
     )
 
-    # Extend to 4x4 for compatibility with the simulation class
-    # The fourth row/column (TYPE_B) won't be used in this scenario
     extended_a_matrix = np.zeros((4, 4))
     extended_a_matrix[:3, :3] = a_matrix
 
     sim = DPDSimulation(
-        L=15.0,  # Box size
-        density=4.0,  # Density
-        dt=0.01,  # Time step
-        rc=1.0,  # Cutoff radius
-        sigma=1.0,  # Random force coefficient
-        gamma=4.5,  # Dissipative force coefficient
-        kBT=1.0,  # Temperature
-        a_matrix=extended_a_matrix,  # Conservative force coefficients
-        K_S=100.0,  # Bond spring constant
-        r_S=0.3,  # Equilibrium bond length for ring molecules
-        body_force=0.3,  # Body force to drive flow
+        L=15.0,
+        density=4.0,
+        dt=0.01,
+        rc=1.0,
+        sigma=1.0,
+        gamma=4.5,
+        kBT=1.0,
+        a_matrix=extended_a_matrix,
+        K_S=100.0,
+        r_S=0.3,
+        body_force=0.3,
     )
 
     sim.create_ring_molecules(num_rings=10, ring_size=9)
@@ -152,11 +144,9 @@ def setup_poiseuille_flow():
         (sim.types == sim.WALL) & (sim.positions[:, 1] > sim.L - sim.rc)
     )[0]
 
-
     sim.set_wall_velocity([0.0, 0.0])
     sim.velocities[bottom_wall] = [0.0, 0.0]
     sim.velocities[top_wall] = [-0.0, 0.0]
-
 
     return sim
 
@@ -186,15 +176,15 @@ def run_simulation(sim, args):
                 f"Step {step}/{args.steps}, T={sim.temperature:.3f}, t={sim.time:.2f}"
             )
 
-            # Calculate and print momentum (conservation check for test case)
             momentum = np.sum(sim.velocities, axis=0)
             print(f"  Total momentum: [{momentum[0]:.6f}, {momentum[1]:.6f}]")
 
-            # Example modification in run_simulation
             non_wall_indices = np.where(sim.types != sim.WALL)[0]
             if len(non_wall_indices) > 0:
                 momentum = np.sum(sim.velocities[non_wall_indices], axis=0)
-                print(f"  Total momentum (non-wall): [{momentum[0]:.6f}, {momentum[1]:.6f}]")
+                print(
+                    f"  Total momentum (non-wall): [{momentum[0]:.6f}, {momentum[1]:.6f}]"
+                )
             else:
                 print("  Total momentum (non-wall): [0.000000, 0.000000]")
 
