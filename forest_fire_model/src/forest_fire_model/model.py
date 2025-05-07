@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import matplotlib.colors as mcolors
 import random
-from particles import *
+from forest_fire_model.particles import *
 from scipy.ndimage import gaussian_filter
 
 class ForestFireModel:
@@ -97,7 +97,7 @@ class ForestFireModel:
         
         # Update existing particles
         for particle in self.particles:
-            particle.update(self.wind_field, self.terrain, dt)
+            particle.update(self.wind_field, self.terrain, self.width, self.height, dt)
             
             if particle.is_active():
                 new_particles.append(particle)

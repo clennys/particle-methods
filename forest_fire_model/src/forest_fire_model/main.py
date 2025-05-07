@@ -1,6 +1,6 @@
-from model import ForestFireModel
+from forest_fire_model.model import ForestFireModel
 import numpy as np
-from particles import CellState
+from forest_fire_model.particles import CellState
 from matplotlib.animation import FuncAnimation
 import matplotlib.pyplot as plt
 

@@ -14,8 +14,15 @@ class FireParticle:
         self.intensity = intensity  # Heat/intensity of the fire
         self.lifetime = lifetime    # How long the particle lives
         self.age = 0                # Current age of particle
+
+    def is_active(self):
+        return self.age < self.lifetime and self.intensity > 0.1
+
+    def is_inbounds(self, width, height):
+        return 0 < self.position[0] < width and 0 < self.position[1] < height
+
     
-    def update(self, wind_field, terrain, dt=1.0):
+    def update(self, wind_field, terrain, max_width, max_height, dt=1.0):
         # Age the particle
         self.age += dt
         
@@ -41,11 +48,13 @@ class FireParticle:
             self.velocity += terrain_effect * 0.1 * dt
         
         self.position += self.velocity * dt
+
+        if not self.is_inbounds(max_width, max_height):
+            self.intensity = 0.0
+
         
         # Decay intensity over time
         # TODO: Refuel the intensity?
         self.intensity *= 0.95
         
-    def is_active(self):
-        return self.age < self.lifetime and self.intensity > 0.1
-
+    
