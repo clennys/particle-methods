@@ -120,7 +120,7 @@ class ForestFireModel:
         self.moisture = np.clip(self.moisture, 0, 1)
     
     def ignite(self, x, y):
-        """Start a fire at the given location
+        """Start a fire at the given location with radial spread
         
         Args:
             x (int): X coordinate to ignite
@@ -131,15 +131,25 @@ class ForestFireModel:
                 self.grid[x, y] = CellState.BURNING.value
                 self.ignition_point = (x, y)
                 
-                # Create initial fire particles
-                num_particles = 30  # Number of initial particles
-                for _ in range(num_particles):
+                # Create particles in all directions
+                num_directions = 16  # Number of directional particles
+                for i in range(num_directions):
+                    angle = 2 * np.pi * i / num_directions
+                    direction_x = np.cos(angle)
+                    direction_y = np.sin(angle)
+                    
+                    # Create particle with randomized properties
                     intensity = random.uniform(0.8, 1.2)
                     lifetime = random.randint(8, 12)
-                    self.particles.append(FireParticle(x, y, intensity, lifetime))
+                    new_particle = FireParticle(x, y, intensity, lifetime)
+                    
+                    # Set initial velocity based on direction
+                    new_particle.velocity = np.array([direction_x, direction_y]) * 0.2
+                    
+                    self.particles.append(new_particle)
     
     def update(self, dt=0.1):
-        """Update the simulation by one time step
+        """Update the simulation by one time step with radial spread
         
         Args:
             dt (float): Time step size
@@ -176,12 +186,7 @@ class ForestFireModel:
                         if distance <= ignition_radius:
                             # Cell is close enough to potentially ignite
                             if self.grid[i, j] == CellState.FUEL.value:
-                                # Calculate ignition probability based on:
-                                # - Particle intensity
-                                # - Distance from particle
-                                # - Fuel type
-                                # - Moisture content
-                                
+                                # Calculate ignition probability based on multiple factors
                                 ignition_prob = (
                                     particle.intensity *             # Higher intensity = higher chance
                                     (1 - distance/ignition_radius) * # Closer = higher chance
@@ -193,11 +198,24 @@ class ForestFireModel:
                                 if random.random() < ignition_prob:
                                     new_grid[i, j] = CellState.BURNING.value
                                     
-                                    # Create new fire particles at newly ignited cells
+                                    # Create new particles with radial spread
                                     if random.random() < 0.8:  # Don't create too many particles
-                                        intensity = random.uniform(0.7, 1.0) * particle.intensity
-                                        lifetime = random.randint(5, 10)
-                                        new_particles.append(FireParticle(i, j, intensity, lifetime))
+                                        # Create multiple particles in different directions
+                                        num_directions = 8  # Fewer directions for secondary ignitions
+                                        for dir_idx in range(num_directions):
+                                            if random.random() < 0.3:  # Only create some of the potential particles
+                                                angle = 2 * np.pi * dir_idx / num_directions
+                                                direction_x = np.cos(angle)
+                                                direction_y = np.sin(angle)
+                                                
+                                                intensity = random.uniform(0.7, 1.0) * particle.intensity
+                                                lifetime = random.randint(5, 10)
+                                                new_particle = FireParticle(i, j, intensity, lifetime)
+                                                
+                                                # Set velocity based on direction
+                                                new_particle.velocity = np.array([direction_x, direction_y]) * 0.15
+                                                
+                                                new_particles.append(new_particle)
         
         # Update cell states
         for i in range(self.width):
@@ -207,11 +225,24 @@ class ForestFireModel:
                     if random.random() < 0.1:
                         new_grid[i, j] = CellState.BURNED.value
                         
-                    # Each burning cell might generate new particles
+                    # Each burning cell might generate new particles with radial spread
                     if random.random() < 0.05:
-                        intensity = random.uniform(0.8, 1.2)
-                        lifetime = random.randint(8, 12)
-                        new_particles.append(FireParticle(i, j, intensity, lifetime))
+                        # Create particles in random directions
+                        num_directions = 4  # Fewer directions for ongoing burning
+                        for dir_idx in range(num_directions):
+                            if random.random() < 0.2:  # Only create some particles
+                                angle = 2 * np.pi * dir_idx / num_directions + random.uniform(-0.5, 0.5)
+                                direction_x = np.cos(angle)
+                                direction_y = np.sin(angle)
+                                
+                                intensity = random.uniform(0.8, 1.2)
+                                lifetime = random.randint(8, 12)
+                                new_particle = FireParticle(i, j, intensity, lifetime)
+                                
+                                # Set velocity based on direction
+                                new_particle.velocity = np.array([direction_x, direction_y]) * 0.1
+                                
+                                new_particles.append(new_particle)
         
         self.grid = new_grid
         self.particles = new_particles

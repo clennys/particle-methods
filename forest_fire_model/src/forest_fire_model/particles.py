@@ -9,7 +9,7 @@ class CellState(Enum):
     EMPTY = 3     # No fuel (e.g., roads, water)
 
 class FireParticle:
-    def __init__(self, x, y, intensity=1.0, lifetime=10):
+    def __init__(self, x, y, intensity=1.0, lifetime=20):  # Increased default lifetime
         """Initialize a fire particle
         
         Args:
@@ -23,6 +23,9 @@ class FireParticle:
         self.intensity = intensity  # Heat/intensity of the fire
         self.lifetime = lifetime    # How long the particle lives
         self.age = 0                # Current age of particle
+        
+        # Enhanced starting parameters
+        self.base_spread_rate = 0.3  # Base rate of fire spread even without wind
         
         # Track the path for visualization
         self.path = [(x, y)]
@@ -75,17 +78,31 @@ class FireParticle:
             
             self.velocity += terrain_effect * 0.1 * dt * slope_factor
         
-        # Apply a small random movement
+        # ENHANCED: Ensure baseline movement even without wind or terrain
+        # Add a radial outward spread component
+        if np.linalg.norm(self.velocity) < self.base_spread_rate:
+            # Generate random direction for base spread
+            random_direction = np.random.rand(2) * 2 - 1  # Random direction vector
+            random_direction = random_direction / (np.linalg.norm(random_direction) + 1e-8)  # Normalize
+            
+            # Apply base spread rate in random direction
+            self.velocity += random_direction * self.base_spread_rate * dt * 2
+        
+        # Apply a stronger random movement to ensure spread
         random_direction = np.random.rand(2) * 2 - 1  # Random direction vector
         random_direction = random_direction / (np.linalg.norm(random_direction) + 1e-8)  # Normalize
-        random_strength = 0.05 * self.intensity  # Stronger fire, more erratic
+        random_strength = 0.15 * self.intensity  # Stronger randomness (increased from 0.05)
         self.velocity += random_direction * random_strength * dt
         
-        # Limit maximum velocity
-        max_speed = 1.5 * self.intensity  # Faster speed for higher intensity
+        # Limit maximum velocity but ensure minimum velocity
+        max_speed = 2.0 * self.intensity  # Increased max speed
+        min_speed = 0.2  # Minimum speed to ensure movement
+        
         current_speed = np.linalg.norm(self.velocity)
         if current_speed > max_speed:
             self.velocity = (self.velocity / current_speed) * max_speed
+        elif current_speed < min_speed and current_speed > 0:
+            self.velocity = (self.velocity / current_speed) * min_speed
         
         # Update position
         old_position = self.position.copy()
@@ -105,10 +122,10 @@ class FireParticle:
             # self.position[0] = self.position[0] % max_width
             # self.position[1] = self.position[1] % max_height
         
-        # Decay intensity over time
-        # Intensity decreases faster with age
+        # ENHANCED: Slower intensity decay
+        # Intensity decreases faster with age but more slowly overall
         age_factor = min(1.0, self.age / self.lifetime)
-        decay_rate = 0.95 - (0.1 * age_factor)  # Decay rate increases with age
+        decay_rate = 0.98 - (0.08 * age_factor)  # Reduced decay rate (was 0.95 - 0.1*age)
         self.intensity *= decay_rate
         
     def draw(self, ax, show_path=True):
