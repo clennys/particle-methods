@@ -74,27 +74,17 @@ def run_combined_visualization():
     for i in range(args.width // 3, args.width * 2 // 3):
         model.grid[i, args.height // 2] = CellState.EMPTY.value
     
-    # Create figure with 3 subplots in a 2x2 grid
-    # Top left: 3D terrain
-    # Top right: Environment factors
-    # Bottom: Simulation and stats
+    # Create figure with 2 subplots in a column (removed right side plots)
+    fig = plt.figure(figsize=(10, 16))
+    gs = gridspec.GridSpec(2, 1, height_ratios=[1, 1.2])
     
-    fig = plt.figure(figsize=(16, 12))
-    gs = gridspec.GridSpec(2, 2, height_ratios=[1, 1.2])
-    
-    # 3D terrain view
+    # 3D terrain view (top)
     ax_3d = fig.add_subplot(gs[0, 0], projection='3d')
     
-    # Environment factors
-    ax_env = fig.add_subplot(gs[0, 1])
-    
-    # Fire simulation
+    # Fire simulation (bottom)
     ax_sim = fig.add_subplot(gs[1, 0])
     
-    # Statistics
-    ax_stats = fig.add_subplot(gs[1, 1])
-    
-    # Initialize the 3D plot and environmental factors plot
+    # Initialize the 3D plot
     
     # Create a meshgrid for 3D plotting
     x = np.arange(0, args.width, 1)
@@ -115,29 +105,10 @@ def run_combined_visualization():
     ax_3d.set_ylabel("Y")
     ax_3d.set_zlabel("Elevation")
     
-    # Initial setup for the environmental factors plot
-    model.visualize_environment(ax=ax_env)
-    
     # Initialize environment for fire simulation
     
     # Ignite fire
     model.ignite(args.ignite_x, args.ignite_y)
-    
-    # Data collection for statistics
-    timestamps = [0]
-    fuel_counts = [np.sum(model.grid == CellState.FUEL.value)]
-    burning_counts = [np.sum(model.grid == CellState.BURNING.value)]
-    burned_counts = [np.sum(model.grid == CellState.BURNED.value)]
-    
-    # Create lines for the statistics plot
-    line_fuel, = ax_stats.plot(timestamps, fuel_counts, 'g-', label='Unburned Fuel')
-    line_burning, = ax_stats.plot(timestamps, burning_counts, 'r-', label='Burning')
-    line_burned, = ax_stats.plot(timestamps, burned_counts, 'k-', label='Burned')
-    
-    ax_stats.set_xlabel('Time Step')
-    ax_stats.set_ylabel('Cell Count')
-    ax_stats.set_title('Fire Progression')
-    ax_stats.legend()
     
     # Initialize variables for animation
     fire_points_3d = None
@@ -151,21 +122,6 @@ def run_combined_visualization():
         # Update the model
         active = model.update()
         frame_count += 1
-        
-        # Update statistics
-        timestamps.append(frame_count)
-        fuel_counts.append(np.sum(model.grid == CellState.FUEL.value))
-        burning_counts.append(np.sum(model.grid == CellState.BURNING.value))
-        burned_counts.append(np.sum(model.grid == CellState.BURNED.value))
-        
-        # Update the statistics lines
-        line_fuel.set_data(timestamps, fuel_counts)
-        line_burning.set_data(timestamps, burning_counts)
-        line_burned.set_data(timestamps, burned_counts)
-        
-        # Adjust y-axis limits as needed
-        ax_stats.relim()
-        ax_stats.autoscale_view()
         
         # Clear simulation axis and redraw
         ax_sim.clear()
@@ -212,10 +168,10 @@ def run_combined_visualization():
         # Stop animation if fire is no longer active or max frames reached
         if not active or frame_count >= args.frames:
             print(f"Simulation ended at time step {frame_count}")
-            print(f"Final state: {fuel_counts[-1]} unburned cells, {burned_counts[-1]} burned cells")
+            print(f"Final state: {np.sum(model.grid == CellState.FUEL.value)} unburned cells, {np.sum(model.grid == CellState.BURNED.value)} burned cells")
             anim.event_source.stop()
         
-        return ax_sim, ax_stats, ax_3d
+        return ax_sim, ax_3d
     
     plt.tight_layout()
     
@@ -233,3 +189,4 @@ def run_combined_visualization():
 
 if __name__ == "__main__":
     run_combined_visualization()
+

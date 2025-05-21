@@ -138,7 +138,7 @@ class ForestFireModel:
                     lifetime = random.randint(8, 12)
                     self.particles.append(FireParticle(x, y, intensity, lifetime))
     
-    def update(self, dt=1.0):
+    def update(self, dt=0.1):
         """Update the simulation by one time step
         
         Args:
@@ -194,7 +194,7 @@ class ForestFireModel:
                                     new_grid[i, j] = CellState.BURNING.value
                                     
                                     # Create new fire particles at newly ignited cells
-                                    if random.random() < 0.3:  # Don't create too many particles
+                                    if random.random() < 0.8:  # Don't create too many particles
                                         intensity = random.uniform(0.7, 1.0) * particle.intensity
                                         lifetime = random.randint(5, 10)
                                         new_particles.append(FireParticle(i, j, intensity, lifetime))
