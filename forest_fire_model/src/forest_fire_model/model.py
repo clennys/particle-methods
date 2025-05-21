@@ -148,7 +148,7 @@ class ForestFireModel:
                     
                     self.particles.append(new_particle)
     
-    def update(self, dt=0.1):
+    def update(self, dt=1.0):
         """Update the simulation by one time step with radial spread
         
         Args:
