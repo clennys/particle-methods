@@ -132,7 +132,7 @@ class ForestFireModel:
                 self.ignition_point = (x, y)
                 
                 # Create particles in all directions
-                num_directions = 16  # Number of directional particles
+                num_directions = 100  # Number of directional particles
                 for i in range(num_directions):
                     angle = 2 * np.pi * i / num_directions
                     direction_x = np.cos(angle)

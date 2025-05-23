@@ -22,6 +22,11 @@ def parse_arguments():
     parser.add_argument('--multi_ignition', action='store_true', 
                         help='Ignite multiple points for better spread')
     
+    # Map selection
+    parser.add_argument('--map_type', type=str, default='houses', 
+                        choices=['houses', 'forest', 'river', 'mountain', 'urban', 'mixed'],
+                        help='Type of map layout to generate')
+    
     # Wind parameters
     parser.add_argument('--wind_direction', type=float, default=np.pi/4, 
                         help='Wind direction in radians (0=east, pi/2=north)')
@@ -76,14 +81,6 @@ def parse_arguments():
     parser.add_argument('--dt', type=float, default=0.1,
                         help='Time step size for simulation (smaller = slower progression)')
     
-    # Auto-recovery to prevent fire from dying out
-    parser.add_argument('--auto_recovery', action='store_true', default=True,
-                        help='Enable automatic recovery if fire starts to die out')
-    parser.add_argument('--min_particles', type=int, default=5,
-                        help='Minimum particles before auto-recovery triggers')
-    parser.add_argument('--boost_factor', type=float, default=1.5,
-                        help='Intensity boost factor for recovery')
-    
     # Output
     parser.add_argument('--save', action='store_true', 
                         help='Save simulation to a file')
@@ -91,6 +88,289 @@ def parse_arguments():
                         help='Output filename for saved simulation')
     
     return parser.parse_args()
+
+def create_small_city(model, args):
+    """Create a small cluster of houses in the center without streets."""
+    
+    # Define city center coordinates
+    city_center_x = args.width // 2
+    city_center_y = args.height // 2
+    
+    # Create houses in a compact cluster
+    num_houses = 25  # Total number of houses
+    houses_created = 0
+    
+    print(f"Creating compact city cluster at center ({city_center_x}, {city_center_y})")
+    
+    # Generate houses in concentric circles for natural clustering
+    for ring in range(3):  # 3 rings of houses
+        ring_radius = 6 + ring * 6  # Rings at radius 6, 12, 18
+        houses_in_ring = 6 + ring * 4  # More houses in outer rings
+        
+        for i in range(houses_in_ring):
+            if houses_created >= num_houses:
+                break
+                
+            # Calculate angle for this house in the ring
+            angle = 2 * np.pi * i / houses_in_ring
+            
+            # Add some randomness to the position
+            actual_radius = ring_radius + np.random.uniform(-2, 2)
+            angle_offset = np.random.uniform(-0.3, 0.3)
+            
+            # Calculate house position
+            house_x = int(city_center_x + actual_radius * np.cos(angle + angle_offset))
+            house_y = int(city_center_y + actual_radius * np.sin(angle + angle_offset))
+            
+            # Ensure house is within grid bounds
+            if not (5 <= house_x < args.width - 5 and 5 <= house_y < args.height - 5):
+                continue
+            
+            # Random house size (2x2 to 4x4)
+            house_size = np.random.randint(2, 5)
+            
+            # Create the house (rectangular area)
+            for x in range(max(0, house_x - house_size//2), 
+                          min(args.width, house_x + house_size//2 + 1)):
+                for y in range(max(0, house_y - house_size//2), 
+                              min(args.height, house_y + house_size//2 + 1)):
+                    if 0 <= x < args.width and 0 <= y < args.height:
+                        model.grid[x, y] = CellState.EMPTY.value
+            
+            houses_created += 1
+    
+    # Add a few more scattered houses to fill gaps
+    for _ in range(8):  # Additional scattered houses
+        if houses_created >= num_houses + 8:
+            break
+            
+        # Random position within city area
+        angle = np.random.uniform(0, 2 * np.pi)
+        radius = np.random.uniform(3, 20 - 3)
+        
+        house_x = int(city_center_x + radius * np.cos(angle))
+        house_y = int(city_center_y + radius * np.sin(angle))
+        
+        # Check if position is valid and not too close to existing houses
+        if not (3 <= house_x < args.width - 3 and 3 <= house_y < args.height - 3):
+            continue
+            
+        # Check if there's already a house nearby (avoid overlap)
+        overlap = False
+        for check_x in range(house_x - 3, house_x + 4):
+            for check_y in range(house_y - 3, house_y + 4):
+                if (0 <= check_x < args.width and 0 <= check_y < args.height and 
+                    model.grid[check_x, check_y] == CellState.EMPTY.value):
+                    overlap = True
+                    break
+            if overlap:
+                break
+        
+        if not overlap:
+            # Small house size for scattered houses
+            house_size = np.random.randint(2, 4)
+            
+            # Create the house
+            for x in range(max(0, house_x - house_size//2), 
+                          min(args.width, house_x + house_size//2 + 1)):
+                for y in range(max(0, house_y - house_size//2), 
+                              min(args.height, house_y + house_size//2 + 1)):
+                    if 0 <= x < args.width and 0 <= y < args.height:
+                        model.grid[x, y] = CellState.EMPTY.value
+            
+            houses_created += 1
+    
+    print(f"Created compact city with {houses_created} houses (no streets)")
+
+def create_river_map(model, args):
+    """Create a map with a winding river and riparian vegetation."""
+    
+    # Create a winding river from top to bottom
+    river_start_x = args.width // 4
+    river_end_x = 3 * args.width // 4
+    
+    # Generate river path using sine wave with random variations
+    for y in range(args.height):
+        # Base sine wave for meandering
+        progress = y / args.height
+        base_x = river_start_x + (river_end_x - river_start_x) * progress
+        meander = 15 * np.sin(progress * 4 * np.pi + np.random.uniform(-0.5, 0.5))
+        
+        river_x = int(base_x + meander)
+        river_width = np.random.randint(3, 7)  # Variable river width
+        
+        # Create river (empty cells)
+        for x in range(max(0, river_x - river_width//2), 
+                      min(args.width, river_x + river_width//2 + 1)):
+            if 0 <= x < args.width:
+                model.grid[x, y] = CellState.EMPTY.value
+    
+    print("Created river map with winding waterway")
+
+def create_mountain_map(model, args):
+    """Create a mountainous map with ridges and valleys."""
+    
+    # Create several mountain ridges
+    num_ridges = 3
+    for ridge in range(num_ridges):
+        # Ridge direction (diagonal across map)
+        start_x = ridge * args.width // (num_ridges + 1)
+        start_y = 0
+        end_x = start_x + args.width // 3
+        end_y = args.height
+        
+        # Create ridge line
+        ridge_width = np.random.randint(8, 15)
+        
+        for step in range(100):
+            progress = step / 100.0
+            ridge_x = int(start_x + (end_x - start_x) * progress)
+            ridge_y = int(start_y + (end_y - start_y) * progress)
+            
+            if 0 <= ridge_x < args.width and 0 <= ridge_y < args.height:
+                # Create rocky areas (empty) along ridge
+                for x in range(max(0, ridge_x - ridge_width//2), 
+                              min(args.width, ridge_x + ridge_width//2 + 1)):
+                    for y in range(max(0, ridge_y - 2), min(args.height, ridge_y + 3)):
+                        if np.random.random() < 0.4:  # Sparse rocky areas
+                            model.grid[x, y] = CellState.EMPTY.value
+    
+    print("Created mountain map with rocky ridges")
+
+def create_urban_map(model, args):
+    """Create an urban/suburban map with multiple neighborhoods."""
+    
+    # Create several neighborhoods
+    neighborhoods = [
+        {'center': (args.width//4, args.height//4), 'size': 15},
+        {'center': (3*args.width//4, args.height//4), 'size': 12},
+        {'center': (args.width//4, 3*args.height//4), 'size': 18},
+        {'center': (3*args.width//4, 3*args.height//4), 'size': 14},
+        {'center': (args.width//2, args.height//2), 'size': 10},
+    ]
+    
+    # Create roads connecting neighborhoods
+    road_width = 2
+    
+    # Horizontal roads
+    for y in [args.height//3, 2*args.height//3]:
+        for x in range(args.width):
+            for j in range(y - road_width//2, y + road_width//2 + 1):
+                if 0 <= j < args.height:
+                    model.grid[x, j] = CellState.EMPTY.value
+    
+    # Vertical roads
+    for x in [args.width//3, 2*args.width//3]:
+        for y in range(args.height):
+            for i in range(x - road_width//2, x + road_width//2 + 1):
+                if 0 <= i < args.width:
+                    model.grid[i, y] = CellState.EMPTY.value
+    
+    # Create houses in each neighborhood
+    for neighborhood in neighborhoods:
+        center_x, center_y = neighborhood['center']
+        size = neighborhood['size']
+        num_houses = np.random.randint(8, 15)
+        
+        for _ in range(num_houses):
+            house_x = center_x + np.random.randint(-size//2, size//2 + 1)
+            house_y = center_y + np.random.randint(-size//2, size//2 + 1)
+            
+            if 5 <= house_x < args.width - 5 and 5 <= house_y < args.height - 5:
+                house_size = np.random.randint(2, 4)
+                
+                for x in range(max(0, house_x - house_size//2), 
+                              min(args.width, house_x + house_size//2 + 1)):
+                    for y in range(max(0, house_y - house_size//2), 
+                                  min(args.height, house_y + house_size//2 + 1)):
+                        if 0 <= x < args.width and 0 <= y < args.height:
+                            model.grid[x, y] = CellState.EMPTY.value
+    
+    print("Created urban map with multiple neighborhoods and road network")
+
+def create_mixed_map(model, args):
+    """Create a mixed landscape with multiple features."""
+    
+    # River in the left third
+    for y in range(args.height):
+        river_x = args.width // 6 + int(5 * np.sin(y * 0.1))
+        for x in range(max(0, river_x - 2), min(args.width, river_x + 3)):
+            model.grid[x, y] = CellState.EMPTY.value
+    
+    # Small town in center-right
+    town_x, town_y = 2 * args.width // 3, args.height // 2
+    for _ in range(15):
+        house_x = town_x + np.random.randint(-15, 16)
+        house_y = town_y + np.random.randint(-15, 16)
+        
+        if 5 <= house_x < args.width - 5 and 5 <= house_y < args.height - 5:
+            house_size = np.random.randint(2, 4)
+            for x in range(max(0, house_x - house_size//2), 
+                          min(args.width, house_x + house_size//2 + 1)):
+                for y in range(max(0, house_y - house_size//2), 
+                              min(args.height, house_y + house_size//2 + 1)):
+                    if 0 <= x < args.width and 0 <= y < args.height:
+                        model.grid[x, y] = CellState.EMPTY.value
+    
+    # Mountain ridge in upper portion
+    for x in range(args.width):
+        if args.height // 4 <= args.height // 3:
+            for y in range(args.height // 4, args.height // 3):
+                if np.random.random() < 0.3:
+                    model.grid[x, y] = CellState.EMPTY.value
+    
+    print("Created mixed landscape with river, town, and mountain features")
+
+def create_enhanced_fuel_types(model, args):
+    """Create enhanced fuel types with distinct characteristics and colors."""
+    
+    # Reset fuel types to base
+    model.fuel_types = np.ones((model.width, model.height))
+    
+    # Define fuel type characteristics
+    fuel_patches = [
+        {'type': 2.0, 'color': 'brown', 'name': 'Dry Brush'},      # Very flammable
+        {'type': 1.5, 'color': 'darkgreen', 'name': 'Dense Forest'}, # High flammability
+        {'type': 1.0, 'color': 'forestgreen', 'name': 'Mixed Forest'}, # Normal
+        {'type': 0.7, 'color': 'olive', 'name': 'Light Forest'},    # Medium
+        {'type': 0.4, 'color': 'yellowgreen', 'name': 'Grassland'}, # Low flammability
+    ]
+    
+    # Create large patches of each fuel type
+    num_patches_per_type = 3
+    
+    for fuel_patch in fuel_patches:
+        fuel_value = fuel_patch['type']
+        
+        for _ in range(num_patches_per_type):
+            # Random center for patch
+            center_x = np.random.randint(10, args.width - 10)
+            center_y = np.random.randint(10, args.height - 10)
+            
+            # Random patch size
+            patch_radius = np.random.randint(8, 20)
+            
+            # Create irregular patch using noise
+            for x in range(max(0, center_x - patch_radius), 
+                          min(args.width, center_x + patch_radius)):
+                for y in range(max(0, center_y - patch_radius), 
+                              min(args.height, center_y + patch_radius)):
+                    
+                    distance = np.sqrt((x - center_x)**2 + (y - center_y)**2)
+                    
+                    # Only set fuel type if it's fuel (not empty/houses)
+                    if (model.grid[x, y] == CellState.FUEL.value and 
+                        distance <= patch_radius):
+                        
+                        # Add some randomness to patch edges
+                        edge_probability = max(0, 1 - (distance / patch_radius) + 
+                                             np.random.uniform(-0.3, 0.3))
+                        
+                        if np.random.random() < edge_probability:
+                            model.fuel_types[x, y] = fuel_value
+    
+    print("Created enhanced fuel type distribution with 5 distinct types")
+    return fuel_patches
 
 # Monkey-patch the FireParticle class for balanced slow spread
 original_init = FireParticle.__init__
@@ -262,18 +542,6 @@ def custom_model_update(self, dt=0.1):
     self.grid = new_grid
     self.particles = new_particles
     
-    # Auto-recovery if fire is dying out
-    if len(new_particles) < self.min_particles and np.sum(self.grid == CellState.BURNING.value) > 0:
-        burning_cells = np.where(self.grid == CellState.BURNING.value)
-        for _ in range(min(10, len(burning_cells[0]))):
-            idx = np.random.randint(0, len(burning_cells[0]))
-            i, j = burning_cells[0][idx], burning_cells[1][idx]
-            
-            # Create boosted particles
-            intensity = np.random.uniform(0.9, 1.2) * self.boost_factor
-            lifetime = np.random.randint(15, 20)
-            new_particles.append(FireParticle(i, j, intensity, lifetime))
-    
     # Check if fire has completely died out
     active = len(new_particles) > 0 or np.sum(self.grid == CellState.BURNING.value) > 0
     
@@ -305,8 +573,6 @@ def run_combined_visualization():
     model.particle_generation_rate = args.particle_generation_rate
     model.initial_particles = args.initial_particles
     model.burnout_rate = args.burnout_rate
-    model.min_particles = args.min_particles
-    model.boost_factor = args.boost_factor
     
     # Initialize environment
     model.initialize_random_terrain(smoothness=args.terrain_smoothness)
@@ -319,23 +585,118 @@ def run_combined_visualization():
         model.set_uniform_wind(direction=args.wind_direction, 
                               strength=args.wind_strength)
     
-    model.set_fuel_heterogeneity(fuel_types=args.fuel_types)
+    # Create enhanced fuel types with colors
+    fuel_patches = create_enhanced_fuel_types(model, args)
     model.set_moisture_gradient(base_moisture=args.base_moisture)
     
-    # Set up some barriers (e.g., roads or rivers) unless --remove_barriers is specified
+    # Create map layout based on selected type
     if not args.remove_barriers:
-        for i in range(args.width // 3, args.width * 2 // 3):
-            model.grid[i, args.height // 2] = CellState.EMPTY.value
+        if args.map_type == 'houses':
+            create_small_city(model, args)
+        elif args.map_type == 'river':
+            create_river_map(model, args)
+        elif args.map_type == 'mountain':
+            create_mountain_map(model, args)
+        elif args.map_type == 'urban':
+            create_urban_map(model, args)
+        elif args.map_type == 'mixed':
+            create_mixed_map(model, args)
+        elif args.map_type == 'forest':
+            print("Created pure forest map (no barriers)")
+        
+        print(f"Map type: {args.map_type}")
+    
+    # Create custom visualization function with fuel type colors
+    def visualize_with_fuel_colors(model, ax=None, show_particles=True):
+        """Enhanced visualization with fuel type colors."""
+        if ax is None:
+            fig, ax = plt.subplots(figsize=(10, 8))
+        
+        # Create fuel type background
+        fuel_display = np.zeros((model.width, model.height, 3))  # RGB array
+        
+        # Define colors for each fuel type
+        fuel_color_map = {
+            0.4: [0.6, 0.8, 0.2],    # Grassland - yellow-green
+            0.7: [0.4, 0.6, 0.2],    # Light Forest - olive
+            1.0: [0.1, 0.4, 0.1],    # Mixed Forest - forest green
+            1.5: [0.0, 0.3, 0.0],    # Dense Forest - dark green
+            2.0: [0.5, 0.3, 0.1],    # Dry Brush - brown
+        }
+        
+        # Set fuel colors
+        for i in range(model.width):
+            for j in range(model.height):
+                if model.grid[i, j] == CellState.FUEL.value:
+                    fuel_value = model.fuel_types[i, j]
+                    # Find closest fuel type
+                    closest_fuel = min(fuel_color_map.keys(), 
+                                     key=lambda x: abs(x - fuel_value))
+                    fuel_display[i, j] = fuel_color_map[closest_fuel]
+                elif model.grid[i, j] == CellState.BURNING.value:
+                    fuel_display[i, j] = [1.0, 0.0, 0.0]  # Red
+                elif model.grid[i, j] == CellState.BURNED.value:
+                    fuel_display[i, j] = [0.0, 0.0, 0.0]  # Black
+                elif model.grid[i, j] == CellState.EMPTY.value:
+                    fuel_display[i, j] = [0.7, 0.7, 0.9]  # Light blue
+        
+        # Display the fuel map
+        ax.imshow(fuel_display.transpose(1, 0, 2), origin='lower', 
+                 extent=[0, model.width, 0, model.height])
+        
+        # Add particles only if requested
+        if show_particles and model.particles:
+            particle_x = [p.position[0] for p in model.particles]
+            particle_y = [p.position[1] for p in model.particles]
+            intensity = [p.intensity for p in model.particles]
+            
+            sizes = [i * 30 for i in intensity]
+            ax.scatter(particle_x, particle_y, s=sizes, color='yellow', alpha=0.7)
+        
+        # Add terrain contours only for right plot
+        if show_particles:
+            terrain_contour = ax.contour(
+                np.arange(model.width), 
+                np.arange(model.height), 
+                model.terrain.T, 
+                levels=8, 
+                colors='white', 
+                alpha=0.3, 
+                linewidths=0.8
+            )
+        
+        # Add statistics
+        burned_percent = np.sum(model.grid == CellState.BURNED.value) / (model.width * model.height) * 100
+        burning_count = np.sum(model.grid == CellState.BURNING.value)
+        fuel_left = np.sum(model.grid == CellState.FUEL.value)
+        
+        info_text = (
+            f"Fire spread: {model.fire_spread_distance:.1f} units\n"
+            f"Burned: {burned_percent:.1f}%\n"
+            f"Active fires: {burning_count}\n"
+            f"Fuel remaining: {fuel_left}"
+        )
+        
+        ax.text(0.98, 0.02, info_text, transform=ax.transAxes, fontsize=9,
+                verticalalignment='bottom', horizontalalignment='right',
+                bbox=dict(boxstyle='round', facecolor='white', alpha=0.7))
+        
+        ax.grid(which='both', color='gray', linestyle='-', linewidth=0.5, alpha=0.2)
+        ax.set_title(f"Fire Simulation with Particles - {args.map_type.title()}")
+        ax.set_xlabel("X")
+        ax.set_ylabel("Y")
+        
+        return ax
     
     # Create figure with 2 subplots side by side
-    fig = plt.figure(figsize=(18, 8))
+    fig = plt.figure(figsize=(20, 8))
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 1])
     
     # 3D terrain view (left)
     ax_3d = fig.add_subplot(gs[0, 0], projection='3d')
     
     # Fire simulation (right)
-    ax_sim = fig.add_subplot(gs[0, 1])
+    ax_right = fig.add_subplot(gs[0, 1])
     
     # Create a meshgrid for 3D plotting
     x = np.arange(0, args.width, 1)
@@ -351,10 +712,23 @@ def run_combined_visualization():
     fig.colorbar(terrain_surf, ax=ax_3d, shrink=0.5, aspect=5, label='Elevation')
     
     # Set labels for 3D plot
-    ax_3d.set_title("3D Terrain with Wind Vectors")
+    ax_3d.set_title(f"3D Terrain - {args.map_type.title()} Map")
     ax_3d.set_xlabel("X")
     ax_3d.set_ylabel("Y")
     ax_3d.set_zlabel("Elevation")
+    
+    # Create legend for fuel types and fire states (for right plot)
+    from matplotlib.patches import Patch
+    legend_elements = [
+        Patch(facecolor=[0.5, 0.3, 0.1], label='Dry Brush (Very Flammable)'),
+        Patch(facecolor=[0.0, 0.3, 0.0], label='Dense Forest (High Flammable)'),
+        Patch(facecolor=[0.1, 0.4, 0.1], label='Mixed Forest (Normal)'),
+        Patch(facecolor=[0.4, 0.6, 0.2], label='Light Forest (Medium)'),
+        Patch(facecolor=[0.6, 0.8, 0.2], label='Grassland (Low Flammable)'),
+        Patch(facecolor=[1.0, 0.0, 0.0], label='Burning'),
+        Patch(facecolor=[0.0, 0.0, 0.0], label='Burned'),
+        Patch(facecolor=[0.7, 0.7, 0.9], label='Empty (Buildings/Water/Rock)'),
+    ]
     
     # Ignite fire
     if args.multi_ignition:
@@ -374,7 +748,6 @@ def run_combined_visualization():
     
     # Initialize variables for animation
     fire_points_3d = None
-    quiver_3d = None
     frame_count = 0
     last_frame_time = time.time()
     fps_history = []
@@ -390,7 +763,7 @@ def run_combined_visualization():
     
     # Run simulation with animation
     def animate(frame):
-        nonlocal fire_points_3d, quiver_3d, frame_count, last_frame_time, fps_history
+        nonlocal fire_points_3d, frame_count, last_frame_time, fps_history
         
         # Calculate FPS
         current_time = time.time()
@@ -409,29 +782,35 @@ def run_combined_visualization():
         active = model.update(dt=args.dt)
         frame_count += 1
         
-        # Clear simulation axis and redraw
-        ax_sim.clear()
-        model.visualize(ax_sim)
+        # Clear right axis and redraw with fuel types and particles
+        ax_right.clear()
+        visualize_with_fuel_colors(model, ax_right, show_particles=True)
         
-        # Add FPS counter and parameters
+        # Add legend to right plot
+        ax_right.legend(handles=legend_elements, loc='upper left', bbox_to_anchor=(0, 1), 
+                       fontsize=8, framealpha=0.9)
+        
+        # Add FPS counter and parameters to right plot
         performance_text = (
             f"FPS: {avg_fps:.1f}\n"
             f"Particles: {len(model.particles)}\n"
+            f"Map: {args.map_type.title()}\n"
             f"Spread Rate: {args.spread_rate}\n"
             f"Ignition Prob: {args.ignition_probability}\n"
             f"Burned: {np.sum(model.grid == CellState.BURNED.value)} cells"
         )
-        ax_sim.text(0.02, 0.98, performance_text, transform=ax_sim.transAxes, fontsize=9,
-                   verticalalignment='top', horizontalalignment='left',
-                   bbox=dict(boxstyle='round', facecolor='white', alpha=0.7))
+        ax_right.text(0.02, 0.98, performance_text, transform=ax_right.transAxes, fontsize=9,
+                      verticalalignment='top', horizontalalignment='left',
+                      bbox=dict(boxstyle='round', facecolor='white', alpha=0.7))
         
-        # Only update 3D visualization periodically to improve performance
+        # Update 3D visualization periodically - show realistic moving particles
         if frame_count % args.skip_3d_update == 0:
-            # First remove old points if they exist
+            # Remove old fire points if they exist
             if fire_points_3d:
                 fire_points_3d.remove()
-                
-            # Update 3D plot with fire particles (limit display count for performance)
+                fire_points_3d = None
+            
+            # Update 3D plot with fire particles (realistic moving visualization)
             if model.particles:
                 # Get subset of particles to display
                 display_particles = model.particles[:min(len(model.particles), args.particle_display_limit)]
@@ -448,29 +827,63 @@ def run_combined_visualization():
                 sizes = [i * 30 for i in intensity]
                 colors = [(1.0, min(1.0, i*0.5 + 0.5), 0.0) for i in intensity]
                 
-                # Update fire particles on 3D plot
+                # Create realistic fire particles visualization
                 fire_points_3d = ax_3d.scatter(particle_x, particle_y, particle_z, 
                                              c=colors, s=sizes, marker='o', alpha=0.7)
+            
+            # Add burned areas as black dots (less frequently for performance)
+            burned_indices = np.where(model.grid == CellState.BURNED.value)
+            if burned_indices[0].size > 0 and frame_count % (args.skip_3d_update * 2) == 0:
+                # Sample burned areas for performance
+                sample_size = min(1000, burned_indices[0].size)
+                if burned_indices[0].size > sample_size:
+                    sample_indices = np.random.choice(burned_indices[0].size, sample_size, replace=False)
+                    burned_x = burned_indices[0][sample_indices]
+                    burned_y = burned_indices[1][sample_indices]
+                else:
+                    burned_x = burned_indices[0]
+                    burned_y = burned_indices[1]
                 
-                # Update title with fire information
-                ax_3d.set_title(f"3D Terrain - Time: {frame_count}, Active Fires: {len(model.particles)}")
+                burned_z = [model.terrain[x, y] + 0.02 for x, y in zip(burned_x, burned_y)]
                 
-                # Update the burned areas on the 3D plot (less frequently)
-                if frame_count % (args.skip_3d_update * 2) == 0:
-                    # Sample a subset of burned cells
-                    burned_indices = np.where(model.grid == CellState.BURNED.value)
-                    if burned_indices[0].size > 0:
-                        # Take a sample to improve performance
-                        sample_size = min(1000, burned_indices[0].size)
-                        sample_indices = np.random.choice(burned_indices[0].size, sample_size, replace=False)
-                        
-                        burned_x = burned_indices[0][sample_indices]
-                        burned_y = burned_indices[1][sample_indices]
-                        burned_z = [model.terrain[x, y] for x, y in zip(burned_x, burned_y)]
-                        
-                        # Add black dots for burned areas
-                        ax_3d.scatter(burned_x, burned_y, burned_z, 
-                                    c='black', s=5, marker='s', alpha=0.3)
+                ax_3d.scatter(burned_x, burned_y, burned_z, 
+                            c='black', s=8, marker='s', alpha=0.6, label='Burned')
+            
+            # Add map features to 3D plot (buildings, water, etc.)
+            if not args.remove_barriers and frame_count % (args.skip_3d_update * 4) == 0:
+                feature_indices = np.where(model.grid == CellState.EMPTY.value)
+                if feature_indices[0].size > 0:
+                    # Sample features for visualization
+                    sample_size = min(200, feature_indices[0].size)
+                    if feature_indices[0].size > sample_size:
+                        sample_indices = np.random.choice(feature_indices[0].size, sample_size, replace=False)
+                        feature_x = feature_indices[0][sample_indices]
+                        feature_y = feature_indices[1][sample_indices]
+                    else:
+                        feature_x = feature_indices[0]
+                        feature_y = feature_indices[1]
+                    
+                    feature_z = [model.terrain[x, y] + 0.08 for x, y in zip(feature_x, feature_y)]
+                    
+                    # Color based on map type
+                    if args.map_type in ['houses', 'urban', 'mixed']:
+                        color = 'saddlebrown'  # Brown for buildings
+                        label = 'Buildings'
+                    elif args.map_type == 'river':
+                        color = 'blue'  # Blue for water
+                        label = 'Water'
+                    elif args.map_type == 'mountain':
+                        color = 'gray'  # Gray for rocks
+                        label = 'Rock'
+                    else:
+                        color = 'lightblue'  # Default
+                        label = 'Features'
+                    
+                    ax_3d.scatter(feature_x, feature_y, feature_z, 
+                                c=color, s=10, marker='s', alpha=0.7, label=label)
+            
+            # Update title with fire information
+            ax_3d.set_title(f"3D {args.map_type.title()} - Time: {frame_count}, Active Fires: {len(model.particles)}")
         
         # Stop animation if fire is no longer active or max frames reached
         if not active or frame_count >= args.frames:
@@ -478,7 +891,7 @@ def run_combined_visualization():
             print(f"Final state: {np.sum(model.grid == CellState.FUEL.value)} unburned cells, {np.sum(model.grid == CellState.BURNED.value)} burned cells")
             anim.event_source.stop()
         
-        return ax_sim, ax_3d
+        return ax_3d, ax_right
     
     plt.tight_layout()
     
@@ -487,10 +900,24 @@ def run_combined_visualization():
     
     # Save animation if requested
     if args.save:
-        from matplotlib.animation import FFMpegWriter
-        writer = FFMpegWriter(fps=15, metadata=dict(artist='ForestFireModel'), bitrate=1800)
-        anim.save(args.output, writer=writer)
-        print(f"Animation saved to {args.output}")
+        try:
+            from matplotlib.animation import FFMpegWriter
+            print(f"Saving animation to {args.output}...")
+            writer = FFMpegWriter(fps=15, metadata=dict(artist='ForestFireModel'), bitrate=1800)
+            anim.save(args.output, writer=writer)
+            print(f"Animation saved successfully to {args.output}")
+        except Exception as e:
+            print(f"Error saving animation: {e}")
+            print("Trying alternative writer...")
+            try:
+                from matplotlib.animation import PillowWriter
+                writer = PillowWriter(fps=10)
+                gif_output = args.output.replace('.mp4', '.gif')
+                anim.save(gif_output, writer=writer)
+                print(f"Animation saved as GIF to {gif_output}")
+            except Exception as e2:
+                print(f"Error saving as GIF: {e2}")
+                print("Animation will only be displayed, not saved.")
     
     plt.show()
 
