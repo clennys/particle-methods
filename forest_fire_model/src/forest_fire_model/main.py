@@ -91,6 +91,10 @@ def parse_arguments():
     
     return parser.parse_args()
 
-if __name__ == "__main__":
+def main():
     args = parse_arguments()
     run_combined_visualization(args)
+
+if __name__ == "__main__":
+    main()
+    

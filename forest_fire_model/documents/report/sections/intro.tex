@@ -1,0 +1,27 @@
+\section{Introduction}
+Understanding the behavior of complex forest fire phenomena are crucial for prevention, management and mitigation strategies. These phenomena have a significant impact in our ecology and socio-economics. Computational modeling provides a powerful tool, that can generate invaluable insights into fire dynamics, that would be impossible to replicate in the real world. So far traditional cellular automata (CA) have been widely adapted to simulate forest fires, a particle-based approach has the potential for a more nuanced representation of of fire behavior and its interaction with the environment.\newline
+\newline
+One of the predominant challenges in forest fire modeling is accurately capturing the highly complex interplay between factors that influence fire spread this includes fuel characteristics, weather conditions and topography. This project attempts to create a simulation that addresses these conditions in a higher degree of physical realism than simpler CA models. This is done by introducing particle based representation of fire embers and heat transfer.\newline
+\newline
+The object of this project are as follows:
+\begin{itemize}
+	\item Design and implement a hybrid 2D CA and particle based for forest fire simulation.
+	\item Integrate key environmental factors into the model, which include
+		\begin{itemize}
+			\item Wind (vector field affecting particle movement)
+			\item Terrain topography (influence the fire spread via slope)
+			\item Fuel heterogeneity (different burn probabilities and intensities)
+			\item Moisture content (affecting ignition probability)
+		\end{itemize}
+	\item Simulate the ignition and spread of fire under various configurations.
+	\item Analyze and visualize emergent fire patterns shapes and propagation rates.
+	\item Investigation the sensitivity of the model changes in key parameters.
+\end{itemize}
+This project implements a simplified forest fire model in a 2D grid environment and simulates the behavior through discrete particles interacting with environmental conditions.\newline 
+The limitations include:
+\begin{itemize}
+	\item Simplified 3D aspects of fire behavior such as complex canopy interactions or smoke plume dynamics.
+	\item Fire chemistry and combustion processes are abstracted
+	\item Long-range spotting is handle through particle generation and movement rules, instead of a dedicated aerodynamic model for embers.
+	\item Computational resources may limit the scale of the simulation.
+\end{itemize}
