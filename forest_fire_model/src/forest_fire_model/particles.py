@@ -9,46 +9,46 @@ class CellState(Enum):
     EMPTY = 3     # No fuel (e.g., roads, water)
 
 class FireParticle:
-    def __init__(self, x, y, intensity=1.0, lifetime=20):  # Increased default lifetime
-        """Initialize a fire particle
+    def __init__(self, x, y, intensity=1.0, lifetime=15, spread_rate=0.01, random_strength=0.03, 
+                intensity_decay=0.97, min_intensity=0.2):
+        """Initialize a fire particle with balanced spread parameters
         
         Args:
             x (float): Initial x position
             y (float): Initial y position
             intensity (float): Fire intensity/heat (affects spread radius)
             lifetime (int): How many time steps the particle lives
+            spread_rate (float): Base fire spread rate
+            random_strength (float): Strength of random movement
+            intensity_decay (float): Rate at which intensity decays
+            min_intensity (float): Minimum intensity before particle dies
         """
         self.position = np.array([x, y], dtype=float)
         self.velocity = np.array([0.0, 0.0])
-        self.intensity = intensity  # Heat/intensity of the fire
-        self.lifetime = lifetime    # How long the particle lives
-        self.age = 0                # Current age of particle
+        self.intensity = intensity
+        self.lifetime = lifetime
+        self.age = 0
         
-        # Enhanced starting parameters
-        self.base_spread_rate = 0.3  # Base rate of fire spread even without wind
+        # Balanced spread parameters
+        self.base_spread_rate = spread_rate
+        self.random_strength = random_strength
+        self.intensity_decay_base = intensity_decay
+        self.min_intensity = min_intensity
         
         # Track the path for visualization
         self.path = [(x, y)]
-        self.max_path_length = 10  # Maximum number of positions to remember
+        self.max_path_length = 10
 
     def is_active(self):
-        """Check if the particle is still active"""
-        return self.age < self.lifetime and self.intensity > 0.1
+        """Check if the particle is still active using custom minimum intensity"""
+        return self.age < self.lifetime and self.intensity > self.min_intensity
 
     def is_inbounds(self, width, height):
         """Check if the particle is within the grid boundaries"""
         return 0 <= self.position[0] < width and 0 <= self.position[1] < height
-    
-    def update(self, wind_field, terrain, max_width, max_height, dt=1.0):
-        """Update the particle position and state
-        
-        Args:
-            wind_field (numpy.ndarray): 3D array of wind vectors
-            terrain (numpy.ndarray): 2D array of terrain heights
-            max_width (int): Grid width
-            max_height (int): Grid height
-            dt (float): Time step size
-        """
+
+    def update(self, wind_field, terrain, max_width, max_height, dt=0.1):
+        """Update the particle with balanced fire spread behavior"""
         # Age the particle
         self.age += dt
         
@@ -60,7 +60,7 @@ class FireParticle:
             wind_vector = wind_field[grid_x, grid_y]
             
             # Apply wind force with some randomness
-            random_factor = 1.0 + 0.2 * (random.random() - 0.5)  # +/- 10% randomness
+            random_factor = 1.0 + 0.2 * (np.random.random() - 0.5)
             self.velocity += wind_vector * dt * random_factor
         
         # Terrain effect (uphill acceleration)
@@ -74,29 +74,28 @@ class FireParticle:
             
             # Stronger effect for steeper slopes
             slope_magnitude = np.sqrt(dx**2 + dy**2)
-            slope_factor = 1.0 + 2.0 * slope_magnitude  # Amplify effect of steep slopes
+            slope_factor = 1.0 + 2.0 * slope_magnitude
             
-            self.velocity += terrain_effect * 0.1 * dt * slope_factor
+            self.velocity += terrain_effect * 0.05 * dt * slope_factor
         
-        # ENHANCED: Ensure baseline movement even without wind or terrain
-        # Add a radial outward spread component
+        # Ensure minimal baseline movement even without wind or terrain
         if np.linalg.norm(self.velocity) < self.base_spread_rate:
             # Generate random direction for base spread
-            random_direction = np.random.rand(2) * 2 - 1  # Random direction vector
-            random_direction = random_direction / (np.linalg.norm(random_direction) + 1e-8)  # Normalize
+            random_direction = np.random.rand(2) * 2 - 1
+            random_direction = random_direction / (np.linalg.norm(random_direction) + 1e-8)
             
             # Apply base spread rate in random direction
-            self.velocity += random_direction * self.base_spread_rate * dt * 2
+            self.velocity += random_direction * self.base_spread_rate * dt * 1.2
         
-        # Apply a stronger random movement to ensure spread
-        random_direction = np.random.rand(2) * 2 - 1  # Random direction vector
-        random_direction = random_direction / (np.linalg.norm(random_direction) + 1e-8)  # Normalize
-        random_strength = 0.15 * self.intensity  # Stronger randomness (increased from 0.05)
+        # Apply random movement with customizable strength
+        random_direction = np.random.rand(2) * 2 - 1
+        random_direction = random_direction / (np.linalg.norm(random_direction) + 1e-8)
+        random_strength = self.random_strength * self.intensity
         self.velocity += random_direction * random_strength * dt
         
         # Limit maximum velocity but ensure minimum velocity
-        max_speed = 2.0 * self.intensity  # Increased max speed
-        min_speed = 0.2  # Minimum speed to ensure movement
+        max_speed = 0.8 * self.intensity
+        min_speed = self.base_spread_rate * 0.3
         
         current_speed = np.linalg.norm(self.velocity)
         if current_speed > max_speed:
@@ -105,29 +104,22 @@ class FireParticle:
             self.velocity = (self.velocity / current_speed) * min_speed
         
         # Update position
-        old_position = self.position.copy()
         self.position += self.velocity * dt
         
-        # Store path for visualization (keep last N positions)
+        # Store path for visualization
         self.path.append((self.position[0], self.position[1]))
         if len(self.path) > self.max_path_length:
             self.path.pop(0)
         
-        # Check boundaries and either stop or wrap around
+        # Check boundaries
         if not self.is_inbounds(max_width, max_height):
-            # Option 1: Reduce intensity (effectively killing the particle when out of bounds)
             self.intensity = 0.0
-            
-            # Option 2: Implement periodic boundary conditions (uncomment to enable)
-            # self.position[0] = self.position[0] % max_width
-            # self.position[1] = self.position[1] % max_height
         
-        # ENHANCED: Slower intensity decay
-        # Intensity decreases faster with age but more slowly overall
+        # Balanced intensity decay
         age_factor = min(1.0, self.age / self.lifetime)
-        decay_rate = 0.98 - (0.08 * age_factor)  # Reduced decay rate (was 0.95 - 0.1*age)
+        decay_rate = self.intensity_decay_base - (0.05 * age_factor)
         self.intensity *= decay_rate
-        
+
     def draw(self, ax, show_path=True):
         """Draw the particle on the given axes
         
