@@ -63,10 +63,9 @@ run_scenario_3() {
 # Function to run scenario 4
 run_scenario_4() {
     echo "Running Scenario 4 - Coastal Fire (Variable Wind)..."
-    echo "Command: python -m forest_fire_model.env_vis --map_type coastal --variable_wind --wind_strength 0.4 --wind_direction 3.14 --base_moisture 0.25 --fuel_types 6 --spread_rate 0.04 --ignition_probability 0.08 --intensity_decay 0.97 --particle_generation_rate 0.08 --random_strength 0.08 --particle_lifetime 18 --frames 1500 --ignite_x 60 --ignite_y 50 --dt 0.25 $SAVE_FLAG"
-    python -m forest_fire_model.main --map_type coastal --variable_wind --wind_strength 0.4 --wind_direction 3.14 --base_moisture 0.25 --fuel_types 6 --spread_rate 0.04 --ignition_probability 0.08 --intensity_decay 0.97 --particle_generation_rate 0.08 --random_strength 0.08 --particle_lifetime 18 --frames 1500 --ignite_x 60 --ignite_y 50 --dt 0.25 --multi_ignition $SAVE_FLAG
+    echo "Command: python -m forest_fire_model.main --map_type coastal --variable_wind --wind_strength 0.4 --wind_direction 3.14 --base_moisture 0.25 --fuel_types 6 --spread_rate 0.04 --ignition_probability 0.08 --intensity_decay 0.97 --particle_generation_rate 0.08 --random_strength 0.08 --particle_lifetime 18 --frames 1500 --multi_ignition --dt 0.25 $SAVE_FLAG"
+    python -m forest_fire_model.main --map_type coastal --variable_wind --wind_strength 0.4 --wind_direction 3.14 --base_moisture 0.25 --fuel_types 6 --spread_rate 0.04 --ignition_probability 0.08 --intensity_decay 0.97 --particle_generation_rate 0.08 --random_strength 0.08 --particle_lifetime 18 --frames 1500 --multi_ignition --dt 0.25 $SAVE_FLAG
 }
-
 # Function to run scenario 5
 run_scenario_5() {
     echo "Running Scenario 5 - Climate Megafire (Mixed Terrain)..."
