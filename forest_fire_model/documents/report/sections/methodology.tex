@@ -31,7 +31,20 @@ these properties are effected as follows at each time step
 
 \subsection{Fire Spread and Ignition}
 \subsubsection{Ignition}
-Active fire particles can ignite nearby \textit{FUEL} cells. For each active particle:
+Active fire particles can ignite nearby \textit{FUEL} cells, using the following probability:
+\begin{equation}
+	P_{\text{ignite}} = I_{\text{particle}} \times (1 - \frac{d}{r_{\text{max}}}) \times F_{\text{fuel}} \times (1 - M) \times P_{\text{base}}
+	\label{eq:fire_ign}
+\end{equation}
+where
+\begin{itemize}
+	\item \textit{Intensity ($I$):} Fire heat/energy
+	\item \textit{Distance ($d/r_{\text{max}}$):} Proximity decay effect, where $d$ is the distance between the fuel patcha and the particle and $r_{\text{max}}$ is the maximum ignition radius.
+	\item \textit{Fuel ($F$):} Vegetation flammability
+	\item \textit{Moisture ($M$):} Resistance factor
+\end{itemize}
+
+For each active particle:
 \begin{itemize}
 	\item An ignition radius based on the intensity is determined.
 	\item Cell within this radius are considered for ignition.
@@ -59,4 +72,12 @@ The Cell states transitions are based on the following rules:
 	\item \textbf{Moisture Content}: The Moisture content is modeled by a 2D scalar field, where each cell has a value between 0 and 1, that represents the moisture level. These levels are smoothed by gaussian filter and higher moisture content reduces the likelihood of ignition.
 \end{itemize}
 
-
+\subsection{Scenario-Specific Map Generation}
+The simulation supports multiple map types, each with unique features of interest and characteristics:
+\begin{itemize}
+	\item \textbf{Forest Map}: A pure fuel environment with heterogenous fuel types and natural moisture variations.
+	\item \textbf{Wildland Urban Interface (WUI) Map}: The goal is to simulate an environement that includes flammable wildland and human structures such as buildings, furthermore around these structures the moisture level is increased.
+	\item \textbf{Coastal Map}: The map intends to simulate a realistic coastline with different fuel types based on the distance to the coast. It also includes seasonal waterways and wind with variable strength blowing from the cooler sea inland.
+\end{itemize}
+\subsection{Implementation Details}
+The simulation was implemented in Python and includes a real time visualization and key data collection. Furthermore the data can then be post processed with an additional script which generates all the plots (and more), which can be seen in this report. For a more detailed description on the structure of the implementation and how to run the simulation consult the \texttt{README.md} file in the root folder of the project.
