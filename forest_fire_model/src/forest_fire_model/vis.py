@@ -9,52 +9,51 @@ import time
 import pickle
 import os
 from datetime import datetime
-
+import sys
+try:
+    from tqdm import tqdm
+    TQDM_AVAILABLE = True
+except ImportError:
+    TQDM_AVAILABLE = False
 
 def create_coastal_fuel_ignitions(model, args):
-    """Create ignition points at different fuel type zones for coastal maps"""
+    """Create better ignition points for coastal simulation that actually work"""
     ignition_points = []
 
     if args.map_type == "coastal":
-        # Based on the coastal map implementation, fuel zones are:
-        # 0-15 units from coast: Coastal scrub (fuel_type ~0.6)
-        # 15-35 units from coast: Transition zone (fuel_type ~1.0)
-        # 35+ units from coast: Inland dry vegetation (fuel_type ~1.5)
-
-        # Find a suitable Y coordinate (middle of map)
-        mid_y = args.height // 2
-
-        # Get the coastline position at mid_y (from create_mountain_map logic)
-        coastline_distance = args.width // 4
-        coast_x = coastline_distance + int(
-            5 * np.sin(mid_y * 0.1) + 3 * np.cos(mid_y * 0.05)
-        )
-
-        # Define ignition points for each fuel zone
-        fuel_zone_ignitions = [
-            # Coastal scrub zone (5-10 units from coast)
-            (coast_x + 8, mid_y, "Coastal Scrub"),
-            # Transition zone (20-25 units from coast)
-            (coast_x + 22, mid_y, "Transition Zone"),
-            # Inland dry zone (40-45 units from coast)
-            (coast_x + 42, mid_y, "Inland Dry"),
-        ]
-
-        # Add additional ignition points at different Y coordinates for better coverage
-        for offset_y in [-15, 0, 15]:  # Three horizontal lines
-            for zone_x, base_y, zone_name in fuel_zone_ignitions:
-                y_coord = base_y + offset_y
-
-                # Ensure coordinates are within bounds and on fuel cells
-                if 0 <= zone_x < args.width and 0 <= y_coord < args.height:
-                    # Check if it's a fuel cell (not water/coast)
-                    if model.grid[zone_x, y_coord] == CellState.FUEL.value:
-                        ignition_points.append(
-                            (zone_x, y_coord, f"{zone_name} (Y+{offset_y})")
-                        )
+        # Find the coastline at different Y coordinates
+        y_positions = [args.height // 4, args.height // 2, 3 * args.height // 4]
+        
+        for base_y in y_positions:
+            # Calculate coastline position at this Y
+            coastline_distance = args.width // 4
+            coast_x = coastline_distance + int(5 * np.sin(base_y * 0.1) + 3 * np.cos(base_y * 0.05))
+            
+            # Define ignition points at different distances from coast
+            potential_ignitions = [
+                (coast_x + 12, base_y, f"Near Coast Y{base_y}"),      # 12 units inland
+                (coast_x + 25, base_y, f"Transition Y{base_y}"),     # 25 units inland  
+                (coast_x + 45, base_y, f"Inland Y{base_y}"),         # 45 units inland
+            ]
+            
+            for ig_x, ig_y, zone_name in potential_ignitions:
+                # Ensure coordinates are valid and in fuel areas
+                if (0 <= ig_x < args.width and 0 <= ig_y < args.height and 
+                    model.grid[ig_x, ig_y] == CellState.FUEL.value):
+                    
+                    # Check fuel type and moisture - only ignite if reasonable
+                    fuel_type = model.fuel_types[ig_x, ig_y]
+                    moisture = model.moisture[ig_x, ig_y]
+                    
+                    # Only add if fuel is decent and not too wet
+                    if fuel_type > 0.8 and moisture < 0.6:
+                        ignition_points.append((ig_x, ig_y, zone_name))
+                        print(f"  Added ignition: {zone_name} at ({ig_x}, {ig_y}) - Fuel: {fuel_type:.2f}, Moisture: {moisture:.2f}")
+                    else:
+                        print(f"  Skipped {zone_name} - poor conditions (Fuel: {fuel_type:.2f}, Moisture: {moisture:.2f})")
 
     else:
-        # For non-coastal maps, use the original multi-ignition pattern
+        # For non-coastal maps
         ignition_points = [
             (args.ignite_x, args.ignite_y, "Center"),
             (args.ignite_x + 10, args.ignite_y, "East"),
@@ -63,6 +62,7 @@ def create_coastal_fuel_ignitions(model, args):
             (args.ignite_x, args.ignite_y - 10, "South"),
         ]
 
+    print(f"Created {len(ignition_points)} viable ignition points for coastal simulation")
     return ignition_points
 
 
@@ -200,14 +200,50 @@ class SimulationDataCollector:
             particle_intensities = [p.intensity for p in model.particles]
             avg_intensity = np.mean(particle_intensities)
             max_intensity = np.max(particle_intensities)
+            
+            # NEW: Add particle velocity tracking
+            particle_velocities = [np.linalg.norm(p.velocity) for p in model.particles]
+            avg_velocity = np.mean(particle_velocities) if particle_velocities else 0
+            max_velocity = np.max(particle_velocities) if particle_velocities else 0
         else:
             avg_intensity = 0
             max_intensity = 0
+            avg_velocity = 0
+            max_velocity = 0
 
-        # Wind effect (average wind strength)
-        wind_strength = np.mean(
-            np.sqrt(model.wind_field[:, :, 0] ** 2 + model.wind_field[:, :, 1] ** 2)
-        )
+        # FIXED: Better wind effect calculation with spatial variation
+        wind_strengths = []
+        for i in range(0, model.width, 5):  # Sample every 5 cells for performance
+            for j in range(0, model.height, 5):
+                wind_magnitude = np.sqrt(
+                    model.wind_field[i, j, 0] ** 2 + model.wind_field[i, j, 1] ** 2
+                )
+                wind_strengths.append(wind_magnitude)
+        
+        wind_strength_avg = np.mean(wind_strengths) if wind_strengths else 0
+        wind_strength_std = np.std(wind_strengths) if wind_strengths else 0
+
+        # NEW: Calculate active fire front perimeter (more dynamic metric)
+        fire_front_cells = 0
+        if burning_count > 0:
+            for i in range(model.width):
+                for j in range(model.height):
+                    if model.grid[i, j] == CellState.BURNING.value:
+                        # Check if this burning cell is on the fire front (adjacent to fuel)
+                        is_front = False
+                        for di in [-1, 0, 1]:
+                            for dj in [-1, 0, 1]:
+                                if di == 0 and dj == 0:
+                                    continue
+                                ni, nj = i + di, j + dj
+                                if (0 <= ni < model.width and 0 <= nj < model.height 
+                                    and model.grid[ni, nj] == CellState.FUEL.value):
+                                    is_front = True
+                                    break
+                            if is_front:
+                                break
+                        if is_front:
+                            fire_front_cells += 1
 
         # Store data
         ts = self.simulation_data["time_series"]
@@ -221,15 +257,40 @@ class SimulationDataCollector:
         ts["burn_rate"].append(burn_rate)
         ts["particle_intensity_avg"].append(avg_intensity)
         ts["particle_intensity_max"].append(max_intensity)
-        ts["wind_effect_strength"].append(wind_strength)
+        ts["wind_effect_strength"].append(wind_strength_avg)
+        
+        # NEW: Add enhanced metrics to existing time series
+        if "particle_velocity_avg" not in ts:
+            ts["particle_velocity_avg"] = [0] * (len(ts["frame"]) - 1)  # Fill previous frames
+        ts["particle_velocity_avg"].append(avg_velocity)
+    
+        if "particle_velocity_max" not in ts:
+            ts["particle_velocity_max"] = [0] * (len(ts["frame"]) - 1)
+        ts["particle_velocity_max"].append(max_velocity)
+        
+        if "wind_effect_std" not in ts:
+            ts["wind_effect_std"] = [0] * (len(ts["frame"]) - 1)
+        ts["wind_effect_std"].append(wind_strength_std)
+        
+        if "fire_front_cells" not in ts:
+            ts["fire_front_cells"] = [0] * (len(ts["frame"]) - 1)
+        ts["fire_front_cells"].append(fire_front_cells)
 
-        # Store burned area snapshot every 10 frames for progression analysis
+           
+        ts["particle_velocity_avg"].append(avg_velocity)
+        ts["particle_velocity_max"].append(max_velocity)
+        ts["wind_effect_std"].append(wind_strength_std)
+        ts["fire_front_cells"].append(fire_front_cells)
+
+        # ENHANCED: Store burned area snapshot with more detail
         if frame_count % 10 == 0:
             burned_mask = (model.grid == CellState.BURNED.value).astype(int)
-            self.simulation_data["spatial_data"]["burned_area_progression"].append(
-                {"frame": frame_count, "burned_area": burned_mask.copy()}
-            )
-
+            burning_mask = (model.grid == CellState.BURNING.value).astype(int)
+            self.simulation_data["spatial_data"]["burned_area_progression"].append({
+                "frame": frame_count, 
+                "burned_area": burned_mask.copy(),
+                "burning_area": burning_mask.copy()  # NEW: Also track current burning
+            })
     def collect_initial_data(self, model):
         """Store initial simulation state"""
         self.simulation_data["spatial_data"]["initial_grid"] = model.grid.copy()
@@ -350,7 +411,7 @@ def run_combined_visualization(args):
                 model, args
             )
         elif args.map_type == "coastal":
-            create_mountain_map(
+            create_coastal_map(
                 model, args
             )
         elif args.map_type == "mixed":
@@ -508,6 +569,7 @@ def run_combined_visualization(args):
 
     # This will be handled in the animation function with split legends
 
+    ignition_points_list = []
     # Ignite fire
     if args.multi_ignition:
         if args.map_type == "coastal":
@@ -521,6 +583,7 @@ def run_combined_visualization(args):
                 if 0 <= x < args.width and 0 <= y < args.height:
                     if model.grid[x, y] == CellState.FUEL.value:
                         model.ignite(x, y)
+                        ignition_points_list.append((x, y))  # NEW: Add to tracking list
                         data_collector.simulation_data["spatial_data"][
                             "ignition_points"
                         ].append((x, y))
@@ -542,18 +605,31 @@ def run_combined_visualization(args):
                 if 0 <= x < args.width and 0 <= y < args.height:
                     model.ignite(x, y)
                     # Record additional ignition points
+                    ignition_points_list.append((x, y))  # NEW: Add to tracking list
                     data_collector.simulation_data["spatial_data"][
                         "ignition_points"
                     ].append((x, y))
     else:
         model.ignite(args.ignite_x, args.ignite_y)
+        ignition_points_list.append((args.ignite_x, args.ignite_y))  # NEW: Add single point
+    model.set_ignition_points(ignition_points_list)
+    print(f"Tracking fire spread from {len(ignition_points_list)} ignition points")
 
     # Initialize variables for animation
     fire_points_3d = None
     frame_count = 0
     last_frame_time = time.time()
     fps_history = []
-    simulation_stopped_and_saved = False
+    simulation_ended = False
+
+    progress_bar = None
+    show_progress = args.save and TQDM_AVAILABLE
+    if show_progress:
+        progress_bar = tqdm(total=args.frames, desc="Simulation Progress", 
+                           unit="frame", ncols=100, 
+                           bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} frames [{elapsed}<{remaining}, {rate_fmt}]')
+    elif args.save and not TQDM_AVAILABLE:
+        print("Note: Install tqdm for progress bars: pip install tqdm")
 
     # Function to limit number of particles for performance
     def limit_particles(model, max_particles):
@@ -564,12 +640,40 @@ def run_combined_visualization(args):
             return True
         return False
 
+    def end_simulation_and_save():
+        nonlocal simulation_ended
+        if simulation_ended:
+            return  # Already ended and saved
+            
+        simulation_ended = True
+        if progress_bar:
+            progress_bar.close()
+        print(f"Simulation ended at time step {frame_count}")
+
+        
+        # Check final state
+        final_fuel = np.sum(model.grid == CellState.FUEL.value)
+        final_burned = np.sum(model.grid == CellState.BURNED.value)
+        final_burning = np.sum(model.grid == CellState.BURNING.value)
+        
+        print(f"Final state: {final_fuel} fuel cells, {final_burned} burned cells, {final_burning} burning cells")
+        print(f"Active particles at end: {len(model.particles)}")
+
+        # Collect final data and save
+        data_collector.collect_final_data(model)
+        data_file = data_collector.save_data()
+        print(f"Simulation data saved to: {data_file}")
+
+        # Stop the animation
+        anim.event_source.stop()
+        print(f"Animaiton stopped")
+        sys.exit(0)
+
     # Run simulation with animation
     def animate(frame):
         nonlocal fire_points_3d, frame_count, last_frame_time, fps_history
-        nonlocal simulation_stopped_and_saved
 
-        if simulation_stopped_and_saved:
+        if simulation_ended:
             return ax_3d, ax_right
 
 
@@ -590,8 +694,36 @@ def run_combined_visualization(args):
         active = model.update(dt=args.dt)
         frame_count += 1
 
-        # Collect data for this frame
         data_collector.collect_frame_data(model, frame_count)
+
+        if progress_bar and show_progress:
+            # Update progress bar with current status
+            active_particles = len(model.particles)
+            burning_cells = np.sum(model.grid == CellState.BURNING.value)
+            burned_cells = np.sum(model.grid == CellState.BURNED.value)
+            
+            progress_bar.set_postfix({
+                'Particles': active_particles,
+                'Burning': burning_cells, 
+                'Burned': burned_cells,
+                'FPS': f'{avg_fps:.1f}'
+            })
+            progress_bar.update(1)
+
+        active_particles = len(model.particles)
+        active_burning = np.sum(model.grid == CellState.BURNING.value)
+
+        fire_completely_out = (active_particles == 0 and active_burning == 0)
+        max_frames_reached = frame_count >= args.frames
+        
+        if fire_completely_out or max_frames_reached:
+            if fire_completely_out:
+                print(f"Fire completely extinguished at frame {frame_count}")
+            else:
+                print(f"Maximum frames ({args.frames}) reached")
+            
+            end_simulation_and_save()
+            return ax_3d, ax_right
 
         # Clear right axis and redraw with fuel types and particles
         ax_right.clear()
@@ -723,22 +855,6 @@ def run_combined_visualization(args):
                 f"3D {args.map_type.title()} - Time: {frame_count}, Active Fires: {len(model.particles)}"
             )
 
-        # Stop animation if fire is no longer active or max frames reached
-        if not active or frame_count >= args.frames:
-            # <<< CHANGE 4a: Check the flag before saving >>>
-            if not simulation_stopped_and_saved:
-                print(f"Simulation ended at time step {frame_count}")
-                print(
-                    f"Final state: {np.sum(model.grid == CellState.FUEL.value)} unburned cells, {np.sum(model.grid == CellState.BURNED.value)} burned cells"
-                )
-
-                # Collect final data and save
-                data_collector.collect_final_data(model)
-                data_file = data_collector.save_data()
-                print(f"Simulation data saved to: {data_file}")
-
-                anim.event_source.stop()
-
         return ax_3d, ax_right
 
     plt.tight_layout()
@@ -753,7 +869,7 @@ def run_combined_visualization(args):
         try:
             from matplotlib.animation import FFMpegWriter
 
-            print(f"Saving animation to {args.output}...")
+            # print(f"Saving animation to {args.output}...")
             writer = FFMpegWriter(
                 fps=15, metadata=dict(artist="ForestFireModel"), bitrate=1800
             )
@@ -775,3 +891,7 @@ def run_combined_visualization(args):
 
     else:
         plt.show()
+
+    if not simulation_ended:
+        print("Animation ended without proper simulation termination - saving data now")
+        end_simulation_and_save()

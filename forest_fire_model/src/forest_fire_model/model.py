@@ -209,17 +209,23 @@ class ForestFireModel:
                 # Check for ignition of nearby cells
                 x, y = int(particle.position[0]), int(particle.position[1])
 
-                # Update max fire spread distance
-                if self.ignition_point:
+                # FIXED: Update max fire spread distance for multiple ignition points
+                if hasattr(self, 'all_ignition_points') and self.all_ignition_points:
+                    # Calculate distance to nearest ignition point
+                    min_dist = float('inf')
+                    for ig_x, ig_y in self.all_ignition_points:
+                        dist = np.sqrt((x - ig_x) ** 2 + (y - ig_y) ** 2)
+                        min_dist = min(min_dist, dist)
+                    self.fire_spread_distance = max(self.fire_spread_distance, min_dist)
+                elif self.ignition_point:
+                    # Fallback to single ignition point
                     dist = np.sqrt(
-                        (x - self.ignition_point[0]) ** 2
-                        + (y - self.ignition_point[1]) ** 2
+                        (x - self.ignition_point[0]) ** 2 + (y - self.ignition_point[1]) ** 2
                     )
                     self.fire_spread_distance = max(self.fire_spread_distance, dist)
+                            # Balanced ignition radius
 
-                # Balanced ignition radius
                 ignition_radius = int(particle.intensity * 1.8)
-
                 for i in range(
                     max(0, x - ignition_radius),
                     min(self.width, x + ignition_radius + 1),
@@ -278,18 +284,26 @@ class ForestFireModel:
         for i in range(self.width):
             for j in range(self.height):
                 if self.grid[i, j] == CellState.BURNING.value:
+                    # FIXED: Also update fire spread distance for burning cells
+                    if hasattr(self, 'all_ignition_points') and self.all_ignition_points:
+                        min_dist = float('inf')
+                        for ig_x, ig_y in self.all_ignition_points:
+                            dist = np.sqrt((i - ig_x) ** 2 + (j - ig_y) ** 2)
+                            min_dist = min(min_dist, dist)
+                        self.fire_spread_distance = max(self.fire_spread_distance, min_dist)
+                    elif self.ignition_point:
+                        dist = np.sqrt((i - self.ignition_point[0]) ** 2 + (j - self.ignition_point[1]) ** 2)
+                        self.fire_spread_distance = max(self.fire_spread_distance, dist)
+
                     # Each burning cell has a chance to burn out
                     if np.random.random() < self.burnout_rate:
                         new_grid[i, j] = CellState.BURNED.value
 
-                    # Generate new particles at a balanced rate
+                    # Generate new particles
                     if np.random.random() < self.particle_generation_rate:
                         intensity = np.random.uniform(0.7, 1.0)
                         new_particle = FireParticle(
-                            i,
-                            j,
-                            intensity,
-                            self.particle_lifetime,
+                            i, j, intensity, self.particle_lifetime,
                             spread_rate=self.spread_rate,
                             random_strength=self.random_strength,
                             intensity_decay=self.intensity_decay,
@@ -300,12 +314,12 @@ class ForestFireModel:
         self.grid = new_grid
         self.particles = new_particles
 
-        # Check if fire has completely died out
-        active = (
-            len(new_particles) > 0 or np.sum(self.grid == CellState.BURNING.value) > 0
-        )
-
+        active = len(new_particles) > 0 or np.sum(self.grid == CellState.BURNING.value) > 0
         return active
+
+    def set_ignition_points(self, ignition_points):
+        """Store all ignition points for proper distance calculations"""
+        self.all_ignition_points = ignition_points
 
     def visualize(
         self, ax=None, show_particles=True, show_terrain=True, show_fuel=False
@@ -545,3 +559,18 @@ class ForestFireModel:
         ax.legend(handles=legend_elements, loc="upper left")
 
         return ax
+    def get_simulation_status(self):
+        """Get detailed status of simulation for termination decisions"""
+        active_particles = len(self.particles)
+        burning_cells = np.sum(self.grid == CellState.BURNING.value)
+        burned_cells = np.sum(self.grid == CellState.BURNED.value)
+        fuel_cells = np.sum(self.grid == CellState.FUEL.value)
+        
+        return {
+            'active_particles': active_particles,
+            'burning_cells': burning_cells,
+            'burned_cells': burned_cells,
+            'fuel_cells': fuel_cells,
+            'fire_active': active_particles > 0 or burning_cells > 0,
+            'fire_completely_out': active_particles == 0 and burning_cells == 0
+        }
