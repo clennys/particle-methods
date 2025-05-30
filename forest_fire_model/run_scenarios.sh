@@ -50,7 +50,7 @@ run_scenario_1() {
 run_scenario_2() {
     echo "Running Scenario 2 - WUI Fire (Wildland-Urban Interface)..."
     echo "Command: python -m forest_fire_model.env_vis --map_type wui --wind_strength 0.6 --wind_direction 0.75 --base_moisture 0.1 --fuel_types 8 --spread_rate 0.06 --ignition_probability 0.12 --intensity_decay 0.98 --particle_generation_rate 0.15 --burnout_rate 0.01 --particle_lifetime 20 --frames 1500 --output wui.mp4 --multi_ignition --dt 0.25 $SAVE_FLAG"
-    python -m forest_fire_model.main --map_type wui --wind_strength 0.6 --wind_direction 0.75 --base_moisture 0.1 --fuel_types 8 --spread_rate 0.06 --ignition_probability 0.12 --intensity_decay 0.98 --particle_generation_rate 0.15 --burnout_rate 0.01 --particle_lifetime 20 --frames 1500 --output wui.mp4 --multi_ignition --dt 0.25 $SAVE_FLAG
+    python -m forest_fire_model.main --map_type wui --wind_strength 0.6 --wind_direction 0.75 --base_moisture 0.1 --fuel_types 6 --spread_rate 0.06 --ignition_probability 0.12 --intensity_decay 0.98 --particle_generation_rate 0.15 --burnout_rate 0.01 --particle_lifetime 20 --frames 1500 --output wui.mp4 --multi_ignition --dt 0.25 $SAVE_FLAG
 }
 
 # Function to run scenario 3
@@ -64,7 +64,7 @@ run_scenario_3() {
 run_scenario_4() {
     echo "Running Scenario 4 - Coastal Fire (Variable Wind)..."
     echo "Command: python -m forest_fire_model.main --map_type coastal --variable_wind --wind_strength 0.4 --wind_direction 3.14 --base_moisture 0.25 --fuel_types 6 --spread_rate 0.04 --ignition_probability 0.08 --intensity_decay 0.97 --particle_generation_rate 0.08 --random_strength 0.08 --particle_lifetime 18 --frames 1500 --multi_ignition --dt 0.25 $SAVE_FLAG"
-    python -m forest_fire_model.main --map_type coastal --variable_wind --wind_strength 0.4 --wind_direction 3.14 --base_moisture 0.25 --fuel_types 6 --spread_rate 0.04 --ignition_probability 0.08 --intensity_decay 0.97 --particle_generation_rate 0.08 --random_strength 0.08 --particle_lifetime 18 --frames 1500 --multi_ignition --dt 0.25 $SAVE_FLAG
+    python -m forest_fire_model.main --map_type coastal --variable_wind --wind_strength 0.4 --wind_direction 3.14 --base_moisture 0.25 --fuel_types 6 --spread_rate 0.04 --ignition_probability 0.08 --intensity_decay 0.97 --particle_generation_rate 0.08 --random_strength 0.08 --particle_lifetime 18 --frames 1500 --multi_ignition --dt 0.25 --output coastal.mp4 $SAVE_FLAG
 }
 # Function to run scenario 5
 run_scenario_5() {
