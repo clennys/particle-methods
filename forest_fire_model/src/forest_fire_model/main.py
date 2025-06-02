@@ -16,16 +16,12 @@ def parse_arguments():
     parser = argparse.ArgumentParser(
         description="Forest Fire Environment and Simulation Visualization"
     )
-
-    # Grid size parameters
     parser.add_argument(
         "--width", type=int, default=100, help="Width of the simulation grid"
     )
     parser.add_argument(
         "--height", type=int, default=100, help="Height of the simulation grid"
     )
-
-    # Ignition parameters
     parser.add_argument(
         "--ignite_x", type=int, default=20, help="X coordinate for initial ignition"
     )
@@ -37,8 +33,6 @@ def parse_arguments():
         action="store_true",
         help="Ignite multiple points for better spread",
     )
-
-    # Map selection
     parser.add_argument(
         "--map_type",
         type=str,
@@ -46,8 +40,6 @@ def parse_arguments():
         choices=["houses", "forest", "river", "wui", "coastal", "mixed"],
         help="Type of map layout to generate",
     )
-
-    # Wind parameters
     parser.add_argument(
         "--wind_direction",
         type=float,
@@ -62,8 +54,6 @@ def parse_arguments():
         action="store_true",
         help="Use variable wind instead of uniform wind",
     )
-
-    # Environment parameters
     parser.add_argument(
         "--fuel_types",
         type=int,
@@ -79,8 +69,6 @@ def parse_arguments():
         default=5,
         help="Terrain smoothness (higher = smoother)",
     )
-
-    # Performance parameters
     parser.add_argument(
         "--max_particles",
         type=int,
@@ -99,8 +87,6 @@ def parse_arguments():
         default=200,
         help="Maximum number of particles to display (improves rendering speed)",
     )
-
-    # Slow spread parameters with good balance
     parser.add_argument(
         "--spread_rate",
         type=float,
@@ -149,8 +135,6 @@ def parse_arguments():
         default=0.2,
         help="Minimum intensity before a particle dies",
     )
-
-    # Simulation parameters
     parser.add_argument(
         "--frames", type=int, default=500, help="Maximum number of simulation frames"
     )
@@ -168,8 +152,6 @@ def parse_arguments():
         default=0.1,
         help="Time step size for simulation (smaller = slower progression)",
     )
-
-    # Output
     parser.add_argument("--save", action="store_true", help="Save simulation to a file")
     parser.add_argument(
         "--output",

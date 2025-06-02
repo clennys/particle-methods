@@ -40,13 +40,11 @@ class FireParticle:
         self.lifetime = lifetime
         self.age = 0
 
-        # Balanced spread parameters
         self.base_spread_rate = spread_rate
         self.random_strength = random_strength
         self.intensity_decay_base = intensity_decay
         self.min_intensity = min_intensity
 
-        # Track the path for visualization
         self.path = [(x, y)]
         self.max_path_length = 10
 
@@ -60,7 +58,6 @@ class FireParticle:
 
     def update(self, wind_field, terrain, max_width, max_height, dt=0.1):
         """Update the particle with balanced fire spread behavior"""
-        # Age the particle
         self.age += dt
 
         # Update velocity based on wind and terrain
@@ -95,9 +92,7 @@ class FireParticle:
 
             self.velocity += terrain_effect * 0.05 * dt * slope_factor
 
-        # Ensure minimal baseline movement even without wind or terrain
         if np.linalg.norm(self.velocity) < self.base_spread_rate:
-            # Generate random direction for base spread
             random_direction = np.random.rand(2) * 2 - 1
             random_direction = random_direction / (
                 np.linalg.norm(random_direction) + 1e-8
@@ -125,16 +120,13 @@ class FireParticle:
         # Update position
         self.position += self.velocity * dt
 
-        # Store path for visualization
         self.path.append((self.position[0], self.position[1]))
         if len(self.path) > self.max_path_length:
             self.path.pop(0)
 
-        # Check boundaries
         if not self.is_inbounds(max_width, max_height):
             self.intensity = 0.0
 
-        # Balanced intensity decay
         age_factor = min(1.0, self.age / self.lifetime)
         decay_rate = self.intensity_decay_base - (0.05 * age_factor)
         self.intensity *= decay_rate
@@ -155,7 +147,6 @@ class FireParticle:
             alpha=min(1.0, self.intensity),
         )
 
-        # Optionally draw the path
         if show_path and len(self.path) > 1:
             path_x, path_y = zip(*self.path)
             # Alpha increases for more recent positions
@@ -170,7 +161,6 @@ class FireParticle:
                     linewidth=1,
                 )
 
-        # Draw velocity vector
         if np.linalg.norm(self.velocity) > 0.01:
             vec_length = np.linalg.norm(self.velocity) * 2
             norm_vel = self.velocity / (np.linalg.norm(self.velocity) + 1e-8)

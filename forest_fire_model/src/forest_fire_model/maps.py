@@ -10,12 +10,11 @@ def create_small_city(model, args):
     city_center_y = args.height // 2
 
     # Create houses in a compact cluster
-    num_houses = 25  # Total number of houses
+    num_houses = 25
     houses_created = 0
 
     print(f"Creating compact city cluster at center ({city_center_x}, {city_center_y})")
 
-    # Generate houses in concentric circles for natural clustering
     for ring in range(3):  # 3 rings of houses
         ring_radius = 6 + ring * 6  # Rings at radius 6, 12, 18
         houses_in_ring = 6 + ring * 4  # More houses in outer rings
@@ -24,25 +23,20 @@ def create_small_city(model, args):
             if houses_created >= num_houses:
                 break
 
-            # Calculate angle for this house in the ring
             angle = 2 * np.pi * i / houses_in_ring
 
-            # Add some randomness to the position
             actual_radius = ring_radius + np.random.uniform(-2, 2)
             angle_offset = np.random.uniform(-0.3, 0.3)
 
-            # Calculate house position
             house_x = int(city_center_x + actual_radius * np.cos(angle + angle_offset))
             house_y = int(city_center_y + actual_radius * np.sin(angle + angle_offset))
 
-            # Ensure house is within grid bounds
             if not (5 <= house_x < args.width - 5 and 5 <= house_y < args.height - 5):
                 continue
 
             # Random house size (2x2 to 4x4)
             house_size = np.random.randint(2, 5)
 
-            # Create the house (rectangular area)
             for x in range(
                 max(0, house_x - house_size // 2),
                 min(args.width, house_x + house_size // 2 + 1),
@@ -56,23 +50,19 @@ def create_small_city(model, args):
 
             houses_created += 1
 
-    # Add a few more scattered houses to fill gaps
-    for _ in range(8):  # Additional scattered houses
+    for _ in range(8):
         if houses_created >= num_houses + 8:
             break
 
-        # Random position within city area
         angle = np.random.uniform(0, 2 * np.pi)
         radius = np.random.uniform(3, 20 - 3)
 
         house_x = int(city_center_x + radius * np.cos(angle))
         house_y = int(city_center_y + radius * np.sin(angle))
 
-        # Check if position is valid and not too close to existing houses
         if not (3 <= house_x < args.width - 3 and 3 <= house_y < args.height - 3):
             continue
 
-        # Check if there's already a house nearby (avoid overlap)
         overlap = False
         for check_x in range(house_x - 3, house_x + 4):
             for check_y in range(house_y - 3, house_y + 4):
@@ -87,10 +77,8 @@ def create_small_city(model, args):
                 break
 
         if not overlap:
-            # Small house size for scattered houses
             house_size = np.random.randint(2, 4)
 
-            # Create the house
             for x in range(
                 max(0, house_x - house_size // 2),
                 min(args.width, house_x + house_size // 2 + 1),
@@ -110,13 +98,10 @@ def create_small_city(model, args):
 def create_river_map(model, args):
     """Create a map with a winding river and riparian vegetation."""
 
-    # Create a winding river from top to bottom
     river_start_x = args.width // 4
     river_end_x = 3 * args.width // 4
 
-    # Generate river path using sine wave with random variations
     for y in range(args.height):
-        # Base sine wave for meandering
         progress = y / args.height
         base_x = river_start_x + (river_end_x - river_start_x) * progress
         meander = 15 * np.sin(progress * 4 * np.pi + np.random.uniform(-0.5, 0.5))
@@ -138,7 +123,6 @@ def create_river_map(model, args):
 def create_urban_map(model, args):
     """Create a Wildland-Urban Interface (WUI) fire map with scattered development and fuel transitions."""
 
-    # Create wildland-urban interface with scattered housing clusters
     housing_clusters = [
         {
             "center": (args.width // 6, args.height // 3),
@@ -167,17 +151,14 @@ def create_urban_map(model, args):
         },
     ]
 
-    # Create scattered housing with defensible space
     for cluster in housing_clusters:
         center_x, center_y = cluster["center"]
         num_houses = cluster["houses"]
         defensible_radius = cluster["defensible_space"]
 
-        # Place houses within cluster first
         placed_houses = 0
         attempts = 0
         while placed_houses < num_houses and attempts < num_houses * 3:
-            # Random position within cluster
             house_x = center_x + np.random.randint(
                 -defensible_radius // 2, defensible_radius // 2 + 1
             )
@@ -186,7 +167,6 @@ def create_urban_map(model, args):
             )
 
             if 3 <= house_x < args.width - 3 and 3 <= house_y < args.height - 3:
-                # Check for overlap with existing houses
                 overlap = False
                 house_size = np.random.randint(2, 4)
 
@@ -205,7 +185,6 @@ def create_urban_map(model, args):
                         break
 
                 if not overlap:
-                    # Create house
                     for x in range(
                         max(0, house_x - house_size // 2),
                         min(args.width, house_x + house_size // 2 + 1),
@@ -220,8 +199,6 @@ def create_urban_map(model, args):
 
             attempts += 1
 
-        # NOW create defensible space around cluster (after houses are placed)
-        # This ensures moisture modifications happen AFTER base moisture is set
         for x in range(
             max(0, center_x - defensible_radius),
             min(args.width, center_x + defensible_radius + 1),
@@ -235,38 +212,30 @@ def create_urban_map(model, args):
                     distance <= defensible_radius
                     and model.grid[x, y] == CellState.FUEL.value
                 ):
-                    # Increase moisture in defensible space (simulates fuel management)
-                    # Use max to preserve any existing higher moisture values
                     model.moisture[x, y] = max(
                         model.moisture[x, y], model.moisture[x, y] + 0.3
                     )
 
-    # Create additional defensible space immediately around each house
     for i in range(args.width):
         for j in range(args.height):
             if model.grid[i, j] == CellState.EMPTY.value:  # This is a structure
-                # Create small defensible space around structure
                 for x in range(max(0, i - 3), min(args.width, i + 4)):
                     for y in range(max(0, j - 3), min(args.height, j + 4)):
                         if model.grid[x, y] == CellState.FUEL.value:
                             distance = np.sqrt((x - i) ** 2 + (y - j) ** 2)
                             if distance <= 3:
-                                # Stronger moisture boost near structures
                                 moisture_boost = 0.4 * (1 - distance / 3)
                                 model.moisture[x, y] = max(
                                     model.moisture[x, y],
                                     model.moisture[x, y] + moisture_boost,
                                 )
 
-    # Create a few evacuation routes (not full road grid)
-    # Main evacuation route - diagonal across map
     for i in range(args.width):
         route_y = int(args.height * 0.6 + 0.1 * args.height * np.sin(i * 0.1))
         for y in range(max(0, route_y - 1), min(args.height, route_y + 2)):
             if 0 <= y < args.height:
                 model.grid[i, y] = CellState.EMPTY.value
 
-    # Secondary evacuation route
     for j in range(args.height):
         route_x = int(args.width * 0.3 + 0.05 * args.width * np.cos(j * 0.15))
         for x in range(max(0, route_x - 1), min(args.width, route_x + 2)):
@@ -275,24 +244,20 @@ def create_urban_map(model, args):
 
     print("Created WUI fire map with scattered development and defensible space")
 
+
 def create_coastal_map(model, args):
     """Create a coastal fire map with moisture gradient and variable winds."""
 
-    # Create coastline on the left side of the map
     coastline_distance = args.width // 4
 
-    # Create irregular coastline
     coastline_positions = []
     for y in range(args.height):
-        # Base coastline with some irregularity
         coast_x = coastline_distance + int(5 * np.sin(y * 0.1) + 3 * np.cos(y * 0.05))
         coastline_positions.append(coast_x)
 
-        # Create water/beach area
         for x in range(0, min(args.width, coast_x + 3)):
             model.grid[x, y] = CellState.EMPTY.value
 
-    # Create moisture gradient - higher near coast, decreasing inland
     if hasattr(model, "moisture"):
         for x in range(args.width):
             for y in range(args.height):
@@ -300,7 +265,6 @@ def create_coastal_map(model, args):
                     coast_x = coastline_positions[y]
                     distance_from_coast = max(0, x - coast_x)
 
-                    # Moisture decreases with distance from coast
                     moisture_factor = np.exp(-distance_from_coast / 20.0)
                     base_coastal_moisture = 0.4
                     base_inland_moisture = 0.1
@@ -313,7 +277,6 @@ def create_coastal_map(model, args):
                         1.0, coastal_moisture + np.random.uniform(-0.1, 0.1)
                     )
 
-    # Create fuel transitions - salt-tolerant near coast, drier inland
     if hasattr(model, "fuel_types"):
         for x in range(args.width):
             for y in range(args.height):
@@ -322,40 +285,29 @@ def create_coastal_map(model, args):
                     distance_from_coast = max(0, x - coast_x)
 
                     if distance_from_coast < 15:
-                        # Coastal scrub - moderate flammability
                         model.fuel_types[x, y] = 0.6 + np.random.uniform(-0.1, 0.1)
                     elif distance_from_coast < 35:
-                        # Transition zone - mixed vegetation
                         model.fuel_types[x, y] = 1.0 + np.random.uniform(-0.2, 0.3)
                     else:
-                        # Inland - drier, more flammable vegetation
                         model.fuel_types[x, y] = 1.5 + np.random.uniform(-0.2, 0.4)
 
-    # Create seasonal creeks and wetlands
     num_creeks = 3
     for creek_id in range(num_creeks):
-        # Creek starts inland and flows toward coast
         start_x = args.width - 10 - creek_id * 15
         start_y = np.random.randint(10, args.height - 10)
 
-        # Creek meanders toward coast
         current_x, current_y = start_x, start_y
 
         for step in range(50):
-            # Add some randomness to creek path
-            direction_x = -1 + np.random.uniform(
-                -0.3, 0.3
-            )  # Generally flows toward coast
-            direction_y = np.random.uniform(-0.5, 0.5)  # Some meandering
+            direction_x = -1 + np.random.uniform(-0.3, 0.3)
+            direction_y = np.random.uniform(-0.5, 0.5)
 
             current_x += direction_x
             current_y += direction_y
 
-            # Ensure creek stays in bounds
             current_x = max(coastline_distance, min(args.width - 1, current_x))
             current_y = max(0, min(args.height - 1, current_y))
 
-            # Create creek bed
             creek_width = np.random.randint(1, 3)
             for x in range(
                 int(current_x) - creek_width, int(current_x) + creek_width + 1
@@ -365,7 +317,6 @@ def create_coastal_map(model, args):
                 ):
                     if 0 <= x < args.width and 0 <= y < args.height:
                         model.grid[x, y] = CellState.EMPTY.value
-                        # Increase moisture around creek
                         for mx in range(x - 2, x + 3):
                             for my in range(y - 2, y + 3):
                                 if 0 <= mx < args.width and 0 <= my < args.height:
@@ -376,11 +327,9 @@ def create_coastal_map(model, args):
                                             1.0, model.moisture[mx, my] + moisture_boost
                                         )
 
-            # Stop if we reach the coast
             if current_x <= coastline_positions[int(current_y)] + 5:
                 break
 
-    # Create some inland hills/ridges with different vegetation
     num_ridges = 2
     for ridge_id in range(num_ridges):
         ridge_center_x = args.width - 20 - ridge_id * 25
@@ -389,7 +338,6 @@ def create_coastal_map(model, args):
         ridge_length = 40
         ridge_width = 15
 
-        # Create ridge running north-south
         for y in range(
             max(0, int(ridge_center_y - ridge_length // 2)),
             min(args.height, int(ridge_center_y + ridge_length // 2)),
@@ -412,10 +360,7 @@ def create_coastal_map(model, args):
                     if model.grid[x, y] == CellState.FUEL.value:
                         model.moisture[x, y] = max(0.05, model.moisture[x, y] - 0.2)
 
-    # Set up variable wind that changes direction (simulating sea/land breeze)
-    # This will be handled by the main script, but we can modify the wind field here
     if hasattr(model, "wind_field"):
-        # Create base offshore wind (blowing inland from coast)
         base_wind_strength = 0.4
         for x in range(args.width):
             for y in range(args.height):
@@ -440,155 +385,15 @@ def create_coastal_map(model, args):
 
     print("Created coastal fire map with moisture gradient and natural barriers")
 
-    # """Create a coastal fire map with BALANCED moisture gradient and variable winds."""
-    # 
-    # # Create coastline on the left side of the map
-    # coastline_distance = args.width // 4
-    #
-    # # Create irregular coastline
-    # coastline_positions = []
-    # for y in range(args.height):
-    #     # Base coastline with some irregularity
-    #     coast_x = coastline_distance + int(5 * np.sin(y * 0.1) + 3 * np.cos(y * 0.05))
-    #     coastline_positions.append(coast_x)
-    #
-    #     # Create water/beach area
-    #     for x in range(0, min(args.width, coast_x + 3)):
-    #         model.grid[x, y] = CellState.EMPTY.value
-    #
-    # # FIXED: Create BALANCED moisture gradient - not too wet inland
-    # if hasattr(model, "moisture"):
-    #     for x in range(args.width):
-    #         for y in range(args.height):
-    #             if model.grid[x, y] == CellState.FUEL.value:
-    #                 coast_x = coastline_positions[y]
-    #                 distance_from_coast = max(0, x - coast_x)
-    #
-    #                 # FIXED: Much drier inland areas for better burning
-    #                 # Old: base_coastal_moisture = 0.6, base_inland_moisture = 0.1
-    #                 # New: More reasonable moisture levels
-    #                 if distance_from_coast < 10:
-    #                     # Very close to coast - still wet but burnable
-    #                     base_moisture = 0.4
-    #                 elif distance_from_coast < 25:
-    #                     # Transition zone - moderate moisture
-    #                     base_moisture = 0.25
-    #                 else:
-    #                     # Inland - dry and flammable
-    #                     base_moisture = 0.15
-    #                 
-    #                 # Add small random variation
-    #                 moisture_variation = np.random.uniform(-0.05, 0.05)
-    #                 final_moisture = max(0.05, min(0.8, base_moisture + moisture_variation))
-    #                 
-    #                 model.moisture[x, y] = final_moisture
-    #
-    # # FIXED: Create fuel transitions with HIGHER flammability
-    # if hasattr(model, "fuel_types"):
-    #     for x in range(args.width):
-    #         for y in range(args.height):
-    #             if model.grid[x, y] == CellState.FUEL.value:
-    #                 coast_x = coastline_positions[y]
-    #                 distance_from_coast = max(0, x - coast_x)
-    #
-    #                 if distance_from_coast < 15:
-    #                     # Coastal scrub - INCREASED flammability
-    #                     model.fuel_types[x, y] = 1.0 + np.random.uniform(-0.1, 0.2)
-    #                 elif distance_from_coast < 35:
-    #                     # Transition zone - good flammability
-    #                     model.fuel_types[x, y] = 1.3 + np.random.uniform(-0.1, 0.3)
-    #                 else:
-    #                     # Inland - very flammable vegetation
-    #                     model.fuel_types[x, y] = 1.6 + np.random.uniform(-0.1, 0.4)
-    #
-    # # FIXED: Reduce number and size of wetlands/creeks
-    # # Old: num_creeks = 3, New: num_creeks = 1 (less water barriers)
-    # num_creeks = 1
-    # for creek_id in range(num_creeks):
-    #     # Creek starts inland and flows toward coast
-    #     start_x = args.width - 10 - creek_id * 20
-    #     start_y = np.random.randint(args.height // 3, 2 * args.height // 3)
-    #
-    #     # Creek meanders toward coast
-    #     current_x, current_y = start_x, start_y
-    #
-    #     # REDUCED creek length and width
-    #     for step in range(25):  # Shorter creeks (was 50)
-    #         direction_x = -1 + np.random.uniform(-0.2, 0.2)  # Less meandering
-    #         direction_y = np.random.uniform(-0.3, 0.3)
-    #
-    #         current_x += direction_x
-    #         current_y += direction_y
-    #
-    #         current_x = max(coastline_distance, min(args.width - 1, current_x))
-    #         current_y = max(0, min(args.height - 1, current_y))
-    #
-    #         # SMALLER creek width
-    #         creek_width = 1  # Much smaller (was 1-3)
-    #         for x in range(
-    #             int(current_x) - creek_width, int(current_x) + creek_width + 1
-    #         ):
-    #             for y in range(
-    #                 int(current_y) - creek_width, int(current_y) + creek_width + 1
-    #             ):
-    #                 if 0 <= x < args.width and 0 <= y < args.height:
-    #                     model.grid[x, y] = CellState.EMPTY.value
-    #                     # REDUCED moisture boost around creeks
-    #                     for mx in range(x - 1, x + 2):  # Smaller radius (was 2)
-    #                         for my in range(y - 1, y + 2):
-    #                             if 0 <= mx < args.width and 0 <= my < args.height:
-    #                                 dist = np.sqrt((mx - x) ** 2 + (my - y) ** 2)
-    #                                 if dist <= 2:
-    #                                     moisture_boost = 0.2 * (1 - dist / 2)  # Less moisture (was 0.4)
-    #                                     model.moisture[mx, my] = min(
-    #                                         0.7, model.moisture[mx, my] + moisture_boost  # Max 0.7 (was 1.0)
-    #                                     )
-    #
-    #         if current_x <= coastline_positions[int(current_y)] + 5:
-    #             break
-    #
-    # # FIXED: Create ridges with better burning characteristics
-    # num_ridges = 2
-    # for ridge_id in range(num_ridges):
-    #     ridge_center_x = args.width - 20 - ridge_id * 25
-    #     ridge_center_y = args.height // 2 + (ridge_id - 0.5) * 30
-    #
-    #     ridge_length = 40
-    #     ridge_width = 15
-    #
-    #     for y in range(
-    #         max(0, int(ridge_center_y - ridge_length // 2)),
-    #         min(args.height, int(ridge_center_y + ridge_length // 2)),
-    #     ):
-    #         for x in range(
-    #             max(0, int(ridge_center_x - ridge_width // 2)),
-    #             min(args.width, int(ridge_center_x + ridge_width // 2)),
-    #         ):
-    #             distance_from_center = np.sqrt(
-    #                 (x - ridge_center_x) ** 2 + (y - ridge_center_y) ** 2
-    #             )
-    #
-    #             if distance_from_center <= ridge_width // 2:
-    #                 if model.grid[x, y] == CellState.FUEL.value:
-    #                     # VERY flammable chaparral on ridges
-    #                     model.fuel_types[x, y] = 2.0 + np.random.uniform(-0.1, 0.2)
-    #
-    #                 # MODERATE moisture reduction on ridges (was -0.2)
-    #                 if model.grid[x, y] == CellState.FUEL.value:
-    #                     model.moisture[x, y] = max(0.08, model.moisture[x, y] - 0.15)
-    #
-    # print("Created ENHANCED coastal fire map with better burning characteristics")
-    #
+
 def create_mixed_map(model, args):
     """Create a mixed landscape with multiple features."""
 
-    # River in the left third
     for y in range(args.height):
         river_x = args.width // 6 + int(5 * np.sin(y * 0.1))
         for x in range(max(0, river_x - 2), min(args.width, river_x + 3)):
             model.grid[x, y] = CellState.EMPTY.value
 
-    # Small town in center-right
     town_x, town_y = 2 * args.width // 3, args.height // 2
     for _ in range(15):
         house_x = town_x + np.random.randint(-15, 16)
@@ -607,7 +412,6 @@ def create_mixed_map(model, args):
                     if 0 <= x < args.width and 0 <= y < args.height:
                         model.grid[x, y] = CellState.EMPTY.value
 
-    # Mountain ridge in upper portion
     for x in range(args.width):
         if args.height // 4 <= args.height // 3:
             for y in range(args.height // 4, args.height // 3):

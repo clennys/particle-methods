@@ -25,26 +25,19 @@ class ForestFireModel:
         self.width = width
         self.height = height
 
-        # Initialize grid
         self.grid = np.zeros((width, height), dtype=int)
         self.grid.fill(CellState.FUEL.value)
 
-        # Fire particles
         self.particles = []
 
-        # Environmental factors
         self.wind_field = np.zeros((width, height, 2))  # 2D vector field for wind
         self.terrain = np.zeros((width, height))  # Elevation map
         self.fuel_types = np.ones((width, height))  # Fuel type/density
         self.moisture = np.zeros((width, height))  # Moisture content
 
-        # Statistics tracking
-        self.fire_spread_distance = (
-            0  # Track max distance fire has spread from ignition
-        )
+        self.fire_spread_distance = 0
         self.ignition_point = None
 
-        # Balanced spread parameters
         self.spread_rate = spread_rate
         self.random_strength = random_strength
         self.intensity_decay = intensity_decay
@@ -71,11 +64,9 @@ class ForestFireModel:
             direction (float): Wind direction in radians (0 = east, pi/2 = north)
             strength (float): Wind strength (0-1 range recommended)
         """
-        # Convert direction and strength to x,y vector
         wind_x = strength * np.cos(direction)
         wind_y = strength * np.sin(direction)
 
-        # Set uniform wind field
         self.wind_field.fill(0)
         for i in range(self.width):
             for j in range(self.height):
@@ -89,17 +80,14 @@ class ForestFireModel:
             base_strength (float): Base wind strength
             variability (float): Amount of random variation (0-1)
         """
-        # Create random variations
         dir_var = np.random.rand(self.width, self.height) * variability * np.pi - (
             variability * np.pi / 2
         )
         str_var = np.random.rand(self.width, self.height) * variability
 
-        # Smooth the variations
         dir_var = gaussian_filter(dir_var, sigma=5)
         str_var = gaussian_filter(str_var, sigma=5)
 
-        # Apply to wind field
         for i in range(self.width):
             for j in range(self.height):
                 direction = base_direction + dir_var[i, j]
@@ -115,10 +103,8 @@ class ForestFireModel:
         Args:
             fuel_types (int): Number of different fuel patches to create
         """
-        # Create random fuel distribution
         self.fuel_types = np.ones((self.width, self.height))
 
-        # Add some random fuel patches
         for _ in range(fuel_types):
             x, y = np.random.randint(0, self.width), np.random.randint(0, self.height)
             radius = np.random.randint(5, 20)
@@ -135,17 +121,13 @@ class ForestFireModel:
         Args:
             base_moisture (float): Base moisture level (0-1)
         """
-        # Base moisture level
         self.moisture = np.ones((self.width, self.height)) * base_moisture
 
-        # Add random moisture variations
         moisture_variation = np.random.rand(self.width, self.height) * 0.3
         self.moisture += moisture_variation
 
-        # Smooth the moisture map
         self.moisture = gaussian_filter(self.moisture, sigma=3)
 
-        # Ensure moisture is between 0 and 1
         self.moisture = np.clip(self.moisture, 0, 1)
 
     def ignite(self, x, y):
@@ -160,16 +142,12 @@ class ForestFireModel:
                 self.grid[x, y] = CellState.BURNING.value
                 self.ignition_point = (x, y)
 
-                # Create particles in all directions using balanced parameters
-                num_directions = (
-                    self.initial_particles
-                )  # Use configurable initial particles
+                num_directions = self.initial_particles
                 for i in range(num_directions):
                     angle = 2 * np.pi * i / num_directions
                     direction_x = np.cos(angle)
                     direction_y = np.sin(angle)
 
-                    # Create particle with balanced spread parameters
                     intensity = random.uniform(0.8, 1.2)
                     new_particle = FireParticle(
                         x,
@@ -182,7 +160,6 @@ class ForestFireModel:
                         min_intensity=self.min_intensity,
                     )
 
-                    # Set initial velocity based on direction
                     new_particle.velocity = np.array([direction_x, direction_y]) * 0.2
 
                     self.particles.append(new_particle)
@@ -199,31 +176,26 @@ class ForestFireModel:
         new_grid = self.grid.copy()
         new_particles = []
 
-        # Update existing particles
         for particle in self.particles:
             particle.update(self.wind_field, self.terrain, self.width, self.height, dt)
 
             if particle.is_active():
                 new_particles.append(particle)
 
-                # Check for ignition of nearby cells
                 x, y = int(particle.position[0]), int(particle.position[1])
 
-                # FIXED: Update max fire spread distance for multiple ignition points
-                if hasattr(self, 'all_ignition_points') and self.all_ignition_points:
-                    # Calculate distance to nearest ignition point
-                    min_dist = float('inf')
+                if hasattr(self, "all_ignition_points") and self.all_ignition_points:
+                    min_dist = float("inf")
                     for ig_x, ig_y in self.all_ignition_points:
                         dist = np.sqrt((x - ig_x) ** 2 + (y - ig_y) ** 2)
                         min_dist = min(min_dist, dist)
                     self.fire_spread_distance = max(self.fire_spread_distance, min_dist)
                 elif self.ignition_point:
-                    # Fallback to single ignition point
                     dist = np.sqrt(
-                        (x - self.ignition_point[0]) ** 2 + (y - self.ignition_point[1]) ** 2
+                        (x - self.ignition_point[0]) ** 2
+                        + (y - self.ignition_point[1]) ** 2
                     )
                     self.fire_spread_distance = max(self.fire_spread_distance, dist)
-                            # Balanced ignition radius
 
                 ignition_radius = int(particle.intensity * 1.8)
                 for i in range(
@@ -234,16 +206,13 @@ class ForestFireModel:
                         max(0, y - ignition_radius),
                         min(self.height, y + ignition_radius + 1),
                     ):
-                        # Distance from particle to cell
                         distance = np.sqrt(
                             (i - particle.position[0]) ** 2
                             + (j - particle.position[1]) ** 2
                         )
 
                         if distance <= ignition_radius:
-                            # Cell is close enough to potentially ignite
                             if self.grid[i, j] == CellState.FUEL.value:
-                                # Balanced ignition probability
                                 ignition_prob = (
                                     (particle.intensity * 1.0)
                                     * (1 - distance / ignition_radius)
@@ -252,17 +221,14 @@ class ForestFireModel:
                                     * 0.7
                                 )
 
-                                # Add base probability
                                 ignition_prob = max(
                                     self.base_ignition_probability,
                                     min(0.7, ignition_prob),
                                 )
 
-                                # Ignite based on probability
                                 if np.random.random() < ignition_prob:
                                     new_grid[i, j] = CellState.BURNING.value
 
-                                    # Create new particles at a balanced rate
                                     if np.random.random() < 0.4:
                                         intensity = (
                                             np.random.uniform(0.7, 1.0)
@@ -285,17 +251,24 @@ class ForestFireModel:
             for j in range(self.height):
                 if self.grid[i, j] == CellState.BURNING.value:
                     # FIXED: Also update fire spread distance for burning cells
-                    if hasattr(self, 'all_ignition_points') and self.all_ignition_points:
-                        min_dist = float('inf')
+                    if (
+                        hasattr(self, "all_ignition_points")
+                        and self.all_ignition_points
+                    ):
+                        min_dist = float("inf")
                         for ig_x, ig_y in self.all_ignition_points:
                             dist = np.sqrt((i - ig_x) ** 2 + (j - ig_y) ** 2)
                             min_dist = min(min_dist, dist)
-                        self.fire_spread_distance = max(self.fire_spread_distance, min_dist)
+                        self.fire_spread_distance = max(
+                            self.fire_spread_distance, min_dist
+                        )
                     elif self.ignition_point:
-                        dist = np.sqrt((i - self.ignition_point[0]) ** 2 + (j - self.ignition_point[1]) ** 2)
+                        dist = np.sqrt(
+                            (i - self.ignition_point[0]) ** 2
+                            + (j - self.ignition_point[1]) ** 2
+                        )
                         self.fire_spread_distance = max(self.fire_spread_distance, dist)
 
-                    # Each burning cell has a chance to burn out
                     if np.random.random() < self.burnout_rate:
                         new_grid[i, j] = CellState.BURNED.value
 
@@ -303,7 +276,10 @@ class ForestFireModel:
                     if np.random.random() < self.particle_generation_rate:
                         intensity = np.random.uniform(0.7, 1.0)
                         new_particle = FireParticle(
-                            i, j, intensity, self.particle_lifetime,
+                            i,
+                            j,
+                            intensity,
+                            self.particle_lifetime,
                             spread_rate=self.spread_rate,
                             random_strength=self.random_strength,
                             intensity_decay=self.intensity_decay,
@@ -314,7 +290,9 @@ class ForestFireModel:
         self.grid = new_grid
         self.particles = new_particles
 
-        active = len(new_particles) > 0 or np.sum(self.grid == CellState.BURNING.value) > 0
+        active = (
+            len(new_particles) > 0 or np.sum(self.grid == CellState.BURNING.value) > 0
+        )
         return active
 
     def set_ignition_points(self, ignition_points):
@@ -338,11 +316,9 @@ class ForestFireModel:
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
 
-        # Create a custom colormap for cell states
         colors = ["darkgreen", "red", "black", "lightblue"]
         cmap = mcolors.ListedColormap(colors)
 
-        # Plot grid
         img = ax.imshow(
             self.grid.T,
             cmap=cmap,
@@ -350,23 +326,19 @@ class ForestFireModel:
             extent=[0, self.width, 0, self.height],
         )
 
-        # Add a colorbar with labels
         if not hasattr(self, "_colorbar_added"):
             cbar = plt.colorbar(img, ax=ax, ticks=[0.4, 1.2, 2.1, 2.9])
             cbar.ax.set_yticklabels(["Fuel", "Burning", "Burned", "Empty"])
             self._colorbar_added = True
 
-        # Plot particles if requested
         if show_particles and self.particles:
             particle_x = [p.position[0] for p in self.particles]
             particle_y = [p.position[1] for p in self.particles]
             intensity = [p.intensity for p in self.particles]
 
-            # Scatter plot with intensity determining size
             sizes = [i * 30 for i in intensity]
             ax.scatter(particle_x, particle_y, s=sizes, color="yellow", alpha=0.7)
 
-        # Plot terrain contours
         if show_terrain:
             terrain_contour = ax.contour(
                 np.arange(self.width),
@@ -378,13 +350,9 @@ class ForestFireModel:
                 linewidths=1.0,
             )
 
-            # Add contour labels (only occasionally)
-            if (
-                random.random() < 0.1
-            ):  # Only add labels 10% of the time to avoid crowding
+            if random.random() < 0.1:
                 ax.clabel(terrain_contour, inline=True, fontsize=8, fmt="%.1f")
 
-        # Plot fuel density as contours
         if show_fuel:
             fuel_contour = ax.contour(
                 np.arange(self.width),
@@ -396,7 +364,6 @@ class ForestFireModel:
                 linewidths=1.0,
             )
 
-        # Add statistics and info
         burned_percent = (
             np.sum(self.grid == CellState.BURNED.value)
             / (self.width * self.height)
@@ -412,7 +379,6 @@ class ForestFireModel:
             f"Fuel remaining: {fuel_left}"
         )
 
-        # Position the text box in the bottom right corner
         ax.text(
             0.98,
             0.02,
@@ -424,10 +390,8 @@ class ForestFireModel:
             bbox=dict(boxstyle="round", facecolor="white", alpha=0.7),
         )
 
-        # Add grid lines
         ax.grid(which="both", color="gray", linestyle="-", linewidth=0.5, alpha=0.2)
 
-        # Add labels
         ax.set_title("Forest Fire Simulation")
         ax.set_xlabel("X")
         ax.set_ylabel("Y")
@@ -446,7 +410,6 @@ class ForestFireModel:
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
 
-        # Create a terrain heatmap
         terrain_img = ax.imshow(
             self.terrain.T,
             cmap="terrain",
@@ -456,7 +419,6 @@ class ForestFireModel:
         )
         plt.colorbar(terrain_img, ax=ax, label="Elevation")
 
-        # Show moisture as contours
         moisture_contour = ax.contour(
             np.arange(self.width),
             np.arange(self.height),
@@ -468,7 +430,6 @@ class ForestFireModel:
         )
         ax.clabel(moisture_contour, inline=True, fontsize=8, fmt="%.1f")
 
-        # Show fuel density
         fuel_contour = ax.contour(
             np.arange(self.width),
             np.arange(self.height),
@@ -480,7 +441,6 @@ class ForestFireModel:
         )
         ax.clabel(fuel_contour, inline=True, fontsize=8, fmt="%.1f")
 
-        # Visualize wind field with downsampled arrows
         skip = max(1, self.width // 20)  # Show fewer arrows for clarity
         x_points = np.arange(0, self.width, skip)
         y_points = np.arange(0, self.height, skip)
@@ -496,16 +456,13 @@ class ForestFireModel:
                     U[j, i] = wind_vec[0]
                     V[j, i] = wind_vec[1]
 
-        # Scale arrows for better visibility
         arrow_scale = 30
         quiver = ax.quiver(X, Y, U, V, color="black", scale=arrow_scale)
 
-        # Add a key for scale reference
         ax.quiverkey(
             quiver, 0.9, 0.95, 0.5, "Wind: 0.5", labelpos="E", coordinates="figure"
         )
 
-        # Add barriers from the grid
         barrier_x, barrier_y = [], []
         for i in range(self.width):
             for j in range(self.height):
@@ -516,13 +473,11 @@ class ForestFireModel:
         if barrier_x:
             ax.scatter(barrier_x, barrier_y, c="gray", marker="s", s=20)
 
-        # Add labels
         ax.set_title("Environmental Factors")
         ax.set_xlabel("X")
         ax.set_ylabel("Y")
         ax.grid(which="both", color="gray", linestyle="-", linewidth=0.5, alpha=0.2)
 
-        # Add legend
         from matplotlib.lines import Line2D
 
         legend_elements = [
@@ -559,18 +514,19 @@ class ForestFireModel:
         ax.legend(handles=legend_elements, loc="upper left")
 
         return ax
+
     def get_simulation_status(self):
         """Get detailed status of simulation for termination decisions"""
         active_particles = len(self.particles)
         burning_cells = np.sum(self.grid == CellState.BURNING.value)
         burned_cells = np.sum(self.grid == CellState.BURNED.value)
         fuel_cells = np.sum(self.grid == CellState.FUEL.value)
-        
+
         return {
-            'active_particles': active_particles,
-            'burning_cells': burning_cells,
-            'burned_cells': burned_cells,
-            'fuel_cells': fuel_cells,
-            'fire_active': active_particles > 0 or burning_cells > 0,
-            'fire_completely_out': active_particles == 0 and burning_cells == 0
+            "active_particles": active_particles,
+            "burning_cells": burning_cells,
+            "burned_cells": burned_cells,
+            "fuel_cells": fuel_cells,
+            "fire_active": active_particles > 0 or burning_cells > 0,
+            "fire_completely_out": active_particles == 0 and burning_cells == 0,
         }

@@ -1,15 +1,3 @@
-"""
-Simulation Data Analysis Script
-
-This script loads saved simulation data from pickle files and creates
-comprehensive visualizations and analysis for research reports.
-
-Usage:
-    python analyze_simulation.py path/to/simulation_data.pkl
-    python analyze_simulation.py --directory simulation_data/  # Analyze all files
-    python analyze_simulation.py --compare file1.pkl file2.pkl  # Compare simulations
-"""
-
 import pickle
 import numpy as np
 import matplotlib.pyplot as plt
@@ -33,10 +21,8 @@ sns.set_palette("husl")
 
 
 class SimulationAnalyzer:
-    """Analyzes and visualizes forest fire simulation data"""
-
     def __init__(self, data_file):
-        """Load simulation data from pickle file - FIXED for array length issues"""
+        """Load simulation data from pickle file"""
         with open(data_file, "rb") as f:
             self.data = pickle.load(f)
 
@@ -45,29 +31,25 @@ class SimulationAnalyzer:
         self.spatial_data = self.data["spatial_data"]
         self.summary_stats = self.data["summary_stats"]
 
-        # Handle arrays of different lengths before creating DataFrame
         print(f"Loading simulation data from {data_file}")
         print(f"Map type: {self.metadata['map_type']}")
         print(f"Grid size: {self.metadata['grid_size']}")
-        
-        # Check the lengths of all arrays in time_series
+
         array_lengths = {}
         for key, value in self.time_series.items():
             if isinstance(value, list):
                 array_lengths[key] = len(value)
-        
-        # Find the expected length
-        if 'frame' in array_lengths:
-            expected_length = array_lengths['frame']
+
+        if "frame" in array_lengths:
+            expected_length = array_lengths["frame"]
             print(f"Expected array length (from 'frame'): {expected_length}")
         else:
             length_counts = Counter(array_lengths.values())
             expected_length = length_counts.most_common(1)[0][0]
             print(f"Expected array length (most common): {expected_length}")
-        
+
         print(f"Simulation duration: {expected_length} frames")
-        
-        # Fix any arrays that don't match the expected length
+
         fixed_time_series = {}
         arrays_fixed = 0
         for key, value in self.time_series.items():
@@ -76,49 +58,53 @@ class SimulationAnalyzer:
                 if current_length == expected_length:
                     fixed_time_series[key] = value
                 elif current_length < expected_length:
-                    # Pad with appropriate default values
-                    if key in ['frame']:
-                        # For frame, continue the sequence
+                    if key in ["frame"]:
                         last_frame = value[-1] if value else 0
-                        padding = list(range(last_frame + 1, last_frame + 1 + (expected_length - current_length)))
+                        padding = list(
+                            range(
+                                last_frame + 1,
+                                last_frame + 1 + (expected_length - current_length),
+                            )
+                        )
                         fixed_time_series[key] = value + padding
                     else:
-                        # For other fields, pad with zeros
                         padding_needed = expected_length - current_length
                         fixed_time_series[key] = value + [0] * padding_needed
                     arrays_fixed += 1
-                    print(f"⚠ Fixed {key}: {current_length} → {expected_length} elements")
+                    print(
+                        f"⚠ Fixed {key}: {current_length} → {expected_length} elements"
+                    )
                 else:
-                    # Truncate to expected length
                     fixed_time_series[key] = value[:expected_length]
                     arrays_fixed += 1
-                    print(f"⚠ Fixed {key}: {current_length} → {expected_length} elements (truncated)")
+                    print(
+                        f"⚠ Fixed {key}: {current_length} → {expected_length} elements (truncated)"
+                    )
             else:
                 fixed_time_series[key] = value
-        
+
         if arrays_fixed > 0:
             print(f"Fixed {arrays_fixed} arrays to consistent length")
-        
-        # Convert fixed time series to DataFrame
+
         try:
             self.df = pd.DataFrame(fixed_time_series)
             print(f"✓ Successfully created DataFrame with shape {self.df.shape}")
         except Exception as e:
             print(f"✗ Error creating DataFrame: {e}")
-            # Last resort: create DataFrame with only consistent arrays
             consistent_arrays = {}
             for key, value in fixed_time_series.items():
                 if isinstance(value, list) and len(value) == expected_length:
                     consistent_arrays[key] = value
             self.df = pd.DataFrame(consistent_arrays)
             print(f"✓ Created DataFrame with consistent arrays only: {self.df.shape}")
-        
-        # Add new columns with zeros if they don't exist (for backward compatibility)
+
         new_columns = [
-            "particle_velocity_avg", "particle_velocity_max", 
-            "wind_effect_std", "fire_front_cells"
+            "particle_velocity_avg",
+            "particle_velocity_max",
+            "wind_effect_std",
+            "fire_front_cells",
         ]
-        
+
         enhanced_data_available = []
         for col in new_columns:
             if col not in self.df.columns:
@@ -126,7 +112,7 @@ class SimulationAnalyzer:
             else:
                 if any(self.df[col] != 0):
                     enhanced_data_available.append(col)
-        
+
         if enhanced_data_available:
             print(f"Enhanced data available: {', '.join(enhanced_data_available)}")
         else:
@@ -168,7 +154,7 @@ class SimulationAnalyzer:
             save_path=f"{output_dir}/fire_spread_patterns.png"
         )
 
-        # 9. NEW: Create report-ready visualization with key graphics
+        # 9. Report-ready visualization with key graphics
         self.create_report_summary(save_path=f"{output_dir}/report_summary.png")
 
         print(f"Analysis complete! Check {output_dir}/ for all generated plots.")
@@ -177,33 +163,34 @@ class SimulationAnalyzer:
 
     def create_report_summary(self, save_path=None):
         """Create a comprehensive report summary with fire progression stages and enhanced visualizations"""
-        fig = plt.figure(figsize=(18, 14))  # Adjusted for 3x3 layout
-        gs = fig.add_gridspec(3, 3, hspace=0.3, wspace=0.3)  # 3 rows, 3 columns
-        
-        # Main title for the entire figure
-        fig.suptitle(f"Fire Simulation Analysis Summary - {self.metadata['map_type'].title()} Map", 
-                    fontsize=18, fontweight='bold', y=0.96)
+        fig = plt.figure(figsize=(18, 14))
+        gs = fig.add_gridspec(3, 3, hspace=0.3, wspace=0.3)
 
-        # TOP ROW: Fire Progression Stages (Early, Mid, Final)
+        fig.suptitle(
+            f"Fire Simulation Analysis Summary - {self.metadata['map_type'].title()} Map",
+            fontsize=18,
+            fontweight="bold",
+            y=0.96,
+        )
+
         progression_data = self.spatial_data.get("burned_area_progression", [])
-        
+
         if len(progression_data) >= 3:
-            # Show progression at different time points
             time_points = [0, len(progression_data) // 2, -1]
             titles = ["Early Stage", "Mid Stage", "Final Stage"]
 
             for i, (time_idx, title) in enumerate(zip(time_points, titles)):
                 ax_stage = fig.add_subplot(gs[0, i])
                 snapshot = progression_data[time_idx]
-                
-                # Show both burned and currently burning areas
+
                 burned_area = snapshot["burned_area"]
                 burning_area = snapshot.get("burning_area", np.zeros_like(burned_area))
-                
-                # Create combined visualization
+
                 combined_display = burned_area.astype(float)
-                combined_display[burning_area == 1] = 0.5  # Burning areas in middle value
-                
+                combined_display[burning_area == 1] = (
+                    0.5  # Burning areas in middle value
+                )
+
                 im = ax_stage.imshow(
                     combined_display.T,
                     origin="lower",
@@ -211,261 +198,373 @@ class SimulationAnalyzer:
                     vmin=0,
                     vmax=1,
                 )
-                ax_stage.set_title(f'{title}\n(Frame {snapshot["frame"]})', fontsize=12, fontweight='bold')
+                ax_stage.set_title(
+                    f'{title}\n(Frame {snapshot["frame"]})',
+                    fontsize=12,
+                    fontweight="bold",
+                )
                 ax_stage.set_xlabel("X", fontsize=10)
                 ax_stage.set_ylabel("Y", fontsize=10)
 
-                # Add ignition points
                 for ignition_point in self.spatial_data["ignition_points"]:
                     ax_stage.plot(
                         ignition_point[0], ignition_point[1], "go", markersize=6
                     )
-                    
-                # Add legend only to the first (leftmost) plot
+
                 if i == 0:
                     from matplotlib.patches import Patch
+
                     legend_elements = [
-                        Patch(facecolor='white', label='Unburned'),
-                        Patch(facecolor='red', alpha=0.5, label='Currently Burning'),
-                        Patch(facecolor='darkred', label='Burned'),
-                        Patch(facecolor='green', label='Ignition Points'),
+                        Patch(facecolor="white", label="Unburned"),
+                        Patch(facecolor="red", alpha=0.5, label="Currently Burning"),
+                        Patch(facecolor="darkred", label="Burned"),
+                        Patch(facecolor="green", label="Ignition Points"),
                     ]
-                    
-                    legend = ax_stage.legend(handles=legend_elements, loc='upper right', 
-                                           fontsize=9, title="Fire States", title_fontsize=10)
-                    legend.get_title().set_fontweight('bold')
+
+                    legend = ax_stage.legend(
+                        handles=legend_elements,
+                        loc="upper right",
+                        fontsize=9,
+                        title="Fire States",
+                        title_fontsize=10,
+                    )
+                    legend.get_title().set_fontweight("bold")
         else:
-            # Fallback visualization if no progression data
             for i, title in enumerate(["Early Stage", "Mid Stage", "Final Stage"]):
                 ax_stage = fig.add_subplot(gs[0, i])
                 if i == 0:
-                    ax_stage.imshow(self.spatial_data["initial_grid"].T, origin="lower", cmap="RdYlGn_r")
-                    # Add legend for fallback visualization
+                    ax_stage.imshow(
+                        self.spatial_data["initial_grid"].T,
+                        origin="lower",
+                        cmap="RdYlGn_r",
+                    )
                     from matplotlib.patches import Patch
+
                     legend_elements = [
-                        Patch(facecolor='green', label='Fuel'),
-                        Patch(facecolor='red', label='Burning'),
-                        Patch(facecolor='black', label='Burned'),
-                        Patch(facecolor='lightblue', label='Empty'),
+                        Patch(facecolor="green", label="Fuel"),
+                        Patch(facecolor="red", label="Burning"),
+                        Patch(facecolor="black", label="Burned"),
+                        Patch(facecolor="lightblue", label="Empty"),
                     ]
-                    legend = ax_stage.legend(handles=legend_elements, loc='upper right', 
-                                           fontsize=9, title="Cell States", title_fontsize=10)
-                    legend.get_title().set_fontweight('bold')
+                    legend = ax_stage.legend(
+                        handles=legend_elements,
+                        loc="upper right",
+                        fontsize=9,
+                        title="Cell States",
+                        title_fontsize=10,
+                    )
+                    legend.get_title().set_fontweight("bold")
                 elif i == 2:
-                    ax_stage.imshow(self.spatial_data["final_grid"].T, origin="lower", cmap="RdYlGn_r")
+                    ax_stage.imshow(
+                        self.spatial_data["final_grid"].T,
+                        origin="lower",
+                        cmap="RdYlGn_r",
+                    )
                 else:
-                    ax_stage.text(0.5, 0.5, 'No mid-stage\ndata available', 
-                                ha='center', va='center', transform=ax_stage.transAxes)
-                ax_stage.set_title(title, fontsize=12, fontweight='bold')
+                    ax_stage.text(
+                        0.5,
+                        0.5,
+                        "No mid-stage\ndata available",
+                        ha="center",
+                        va="center",
+                        transform=ax_stage.transAxes,
+                    )
+                ax_stage.set_title(title, fontsize=12, fontweight="bold")
                 ax_stage.set_xlabel("X", fontsize=10)
                 ax_stage.set_ylabel("Y", fontsize=10)
 
-        # SECOND ROW: Panels A, B, C
         # Panel A: Fire Progression Evolution (second row, left)
         ax1 = fig.add_subplot(gs[1, 0])
-        ax1.plot(self.df["frame"], self.df["fuel_cells"], label="Fuel Remaining", 
-                color="green", linewidth=2.5)
-        ax1.plot(self.df["frame"], self.df["burning_cells"], label="Currently Burning", 
-                color="red", linewidth=2.5)
-        ax1.plot(self.df["frame"], self.df["burned_cells"], label="Burned", 
-                color="black", linewidth=2.5)
+        ax1.plot(
+            self.df["frame"],
+            self.df["fuel_cells"],
+            label="Fuel Remaining",
+            color="green",
+            linewidth=2.5,
+        )
+        ax1.plot(
+            self.df["frame"],
+            self.df["burning_cells"],
+            label="Currently Burning",
+            color="red",
+            linewidth=2.5,
+        )
+        ax1.plot(
+            self.df["frame"],
+            self.df["burned_cells"],
+            label="Burned",
+            color="black",
+            linewidth=2.5,
+        )
         ax1.set_xlabel("Time (frames)", fontsize=12)
         ax1.set_ylabel("Number of Cells", fontsize=12)
-        ax1.set_title("A) Cell State Evolution Over Time", fontsize=14, fontweight='bold')
+        ax1.set_title(
+            "A) Cell State Evolution Over Time", fontsize=14, fontweight="bold"
+        )
         ax1.legend(fontsize=10)
         ax1.grid(True, alpha=0.3)
 
         # Panel B: Cumulative Fire Spread (second row, center)
         ax2 = fig.add_subplot(gs[1, 1])
         cumulative_burned = np.cumsum(self.df["burn_rate"])
-        ax2.plot(self.df["frame"], cumulative_burned, color='darkred', linewidth=3, label='Cumulative Burned')
-        ax2.fill_between(self.df["frame"], cumulative_burned, alpha=0.3, color='red')
-        ax2.set_xlabel('Time (frames)', fontsize=12)
-        ax2.set_ylabel('Cumulative Cells Burned', fontsize=12)
-        ax2.set_title("B) Cumulative Fire Spread", fontsize=14, fontweight='bold')
+        ax2.plot(
+            self.df["frame"],
+            cumulative_burned,
+            color="darkred",
+            linewidth=3,
+            label="Cumulative Burned",
+        )
+        ax2.fill_between(self.df["frame"], cumulative_burned, alpha=0.3, color="red")
+        ax2.set_xlabel("Time (frames)", fontsize=12)
+        ax2.set_ylabel("Cumulative Cells Burned", fontsize=12)
+        ax2.set_title("B) Cumulative Fire Spread", fontsize=14, fontweight="bold")
         ax2.grid(True, alpha=0.3)
         ax2.legend(fontsize=10)
 
         # Panel C: Active Particles and Burning Cells (second row, right)
         ax3 = fig.add_subplot(gs[1, 2])
-        ax3.plot(self.df["frame"], self.df["active_particles"], color="orange", 
-                linewidth=2.5, label="Active Particles")
-        
+        ax3.plot(
+            self.df["frame"],
+            self.df["active_particles"],
+            color="orange",
+            linewidth=2.5,
+            label="Active Particles",
+        )
+
         ax3_twin = ax3.twinx()
-        ax3_twin.plot(self.df["frame"], self.df["burning_cells"], 
-                     color="red", linewidth=2.5, alpha=0.8, label="Burning Cells")
+        ax3_twin.plot(
+            self.df["frame"],
+            self.df["burning_cells"],
+            color="red",
+            linewidth=2.5,
+            alpha=0.8,
+            label="Burning Cells",
+        )
         ax3_twin.set_ylabel("Burning Cells", color="red", fontsize=12)
-        ax3_twin.tick_params(axis='y', labelcolor="red")
-        
+        ax3_twin.tick_params(axis="y", labelcolor="red")
+
         ax3.set_xlabel("Time (frames)", fontsize=12)
         ax3.set_ylabel("Active Particles", color="orange", fontsize=12)
-        ax3.tick_params(axis='y', labelcolor="orange")
-        ax3.set_title("C) Particles and Burning Cells", fontsize=14, fontweight='bold')
+        ax3.tick_params(axis="y", labelcolor="orange")
+        ax3.set_title("C) Particles and Burning Cells", fontsize=14, fontweight="bold")
         ax3.grid(True, alpha=0.3)
-        
+
         # Combined legend for Panel C
         lines1, labels1 = ax3.get_legend_handles_labels()
         lines2, labels2 = ax3_twin.get_legend_handles_labels()
-        ax3.legend(lines1 + lines2, labels1 + labels2, loc='upper right', fontsize=10)
+        ax3.legend(lines1 + lines2, labels1 + labels2, loc="upper right", fontsize=10)
 
-        # THIRD ROW: Enhanced panels E, G (new), and F
         # Panel E: Fire Intensity Timeline (third row, left)
         ax5 = fig.add_subplot(gs[2, 0])
-        
-        # Calculate moving average for smoother visualization
+
         window_size = max(5, len(self.df) // 20)
         if len(self.df) > window_size:
-            burn_rate_smooth = self.df["burn_rate"].rolling(window=window_size, center=True).mean()
-            
-            # Plot raw burn rate
-            ax5.plot(self.df["frame"], self.df["burn_rate"], 
-                    color='lightcoral', alpha=0.6, linewidth=1, label='Instantaneous')
-            
-            # Plot smoothed burn rate
-            ax5.plot(self.df["frame"], burn_rate_smooth, 
-                    color='darkred', linewidth=3, label=f'{window_size}-frame average')
-            
-            ax5.fill_between(self.df["frame"], burn_rate_smooth.fillna(0), 
-                            alpha=0.3, color='red')
+            burn_rate_smooth = (
+                self.df["burn_rate"].rolling(window=window_size, center=True).mean()
+            )
+
+            ax5.plot(
+                self.df["frame"],
+                self.df["burn_rate"],
+                color="lightcoral",
+                alpha=0.6,
+                linewidth=1,
+                label="Instantaneous",
+            )
+
+            ax5.plot(
+                self.df["frame"],
+                burn_rate_smooth,
+                color="darkred",
+                linewidth=3,
+                label=f"{window_size}-frame average",
+            )
+
+            ax5.fill_between(
+                self.df["frame"], burn_rate_smooth.fillna(0), alpha=0.3, color="red"
+            )
         else:
-            ax5.plot(self.df["frame"], self.df["burn_rate"], 
-                    color='darkred', linewidth=2, label='Burn Rate')
+            ax5.plot(
+                self.df["frame"],
+                self.df["burn_rate"],
+                color="darkred",
+                linewidth=2,
+                label="Burn Rate",
+            )
 
         ax5.set_xlabel("Time (frames)", fontsize=12)
         ax5.set_ylabel("Burn Rate (cells/frame)", fontsize=12)
-        ax5.set_title("E) Fire Intensity Timeline", fontsize=14, fontweight='bold')
+        ax5.set_title("E) Fire Intensity Timeline", fontsize=14, fontweight="bold")
         ax5.grid(True, alpha=0.3)
-        
+
         if len(self.df) > window_size:
             ax5.legend(fontsize=10)
 
-        # Add peak burn rate annotation
         if len(self.df["burn_rate"]) > 0:
             max_burn_rate = self.df["burn_rate"].max()
             max_frame = self.df.loc[self.df["burn_rate"].idxmax(), "frame"]
-            ax5.annotate(f'Peak: {max_burn_rate:.1f}', 
-                        xy=(max_frame, max_burn_rate),
-                        xytext=(10, 10), textcoords='offset points',
-                        bbox=dict(boxstyle="round,pad=0.3", facecolor="yellow", alpha=0.7),
-                        arrowprops=dict(arrowstyle='->', color='red'))
+            ax5.annotate(
+                f"Peak: {max_burn_rate:.1f}",
+                xy=(max_frame, max_burn_rate),
+                xytext=(10, 10),
+                textcoords="offset points",
+                bbox=dict(boxstyle="round,pad=0.3", facecolor="yellow", alpha=0.7),
+                arrowprops=dict(arrowstyle="->", color="red"),
+            )
 
-        # Panel G: Fire Spread Velocity Over Time (third row, center) - NEW!
         ax7 = fig.add_subplot(gs[2, 1])
-        
-        # Calculate fire spread velocity (rate of change of spread distance)
+
         if len(self.df["fire_spread_distance"]) > 1:
             spread_velocity = np.diff(self.df["fire_spread_distance"])
-            velocity_frames = self.df["frame"][1:]  # One less frame due to diff
-            
-            # Handle case where velocity might be all zeros or very small
+            velocity_frames = self.df["frame"][1:]
+
             if np.any(np.abs(spread_velocity) > 0.01):
-                # Plot raw velocity
-                ax7.plot(velocity_frames, spread_velocity, 
-                        color='purple', alpha=0.7, linewidth=1, label='Instantaneous')
-                
-                # Calculate smoothed velocity if we have enough data
+                ax7.plot(
+                    velocity_frames,
+                    spread_velocity,
+                    color="purple",
+                    alpha=0.7,
+                    linewidth=1,
+                    label="Instantaneous",
+                )
+
                 if len(spread_velocity) > 10:
-                    velocity_smooth = pd.Series(spread_velocity).rolling(
-                        window=max(3, len(spread_velocity)//10), center=True
-                    ).mean()
-                    ax7.plot(velocity_frames, velocity_smooth, 
-                            color='darkviolet', linewidth=3, label='Smoothed')
-                    ax7.fill_between(velocity_frames, velocity_smooth.fillna(0), 
-                                    alpha=0.3, color='purple')
+                    velocity_smooth = (
+                        pd.Series(spread_velocity)
+                        .rolling(window=max(3, len(spread_velocity) // 10), center=True)
+                        .mean()
+                    )
+                    ax7.plot(
+                        velocity_frames,
+                        velocity_smooth,
+                        color="darkviolet",
+                        linewidth=3,
+                        label="Smoothed",
+                    )
+                    ax7.fill_between(
+                        velocity_frames,
+                        velocity_smooth.fillna(0),
+                        alpha=0.3,
+                        color="purple",
+                    )
                     ax7.legend(fontsize=10)
-                
-                # Add zero line for reference
-                ax7.axhline(y=0, color='gray', linestyle='--', alpha=0.5, linewidth=1)
-                
-                # Highlight acceleration and deceleration phases
+
+                ax7.axhline(y=0, color="gray", linestyle="--", alpha=0.5, linewidth=1)
+
                 positive_velocity = spread_velocity > 0.1
                 if np.any(positive_velocity):
                     max_velocity = np.max(spread_velocity)
                     max_vel_frame = velocity_frames[np.argmax(spread_velocity)]
-                    ax7.annotate(f'Max: {max_velocity:.2f}', 
-                                xy=(max_vel_frame, max_velocity),
-                                xytext=(10, 10), textcoords='offset points',
-                                bbox=dict(boxstyle="round,pad=0.2", facecolor="lightblue", alpha=0.7),
-                                arrowprops=dict(arrowstyle='->', color='purple', alpha=0.7))
-                
+                    ax7.annotate(
+                        f"Max: {max_velocity:.2f}",
+                        xy=(max_vel_frame, max_velocity),
+                        xytext=(10, 10),
+                        textcoords="offset points",
+                        bbox=dict(
+                            boxstyle="round,pad=0.2", facecolor="lightblue", alpha=0.7
+                        ),
+                        arrowprops=dict(arrowstyle="->", color="purple", alpha=0.7),
+                    )
+
                 ax7.set_ylabel("Velocity (units/frame)", fontsize=12)
             else:
-                # If no significant velocity, show a message
-                ax7.text(0.5, 0.5, 'Fire spread was\ntoo slow to measure\nvelocity accurately', 
-                        ha='center', va='center', transform=ax7.transAxes,
-                        bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray", alpha=0.7))
+                ax7.text(
+                    0.5,
+                    0.5,
+                    "Fire spread was\ntoo slow to measure\nvelocity accurately",
+                    ha="center",
+                    va="center",
+                    transform=ax7.transAxes,
+                    bbox=dict(
+                        boxstyle="round,pad=0.3", facecolor="lightgray", alpha=0.7
+                    ),
+                )
                 ax7.set_ylabel("Velocity (units/frame)", fontsize=12)
         else:
-            # Not enough data points
-            ax7.text(0.5, 0.5, 'Insufficient data\nfor velocity analysis', 
-                    ha='center', va='center', transform=ax7.transAxes)
+            ax7.text(
+                0.5,
+                0.5,
+                "Insufficient data\nfor velocity analysis",
+                ha="center",
+                va="center",
+                transform=ax7.transAxes,
+            )
             ax7.set_ylabel("Velocity (units/frame)", fontsize=12)
-        
+
         ax7.set_xlabel("Time (frames)", fontsize=12)
-        ax7.set_title("G) Fire Spread Velocity", fontsize=14, fontweight='bold')
+        ax7.set_title("G) Fire Spread Velocity", fontsize=14, fontweight="bold")
         ax7.grid(True, alpha=0.3)
 
         # Panel F: Key Metrics Dashboard (third row, right)
         ax6 = fig.add_subplot(gs[2, 2])
-        
-        # Create a dashboard with key metrics as horizontal bar chart
+
         metrics_data = {
-            'Final Burned (%)': self.summary_stats.get('final_burned_percentage', 0),
-            'Max Spread (units)': min(100, self.summary_stats.get('max_fire_spread_distance', 0)),
-            'Peak Particles': min(500, self.summary_stats.get('max_active_particles', 0)),
-            'Avg Burn Rate': min(10, self.summary_stats.get('average_burn_rate', 0)),
-            'Fire Duration (×10)': min(200, self.summary_stats.get('fire_duration', 0) / 10),
-        }
-        
-        # Store original values for display
-        original_values = {
-            'Final Burned (%)': self.summary_stats.get('final_burned_percentage', 0),
-            'Max Spread (units)': self.summary_stats.get('max_fire_spread_distance', 0),
-            'Peak Particles': self.summary_stats.get('max_active_particles', 0),
-            'Avg Burn Rate': self.summary_stats.get('average_burn_rate', 0),
-            'Fire Duration': self.summary_stats.get('fire_duration', 0),
+            "Final Burned (%)": self.summary_stats.get("final_burned_percentage", 0),
+            "Max Spread (units)": min(
+                100, self.summary_stats.get("max_fire_spread_distance", 0)
+            ),
+            "Peak Particles": min(
+                500, self.summary_stats.get("max_active_particles", 0)
+            ),
+            "Avg Burn Rate": min(10, self.summary_stats.get("average_burn_rate", 0)),
+            "Fire Duration (×10)": min(
+                200, self.summary_stats.get("fire_duration", 0) / 10
+            ),
         }
 
-        # Create horizontal bar chart
+        original_values = {
+            "Final Burned (%)": self.summary_stats.get("final_burned_percentage", 0),
+            "Max Spread (units)": self.summary_stats.get("max_fire_spread_distance", 0),
+            "Peak Particles": self.summary_stats.get("max_active_particles", 0),
+            "Avg Burn Rate": self.summary_stats.get("average_burn_rate", 0),
+            "Fire Duration": self.summary_stats.get("fire_duration", 0),
+        }
+
         y_pos = np.arange(len(metrics_data))
         values = list(metrics_data.values())
         labels = list(metrics_data.keys())
 
-        # Color code the bars with meaningful colors
-        colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7']
+        colors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7"]
 
-        bars = ax6.barh(y_pos, values, color=colors, alpha=0.8, edgecolor='black', linewidth=0.5)
+        bars = ax6.barh(
+            y_pos, values, color=colors, alpha=0.8, edgecolor="black", linewidth=0.5
+        )
 
-        # Add value labels on bars with original values
         for i, (bar, label) in enumerate(zip(bars, labels)):
             width = bar.get_width()
-            
-            # Get original unscaled value for display
-            if 'Burned' in label:
+
+            if "Burned" in label:
                 display_val = f'{original_values["Final Burned (%)"]:.1f}%'
-            elif 'Spread' in label:
+            elif "Spread" in label:
                 display_val = f'{original_values["Max Spread (units)"]:.1f}'
-            elif 'Particles' in label:
+            elif "Particles" in label:
                 display_val = f'{int(original_values["Peak Particles"])}'
-            elif 'Rate' in label:
+            elif "Rate" in label:
                 display_val = f'{original_values["Avg Burn Rate"]:.2f}'
-            elif 'Duration' in label:
+            elif "Duration" in label:
                 display_val = f'{int(original_values["Fire Duration"])}'
             else:
-                display_val = f'{width:.1f}'
-                
-            ax6.text(width + max(values)*0.01, bar.get_y() + bar.get_height()/2, 
-                    display_val, ha='left', va='center', fontweight='bold', fontsize=10)
+                display_val = f"{width:.1f}"
+
+            ax6.text(
+                width + max(values) * 0.01,
+                bar.get_y() + bar.get_height() / 2,
+                display_val,
+                ha="left",
+                va="center",
+                fontweight="bold",
+                fontsize=10,
+            )
 
         ax6.set_yticks(y_pos)
         ax6.set_yticklabels(labels, fontsize=11)
-        ax6.set_xlabel('Metric Values', fontsize=12)
-        ax6.set_title('F) Key Performance Metrics', fontsize=14, fontweight='bold')
-        ax6.grid(axis='x', alpha=0.3)
+        ax6.set_xlabel("Metric Values", fontsize=12)
+        ax6.set_title("F) Key Performance Metrics", fontsize=14, fontweight="bold")
+        ax6.grid(axis="x", alpha=0.3)
 
         plt.tight_layout()
         if save_path:
-            plt.savefig(save_path, dpi=300, bbox_inches="tight", facecolor='white')
+            plt.savefig(save_path, dpi=300, bbox_inches="tight", facecolor="white")
             print(f"Enhanced report summary saved to {save_path}")
         # plt.show()
 
@@ -589,8 +688,10 @@ class SimulationAnalyzer:
         axes[0, 1].legend()
         axes[0, 1].grid(True, alpha=0.3)
 
-        # Plot 3: NEW - Particle velocity evolution
-        if "particle_velocity_avg" in self.df.columns and any(self.df["particle_velocity_avg"]):
+        # Plot 3: Particle velocity evolution
+        if "particle_velocity_avg" in self.df.columns and any(
+            self.df["particle_velocity_avg"]
+        ):
             axes[1, 0].plot(
                 self.df["frame"],
                 self.df["particle_velocity_avg"],
@@ -611,7 +712,6 @@ class SimulationAnalyzer:
             axes[1, 0].legend()
             axes[1, 0].grid(True, alpha=0.3)
         else:
-            # Fallback to original particle efficiency plot
             efficiency = np.where(
                 self.df["burning_cells"] > 0,
                 self.df["active_particles"] / self.df["burning_cells"],
@@ -634,7 +734,7 @@ class SimulationAnalyzer:
                 color="blue",
                 linewidth=2,
             )
-            
+
             ax_wind_std = ax_wind.twinx()
             ax_wind_std.plot(
                 self.df["frame"],
@@ -644,19 +744,17 @@ class SimulationAnalyzer:
                 linewidth=2,
                 alpha=0.7,
             )
-            
+
             ax_wind.set_xlabel("Time (frames)")
             ax_wind.set_ylabel("Wind Strength", color="blue")
             ax_wind_std.set_ylabel("Wind Variation", color="red")
             ax_wind.set_title("Wind Effect Analysis")
             ax_wind.grid(True, alpha=0.3)
-            
-            # Combine legends
+
             lines1, labels1 = ax_wind.get_legend_handles_labels()
             lines2, labels2 = ax_wind_std.get_legend_handles_labels()
-            ax_wind.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
+            ax_wind.legend(lines1 + lines2, labels1 + labels2, loc="upper right")
         else:
-            # Original wind scatter plot
             axes[1, 1].scatter(
                 self.df["wind_effect_strength"],
                 self.df["active_particles"],
@@ -680,7 +778,6 @@ class SimulationAnalyzer:
         fig, axes = plt.subplots(2, 3, figsize=(18, 12))
         fig.suptitle("Spatial Analysis", fontsize=16, fontweight="bold")
 
-        # Initial vs Final state
         axes[0, 0].imshow(
             self.spatial_data["initial_grid"].T, origin="lower", cmap="RdYlGn_r"
         )
@@ -835,7 +932,6 @@ class SimulationAnalyzer:
         fuel_types = self.spatial_data["fuel_types"]
         final_grid = self.spatial_data["final_grid"]
 
-        # Calculate burn probability by fuel type
         fuel_values = np.unique(fuel_types)
         burn_probabilities = []
         fuel_labels = []
@@ -861,7 +957,6 @@ class SimulationAnalyzer:
         # Plot 3: Moisture vs burn probability
         moisture_map = self.spatial_data["moisture_map"]
 
-        # Create moisture bins and calculate burn probability
         moisture_bins = np.linspace(0, 1, 10)
         moisture_burn_probs = []
         bin_centers = []
@@ -910,7 +1005,6 @@ class SimulationAnalyzer:
         axes[1, 1].set_title("Key Simulation Parameters")
         axes[1, 1].tick_params(axis="x", rotation=45)
 
-        # Add value labels on bars
         for bar, value in zip(bars, param_values):
             height = bar.get_height()
             axes[1, 1].text(
@@ -933,7 +1027,6 @@ class SimulationAnalyzer:
         ax.axis("tight")
         ax.axis("off")
 
-        # Prepare summary data
         summary_data = []
         for key, value in self.summary_stats.items():
             if isinstance(value, float):
@@ -942,7 +1035,6 @@ class SimulationAnalyzer:
                 formatted_value = str(value)
             summary_data.append([key.replace("_", " ").title(), formatted_value])
 
-        # Add parameter information
         params = self.metadata["parameters"]
         key_params = [
             "map_type",
@@ -966,7 +1058,6 @@ class SimulationAnalyzer:
                     formatted_value = str(value)
                 summary_data.append([param.replace("_", " ").title(), formatted_value])
 
-        # Create table
         table = ax.table(
             cellText=summary_data,
             colLabels=["Metric", "Value"],
@@ -979,7 +1070,6 @@ class SimulationAnalyzer:
         table.set_fontsize(10)
         table.scale(1, 2)
 
-        # Style the table
         for i in range(len(summary_data) + 1):
             for j in range(2):
                 cell = table[(i, j)]
@@ -1107,25 +1197,23 @@ class SimulationAnalyzer:
         fig, axes = plt.subplots(2, 3, figsize=(18, 12))
         fig.suptitle("Fire Spread Pattern Analysis", fontsize=16, fontweight="bold")
 
-        # Get burned area progression snapshots
         progression_data = self.spatial_data.get("burned_area_progression", [])
 
         if len(progression_data) >= 3:
-            # Show progression at different time points
             time_points = [0, len(progression_data) // 2, -1]
             titles = ["Early Stage", "Mid Stage", "Final Stage"]
 
             for i, (time_idx, title) in enumerate(zip(time_points, titles)):
                 snapshot = progression_data[time_idx]
-                
-                # UPDATED: Show both burned and currently burning areas
+
                 burned_area = snapshot["burned_area"]
                 burning_area = snapshot.get("burning_area", np.zeros_like(burned_area))
-                
-                # Create combined visualization
+
                 combined_display = burned_area.astype(float)
-                combined_display[burning_area == 1] = 0.5  # Burning areas in middle value
-                
+                combined_display[burning_area == 1] = (
+                    0.5  # Burning areas in middle value
+                )
+
                 im = axes[0, i].imshow(
                     combined_display.T,
                     origin="lower",
@@ -1137,17 +1225,18 @@ class SimulationAnalyzer:
                 axes[0, i].set_xlabel("X")
                 axes[0, i].set_ylabel("Y")
 
-                # Add ignition points
                 for ignition_point in self.spatial_data["ignition_points"]:
                     axes[0, i].plot(
                         ignition_point[0], ignition_point[1], "go", markersize=8
                     )
-                    
-                # Add colorbar for first plot
+
                 if i == 0:
-                    plt.colorbar(im, ax=axes[0, i], label="Burned (1) / Burning (0.5) / Unburned (0)")
+                    plt.colorbar(
+                        im,
+                        ax=axes[0, i],
+                        label="Burned (1) / Burning (0.5) / Unburned (0)",
+                    )
         else:
-            # Fallback visualization
             axes[0, 0].imshow(
                 self.spatial_data["initial_grid"].T, origin="lower", cmap="RdYlGn_r"
             )
@@ -1160,7 +1249,6 @@ class SimulationAnalyzer:
 
             axes[0, 2].axis("off")
 
-        # UPDATED: Enhanced spread analysis with new metrics
         if len(self.df) > 1:
             # Plot 1: Cumulative fire spread
             axes[1, 0].plot(
@@ -1168,10 +1256,9 @@ class SimulationAnalyzer:
                 np.cumsum(self.df["burn_rate"]),
                 color="red",
                 linewidth=2,
-                label="Cumulative Burned"
+                label="Cumulative Burned",
             )
-            
-            # Add fire front cells if available
+
             if "fire_front_cells" in self.df.columns:
                 ax2 = axes[1, 0].twinx()
                 ax2.plot(
@@ -1180,19 +1267,18 @@ class SimulationAnalyzer:
                     color="orange",
                     linewidth=2,
                     alpha=0.7,
-                    label="Fire Front Cells"
+                    label="Fire Front Cells",
                 )
                 ax2.set_ylabel("Fire Front Cells", color="orange")
-                
+
             axes[1, 0].set_xlabel("Time (frames)")
             axes[1, 0].set_ylabel("Cumulative Cells Burned", color="red")
             axes[1, 0].set_title("Cumulative Fire Spread")
             axes[1, 0].grid(True, alpha=0.3)
-            axes[1, 0].legend(loc='upper left')
+            axes[1, 0].legend(loc="upper left")
 
             # Plot 2: Fire front velocity
             spread_velocity = np.diff(self.df["fire_spread_distance"])
-            # Handle case where spread_velocity might be all zeros
             if np.any(spread_velocity != 0):
                 axes[1, 1].plot(
                     self.df["frame"][1:], spread_velocity, color="orange", linewidth=2
@@ -1202,7 +1288,6 @@ class SimulationAnalyzer:
                 axes[1, 1].set_title("Fire Front Velocity")
                 axes[1, 1].grid(True, alpha=0.3)
             else:
-                # Alternative plot if no velocity data
                 axes[1, 1].plot(
                     self.df["frame"], self.df["burn_rate"], color="orange", linewidth=2
                 )
@@ -1211,21 +1296,20 @@ class SimulationAnalyzer:
                 axes[1, 1].set_title("Instantaneous Burn Rate")
                 axes[1, 1].grid(True, alpha=0.3)
 
-            # Plot 3: UPDATED shape analysis with better error handling
+            # Plot 3: Shape analysis with better error handling
             if len(progression_data) >= 3:
                 try:
                     from scipy import ndimage
-                    
+
                     perimeters = []
                     areas = []
                     frames = []
-                    
+
                     for snapshot in progression_data:
                         burned_area = snapshot["burned_area"]
                         area = np.sum(burned_area)
-                        
-                        if area > 5:  # Only analyze if significant area burned
-                            # Calculate perimeter using edge detection
+
+                        if area > 5:
                             edges = ndimage.sobel(burned_area.astype(float))
                             perimeter = np.sum(edges > 0.1)
                             perimeters.append(perimeter)
@@ -1233,32 +1317,44 @@ class SimulationAnalyzer:
                             frames.append(snapshot["frame"])
 
                     if len(areas) > 3:
-                        # Plot fire shape evolution over time
-                        scatter = axes[1, 2].scatter(areas, perimeters, c=frames, cmap="viridis", alpha=0.7)
+                        scatter = axes[1, 2].scatter(
+                            areas, perimeters, c=frames, cmap="viridis", alpha=0.7
+                        )
                         axes[1, 2].set_xlabel("Burned Area (cells)")
                         axes[1, 2].set_ylabel("Fire Perimeter (cells)")
                         axes[1, 2].set_title("Fire Shape Evolution")
                         axes[1, 2].grid(True, alpha=0.3)
-                        
-                        # Add colorbar for time
+
                         plt.colorbar(scatter, ax=axes[1, 2], label="Time (frame)")
                     else:
                         axes[1, 2].text(
-                            0.5, 0.5, "Insufficient burned area\nfor shape analysis",
-                            ha="center", va="center", transform=axes[1, 2].transAxes
+                            0.5,
+                            0.5,
+                            "Insufficient burned area\nfor shape analysis",
+                            ha="center",
+                            va="center",
+                            transform=axes[1, 2].transAxes,
                         )
                         axes[1, 2].set_title("Fire Shape Evolution")
 
                 except (ImportError, Exception) as e:
                     axes[1, 2].text(
-                        0.5, 0.5, f"Shape analysis unavailable:\n{str(e)[:50]}...",
-                        ha="center", va="center", transform=axes[1, 2].transAxes
+                        0.5,
+                        0.5,
+                        f"Shape analysis unavailable:\n{str(e)[:50]}...",
+                        ha="center",
+                        va="center",
+                        transform=axes[1, 2].transAxes,
                     )
                     axes[1, 2].set_title("Fire Shape Analysis")
             else:
                 axes[1, 2].text(
-                    0.5, 0.5, "No progression data\navailable for analysis",
-                    ha="center", va="center", transform=axes[1, 2].transAxes
+                    0.5,
+                    0.5,
+                    "No progression data\navailable for analysis",
+                    ha="center",
+                    va="center",
+                    transform=axes[1, 2].transAxes,
                 )
                 axes[1, 2].set_title("Fire Shape Analysis")
 
@@ -1268,7 +1364,6 @@ class SimulationAnalyzer:
             print(f"Fire spread patterns plot saved to {save_path}")
         # plt.show()
 
-
     def quick_summary(self):
         """Print a quick text summary of key results - FIXED pandas Series issue"""
         print("\n" + "=" * 60)
@@ -1277,71 +1372,94 @@ class SimulationAnalyzer:
         print(f"Map Type: {self.metadata['map_type']}")
         print(f"Grid Size: {self.metadata['grid_size']}")
         print(f"Simulation Duration: {len(self.df)} frames")
-        print(f"Total Burned Area: {self.summary_stats.get('final_burned_percentage', 0):.1f}%")
-        print(f"Max Fire Spread: {self.summary_stats.get('max_fire_spread_distance', 0):.1f} units")
+        print(
+            f"Total Burned Area: {self.summary_stats.get('final_burned_percentage', 0):.1f}%"
+        )
+        print(
+            f"Max Fire Spread: {self.summary_stats.get('max_fire_spread_distance', 0):.1f} units"
+        )
 
-        # Enhanced statistics with new metrics
         peak_burn_rate = self.summary_stats.get(
             "peak_burning_cells",
-            max(self.df["burn_rate"]) if "burn_rate" in self.df.columns and len(self.df["burn_rate"]) > 0 else 0,
+            (
+                max(self.df["burn_rate"])
+                if "burn_rate" in self.df.columns and len(self.df["burn_rate"]) > 0
+                else 0
+            ),
         )
         peak_particles = self.summary_stats.get(
             "max_active_particles",
-            max(self.df["active_particles"]) if "active_particles" in self.df.columns and len(self.df["active_particles"]) > 0 else 0,
+            (
+                max(self.df["active_particles"])
+                if "active_particles" in self.df.columns
+                and len(self.df["active_particles"]) > 0
+                else 0
+            ),
         )
-        
+
         print(f"Peak Burn Rate: {peak_burn_rate:.1f} cells/frame")
         print(f"Peak Active Particles: {peak_particles}")
-        
-        # FIXED: Particle velocity statistics with proper pandas Series handling
-        if "particle_velocity_avg" in self.df.columns and not self.df["particle_velocity_avg"].empty:
-            # Check if there are any non-zero values
-            non_zero_velocities = self.df["particle_velocity_avg"][self.df["particle_velocity_avg"] > 0]
+
+        if (
+            "particle_velocity_avg" in self.df.columns
+            and not self.df["particle_velocity_avg"].empty
+        ):
+            non_zero_velocities = self.df["particle_velocity_avg"][
+                self.df["particle_velocity_avg"] > 0
+            ]
             if not non_zero_velocities.empty:
                 avg_velocity = non_zero_velocities.mean()
                 max_velocity = self.df["particle_velocity_max"].max()
                 print(f"Average Particle Velocity: {avg_velocity:.3f}")
                 print(f"Maximum Particle Velocity: {max_velocity:.3f}")
-        
-        # FIXED: Wind effect statistics with proper pandas Series handling
-        if "wind_effect_std" in self.df.columns and not self.df["wind_effect_std"].empty:
+
+        if (
+            "wind_effect_std" in self.df.columns
+            and not self.df["wind_effect_std"].empty
+        ):
             avg_wind_variation = self.df["wind_effect_std"].mean()
             print(f"Average Wind Variation: {avg_wind_variation:.3f}")
-        
-        # FIXED: Fire front statistics with proper pandas Series handling
-        if "fire_front_cells" in self.df.columns and not self.df["fire_front_cells"].empty:
-            # Check if there are any non-zero values
-            non_zero_front = self.df["fire_front_cells"][self.df["fire_front_cells"] > 0]
+
+        if (
+            "fire_front_cells" in self.df.columns
+            and not self.df["fire_front_cells"].empty
+        ):
+            non_zero_front = self.df["fire_front_cells"][
+                self.df["fire_front_cells"] > 0
+            ]
             if not non_zero_front.empty:
                 max_fire_front = self.df["fire_front_cells"].max()
                 avg_fire_front = non_zero_front.mean()
                 print(f"Peak Fire Front Size: {max_fire_front} cells")
                 print(f"Average Fire Front Size: {avg_fire_front:.1f} cells")
-        
-        # Existing statistics with fixes
+
         avg_intensity = self.summary_stats.get(
-            "fire_intensity_average",
-            0  # Default fallback
+            "fire_intensity_average", 0  # Default fallback
         )
-        
-        # If not in summary stats, calculate from DataFrame
+
         if avg_intensity == 0 and "particle_intensity_avg" in self.df.columns:
-            non_zero_intensity = self.df["particle_intensity_avg"][self.df["particle_intensity_avg"] > 0]
+            non_zero_intensity = self.df["particle_intensity_avg"][
+                self.df["particle_intensity_avg"] > 0
+            ]
             if not non_zero_intensity.empty:
                 avg_intensity = non_zero_intensity.mean()
-        
+
         print(f"Average Particle Intensity: {avg_intensity:.3f}")
-        print(f"Fire Duration: {self.summary_stats.get('fire_duration', len(self.df))} frames")
-        print(f"Total Area Burned: {self.summary_stats.get('total_area_burned', 0)} cells")
-        
-        # Multi-ignition point summary for coastal simulations
+        print(
+            f"Fire Duration: {self.summary_stats.get('fire_duration', len(self.df))} frames"
+        )
+        print(
+            f"Total Area Burned: {self.summary_stats.get('total_area_burned', 0)} cells"
+        )
+
         ignition_points = self.spatial_data.get("ignition_points", [])
         if len(ignition_points) > 1:
             print(f"Ignition Points: {len(ignition_points)} locations")
             print(f"Ignition Strategy: Multi-point ignition")
-        
+
         print("=" * 60)
-    
+
+
 def compare_simulations(file_list, output_dir="comparison_output"):
     """Compare multiple simulation files"""
     analyzers = []
@@ -1351,14 +1469,12 @@ def compare_simulations(file_list, output_dir="comparison_output"):
         analyzer = SimulationAnalyzer(file_path)
         analyzers.append(analyzer)
 
-        # Extract meaningful label from filename
         filename = os.path.basename(file_path)
         label = filename.replace("fire_simulation_", "").replace(".pkl", "")
         labels.append(label)
 
     os.makedirs(output_dir, exist_ok=True)
 
-    # Create comparison plots
     fig, axes = plt.subplots(2, 2, figsize=(15, 12))
     fig.suptitle("Simulation Comparison", fontsize=16, fontweight="bold")
 
@@ -1451,7 +1567,6 @@ def compare_simulations(file_list, output_dir="comparison_output"):
     print(f"Comparison plot saved to {save_path}")
     # plt.show()
 
-    # Create comparison summary table
     comparison_data = []
     for analyzer, label in zip(analyzers, labels):
         row = [
@@ -1464,7 +1579,6 @@ def compare_simulations(file_list, output_dir="comparison_output"):
         ]
         comparison_data.append(row)
 
-    # Save comparison table
     comparison_df = pd.DataFrame(
         comparison_data,
         columns=[
@@ -1499,11 +1613,9 @@ def main():
 
     args = parser.parse_args()
 
-    # Determine which files to analyze
     files_to_analyze = []
 
     if args.directory:
-        # Analyze all pickle files in directory
         pattern = os.path.join(args.directory, "*.pkl")
         files_to_analyze = glob.glob(pattern)
         print(f"Found {len(files_to_analyze)} simulation files in {args.directory}")
@@ -1517,7 +1629,6 @@ def main():
         print("No simulation files found!")
         return
 
-    # Process files
     if len(files_to_analyze) == 1:
         # Single file analysis
         analyzer = SimulationAnalyzer(files_to_analyze[0])
@@ -1530,11 +1641,9 @@ def main():
             print(f"\nComplete analysis saved to: {output_dir}/")
 
     elif args.compare or len(files_to_analyze) > 1:
-        # Multiple file comparison
         print(f"Comparing {len(files_to_analyze)} simulations...")
         analyzers = compare_simulations(files_to_analyze, args.output)
 
-        # Also show individual quick summaries
         for analyzer, filename in zip(analyzers, files_to_analyze):
             print(f"\n--- {os.path.basename(filename)} ---")
             analyzer.quick_summary()

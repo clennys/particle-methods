@@ -10,50 +10,56 @@ import pickle
 import os
 from datetime import datetime
 import sys
+
 try:
     from tqdm import tqdm
+
     TQDM_AVAILABLE = True
 except ImportError:
     TQDM_AVAILABLE = False
+
 
 def create_coastal_fuel_ignitions(model, args):
     """Create better ignition points for coastal simulation that actually work"""
     ignition_points = []
 
     if args.map_type == "coastal":
-        # Find the coastline at different Y coordinates
         y_positions = [args.height // 4, args.height // 2, 3 * args.height // 4]
-        
+
         for base_y in y_positions:
-            # Calculate coastline position at this Y
             coastline_distance = args.width // 4
-            coast_x = coastline_distance + int(5 * np.sin(base_y * 0.1) + 3 * np.cos(base_y * 0.05))
-            
+            coast_x = coastline_distance + int(
+                5 * np.sin(base_y * 0.1) + 3 * np.cos(base_y * 0.05)
+            )
+
             # Define ignition points at different distances from coast
             potential_ignitions = [
-                (coast_x + 12, base_y, f"Near Coast Y{base_y}"),      # 12 units inland
-                (coast_x + 25, base_y, f"Transition Y{base_y}"),     # 25 units inland  
-                (coast_x + 45, base_y, f"Inland Y{base_y}"),         # 45 units inland
+                (coast_x + 12, base_y, f"Near Coast Y{base_y}"),  # 12 units inland
+                (coast_x + 25, base_y, f"Transition Y{base_y}"),  # 25 units inland
+                (coast_x + 45, base_y, f"Inland Y{base_y}"),  # 45 units inland
             ]
-            
+
             for ig_x, ig_y, zone_name in potential_ignitions:
-                # Ensure coordinates are valid and in fuel areas
-                if (0 <= ig_x < args.width and 0 <= ig_y < args.height and 
-                    model.grid[ig_x, ig_y] == CellState.FUEL.value):
-                    
-                    # Check fuel type and moisture - only ignite if reasonable
+                if (
+                    0 <= ig_x < args.width
+                    and 0 <= ig_y < args.height
+                    and model.grid[ig_x, ig_y] == CellState.FUEL.value
+                ):
+
                     fuel_type = model.fuel_types[ig_x, ig_y]
                     moisture = model.moisture[ig_x, ig_y]
-                    
-                    # Only add if fuel is decent and not too wet
+
                     if fuel_type > 0.8 and moisture < 0.6:
                         ignition_points.append((ig_x, ig_y, zone_name))
-                        print(f"  Added ignition: {zone_name} at ({ig_x}, {ig_y}) - Fuel: {fuel_type:.2f}, Moisture: {moisture:.2f}")
+                        print(
+                            f"  Added ignition: {zone_name} at ({ig_x}, {ig_y}) - Fuel: {fuel_type:.2f}, Moisture: {moisture:.2f}"
+                        )
                     else:
-                        print(f"  Skipped {zone_name} - poor conditions (Fuel: {fuel_type:.2f}, Moisture: {moisture:.2f})")
+                        print(
+                            f"  Skipped {zone_name} - poor conditions (Fuel: {fuel_type:.2f}, Moisture: {moisture:.2f})"
+                        )
 
     else:
-        # For non-coastal maps
         ignition_points = [
             (args.ignite_x, args.ignite_y, "Center"),
             (args.ignite_x + 10, args.ignite_y, "East"),
@@ -62,7 +68,9 @@ def create_coastal_fuel_ignitions(model, args):
             (args.ignite_x, args.ignite_y - 10, "South"),
         ]
 
-    print(f"Created {len(ignition_points)} viable ignition points for coastal simulation")
+    print(
+        f"Created {len(ignition_points)} viable ignition points for coastal simulation"
+    )
     return ignition_points
 
 
@@ -73,41 +81,32 @@ def create_enhanced_fuel_types(model, args):
     that are still at default fuel type (1.0).
     """
 
-    # Don't reset existing fuel types - preserve map-specific patterns
-    # model.fuel_types = np.ones((model.width, model.height))  # REMOVED - was causing overwrites
-
-    # Define fuel type characteristics
     fuel_patches = [
         {"type": 2.0, "color": "brown", "name": "Dry Brush"},  # Very flammable
         {
             "type": 1.5,
             "color": "darkgreen",
             "name": "Dense Forest",
-        },  # High flammability
+        },
         {"type": 1.0, "color": "forestgreen", "name": "Mixed Forest"},  # Normal
         {"type": 0.7, "color": "olive", "name": "Light Forest"},  # Medium
         {"type": 0.4, "color": "yellowgreen", "name": "Grassland"},  # Low flammability
     ]
 
-    # Create large patches of each fuel type, but only in areas with default fuel (1.0)
     num_patches_per_type = 3
 
     for fuel_patch in fuel_patches:
         fuel_value = fuel_patch["type"]
 
-        # Skip if this is the default fuel type (already set)
         if fuel_value == 1.0:
             continue
 
         for _ in range(num_patches_per_type):
-            # Random center for patch
             center_x = np.random.randint(10, args.width - 10)
             center_y = np.random.randint(10, args.height - 10)
 
-            # Random patch size
             patch_radius = np.random.randint(8, 20)
 
-            # Create irregular patch using noise
             for x in range(
                 max(0, center_x - patch_radius),
                 min(args.width, center_x + patch_radius),
@@ -119,14 +118,12 @@ def create_enhanced_fuel_types(model, args):
 
                     distance = np.sqrt((x - center_x) ** 2 + (y - center_y) ** 2)
 
-                    # Only set fuel type if it's fuel (not empty/houses) AND still at default (1.0)
                     if (
                         model.grid[x, y] == CellState.FUEL.value
                         and distance <= patch_radius
                         and abs(model.fuel_types[x, y] - 1.0) < 0.1
-                    ):  # Only modify default fuel areas
+                    ):
 
-                        # Add some randomness to patch edges
                         edge_probability = max(
                             0,
                             1
@@ -145,7 +142,7 @@ class SimulationDataCollector:
     """Collects and stores simulation data for analysis"""
 
     def __init__(self, args):
-        self.args = vars(args)  # Store all command line arguments
+        self.args = vars(args)
         self.simulation_data = {
             "metadata": {
                 "timestamp": datetime.now().isoformat(),
@@ -183,25 +180,21 @@ class SimulationDataCollector:
 
     def collect_frame_data(self, model, frame_count):
         """Collect data for current frame"""
-        # Count different cell types
         burning_count = np.sum(model.grid == CellState.BURNING.value)
         burned_count = np.sum(model.grid == CellState.BURNED.value)
         fuel_count = np.sum(model.grid == CellState.FUEL.value)
 
-        # Calculate burn rate (change in burned cells)
         if len(self.simulation_data["time_series"]["burned_cells"]) > 0:
             prev_burned = self.simulation_data["time_series"]["burned_cells"][-1]
             burn_rate = burned_count - prev_burned
         else:
             burn_rate = burned_count
 
-        # Particle statistics
         if model.particles:
             particle_intensities = [p.intensity for p in model.particles]
             avg_intensity = np.mean(particle_intensities)
             max_intensity = np.max(particle_intensities)
-            
-            # NEW: Add particle velocity tracking
+
             particle_velocities = [np.linalg.norm(p.velocity) for p in model.particles]
             avg_velocity = np.mean(particle_velocities) if particle_velocities else 0
             max_velocity = np.max(particle_velocities) if particle_velocities else 0
@@ -211,7 +204,6 @@ class SimulationDataCollector:
             avg_velocity = 0
             max_velocity = 0
 
-        # FIXED: Better wind effect calculation with spatial variation
         wind_strengths = []
         for i in range(0, model.width, 5):  # Sample every 5 cells for performance
             for j in range(0, model.height, 5):
@@ -219,25 +211,26 @@ class SimulationDataCollector:
                     model.wind_field[i, j, 0] ** 2 + model.wind_field[i, j, 1] ** 2
                 )
                 wind_strengths.append(wind_magnitude)
-        
+
         wind_strength_avg = np.mean(wind_strengths) if wind_strengths else 0
         wind_strength_std = np.std(wind_strengths) if wind_strengths else 0
 
-        # NEW: Calculate active fire front perimeter (more dynamic metric)
         fire_front_cells = 0
         if burning_count > 0:
             for i in range(model.width):
                 for j in range(model.height):
                     if model.grid[i, j] == CellState.BURNING.value:
-                        # Check if this burning cell is on the fire front (adjacent to fuel)
                         is_front = False
                         for di in [-1, 0, 1]:
                             for dj in [-1, 0, 1]:
                                 if di == 0 and dj == 0:
                                     continue
                                 ni, nj = i + di, j + dj
-                                if (0 <= ni < model.width and 0 <= nj < model.height 
-                                    and model.grid[ni, nj] == CellState.FUEL.value):
+                                if (
+                                    0 <= ni < model.width
+                                    and 0 <= nj < model.height
+                                    and model.grid[ni, nj] == CellState.FUEL.value
+                                ):
                                     is_front = True
                                     break
                             if is_front:
@@ -245,7 +238,6 @@ class SimulationDataCollector:
                         if is_front:
                             fire_front_cells += 1
 
-        # Store data
         ts = self.simulation_data["time_series"]
         ts["frame"].append(frame_count)
         ts["active_particles"].append(len(model.particles))
@@ -258,39 +250,41 @@ class SimulationDataCollector:
         ts["particle_intensity_avg"].append(avg_intensity)
         ts["particle_intensity_max"].append(max_intensity)
         ts["wind_effect_strength"].append(wind_strength_avg)
-        
-        # NEW: Add enhanced metrics to existing time series
+
         if "particle_velocity_avg" not in ts:
-            ts["particle_velocity_avg"] = [0] * (len(ts["frame"]) - 1)  # Fill previous frames
+            ts["particle_velocity_avg"] = [0] * (
+                len(ts["frame"]) - 1
+            )  # Fill previous frames
         ts["particle_velocity_avg"].append(avg_velocity)
-    
+
         if "particle_velocity_max" not in ts:
             ts["particle_velocity_max"] = [0] * (len(ts["frame"]) - 1)
         ts["particle_velocity_max"].append(max_velocity)
-        
+
         if "wind_effect_std" not in ts:
             ts["wind_effect_std"] = [0] * (len(ts["frame"]) - 1)
         ts["wind_effect_std"].append(wind_strength_std)
-        
+
         if "fire_front_cells" not in ts:
             ts["fire_front_cells"] = [0] * (len(ts["frame"]) - 1)
         ts["fire_front_cells"].append(fire_front_cells)
 
-           
         ts["particle_velocity_avg"].append(avg_velocity)
         ts["particle_velocity_max"].append(max_velocity)
         ts["wind_effect_std"].append(wind_strength_std)
         ts["fire_front_cells"].append(fire_front_cells)
 
-        # ENHANCED: Store burned area snapshot with more detail
         if frame_count % 10 == 0:
             burned_mask = (model.grid == CellState.BURNED.value).astype(int)
             burning_mask = (model.grid == CellState.BURNING.value).astype(int)
-            self.simulation_data["spatial_data"]["burned_area_progression"].append({
-                "frame": frame_count, 
-                "burned_area": burned_mask.copy(),
-                "burning_area": burning_mask.copy()  # NEW: Also track current burning
-            })
+            self.simulation_data["spatial_data"]["burned_area_progression"].append(
+                {
+                    "frame": frame_count,
+                    "burned_area": burned_mask.copy(),
+                    "burning_area": burning_mask.copy(),  # NEW: Also track current burning
+                }
+            )
+
     def collect_initial_data(self, model):
         """Store initial simulation state"""
         self.simulation_data["spatial_data"]["initial_grid"] = model.grid.copy()
@@ -307,7 +301,6 @@ class SimulationDataCollector:
         """Store final simulation state and calculate summary statistics"""
         self.simulation_data["spatial_data"]["final_grid"] = model.grid.copy()
 
-        # Calculate summary statistics
         total_cells = model.width * model.height
         fuel_cells = np.sum(model.grid == CellState.FUEL.value)
         burned_cells = np.sum(model.grid == CellState.BURNED.value)
@@ -347,7 +340,6 @@ class SimulationDataCollector:
             map_type = self.args["map_type"]
             filename = f"fire_simulation_{map_type}_{timestamp}.pkl"
 
-        # Create data directory if it doesn't exist
         os.makedirs("simulation_data", exist_ok=True)
         filepath = os.path.join("simulation_data", filename)
 
@@ -361,10 +353,8 @@ class SimulationDataCollector:
 def run_combined_visualization(args):
     """Combined environment and fire simulation visualization with data collection."""
 
-    # Initialize data collector
     data_collector = SimulationDataCollector(args)
 
-    # Create model with specified dimensions and balanced spread parameters
     model = ForestFireModel(
         args.width,
         args.height,
@@ -384,11 +374,8 @@ def run_combined_visualization(args):
 
     # Set base moisture and fuel types BEFORE map creation
     model.set_moisture_gradient(base_moisture=args.base_moisture)
-    model.fuel_types = np.ones(
-        (model.width, model.height)
-    )  # Initialize base fuel types
+    model.fuel_types = np.ones((model.width, model.height))
 
-    # Set wind field before map creation (maps may modify if needed)
     if args.variable_wind:
         model.set_variable_wind(
             base_direction=args.wind_direction,
@@ -400,20 +387,15 @@ def run_combined_visualization(args):
             direction=args.wind_direction, strength=args.wind_strength
         )
 
-    # Create map layout based on selected type (will modify moisture/fuel as needed)
     if not args.remove_barriers:
         if args.map_type == "houses":
             create_small_city(model, args)
         elif args.map_type == "river":
             create_river_map(model, args)
         elif args.map_type == "wui":
-            create_urban_map(
-                model, args
-            )
+            create_urban_map(model, args)
         elif args.map_type == "coastal":
-            create_coastal_map(
-                model, args
-            )
+            create_coastal_map(model, args)
         elif args.map_type == "mixed":
             create_mixed_map(model, args)
         elif args.map_type == "forest":
@@ -426,7 +408,6 @@ def run_combined_visualization(args):
     ):
         fuel_patches = create_enhanced_fuel_types(model, args)
     else:
-        # Create a simple fuel patches list for legend consistency
         fuel_patches = [
             {"type": 2.0, "color": "brown", "name": "Dry Brush"},
             {"type": 1.5, "color": "darkgreen", "name": "Dense Forest"},
@@ -435,16 +416,13 @@ def run_combined_visualization(args):
             {"type": 0.4, "color": "yellowgreen", "name": "Grassland"},
         ]
 
-    # Create custom visualization function with fuel type colors
     def visualize_with_fuel_colors(model, ax=None, show_particles=True):
         """Enhanced visualization with fuel type colors."""
         if ax is None:
             fig, ax = plt.subplots(figsize=(10, 8))
 
-        # Create fuel type background
         fuel_display = np.zeros((model.width, model.height, 3))  # RGB array
 
-        # Define colors for each fuel type
         fuel_color_map = {
             0.4: [0.6, 0.8, 0.2],  # Grassland - yellow-green
             0.7: [0.4, 0.6, 0.2],  # Light Forest - olive
@@ -453,7 +431,6 @@ def run_combined_visualization(args):
             2.0: [0.5, 0.3, 0.1],  # Dry Brush - brown
         }
 
-        # Set fuel colors
         for i in range(model.width):
             for j in range(model.height):
                 if model.grid[i, j] == CellState.FUEL.value:
@@ -470,14 +447,12 @@ def run_combined_visualization(args):
                 elif model.grid[i, j] == CellState.EMPTY.value:
                     fuel_display[i, j] = [0.7, 0.7, 0.9]  # Light blue
 
-        # Display the fuel map
         ax.imshow(
             fuel_display.transpose(1, 0, 2),
             origin="lower",
             extent=[0, model.width, 0, model.height],
         )
 
-        # Add particles only if requested
         if show_particles and model.particles:
             particle_x = [p.position[0] for p in model.particles]
             particle_y = [p.position[1] for p in model.particles]
@@ -486,7 +461,6 @@ def run_combined_visualization(args):
             sizes = [i * 30 for i in intensity]
             ax.scatter(particle_x, particle_y, s=sizes, color="yellow", alpha=0.7)
 
-        # Add terrain contours only for right plot
         if show_particles:
             terrain_contour = ax.contour(
                 np.arange(model.width),
@@ -498,7 +472,6 @@ def run_combined_visualization(args):
                 linewidths=0.8,
             )
 
-        # Add statistics
         burned_percent = (
             np.sum(model.grid == CellState.BURNED.value)
             / (model.width * model.height)
@@ -532,48 +505,35 @@ def run_combined_visualization(args):
 
         return ax
 
-    # Collect initial data
     data_collector.collect_initial_data(model)
 
-    # Create figure with 2 subplots side by side
     fig = plt.figure(figsize=(20, 8))
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 1])
 
-    # 3D terrain view (left)
     ax_3d = fig.add_subplot(gs[0, 0], projection="3d")
 
-    # Fire simulation (right)
     ax_right = fig.add_subplot(gs[0, 1])
 
-    # Create a meshgrid for 3D plotting
     x = np.arange(0, args.width, 1)
     y = np.arange(0, args.height, 1)
     X, Y = np.meshgrid(x, y)
 
-    # Plot the terrain as a 3D surface
     terrain_surf = ax_3d.plot_surface(
         X, Y, model.terrain.T, cmap="terrain", alpha=0.7, linewidth=0, antialiased=True
     )
 
-    # Add colorbar for the terrain
     fig.colorbar(terrain_surf, ax=ax_3d, shrink=0.5, aspect=5, label="Elevation")
 
-    # Set labels for 3D plot
     ax_3d.set_title(f"3D Terrain - {args.map_type.title()} Map")
     ax_3d.set_xlabel("X")
     ax_3d.set_ylabel("Y")
     ax_3d.set_zlabel("Elevation")
 
-    # Create legend for fuel types and fire states (for right plot)
     from matplotlib.patches import Patch
 
-    # This will be handled in the animation function with split legends
-
     ignition_points_list = []
-    # Ignite fire
     if args.multi_ignition:
         if args.map_type == "coastal":
-            # Use coastal-specific fuel zone ignitions
             ignite_points = create_coastal_fuel_ignitions(model, args)
             print(
                 f"Coastal multi-ignition: Creating {len(ignite_points)} ignition points across fuel zones"
@@ -583,7 +543,7 @@ def run_combined_visualization(args):
                 if 0 <= x < args.width and 0 <= y < args.height:
                     if model.grid[x, y] == CellState.FUEL.value:
                         model.ignite(x, y)
-                        ignition_points_list.append((x, y))  # NEW: Add to tracking list
+                        ignition_points_list.append((x, y))
                         data_collector.simulation_data["spatial_data"][
                             "ignition_points"
                         ].append((x, y))
@@ -593,7 +553,6 @@ def run_combined_visualization(args):
                     else:
                         print(f"  Skipped {zone_name} at ({x}, {y}) - not fuel cell")
         else:
-            # Ignite multiple points for better spread
             ignite_points = [
                 (args.ignite_x, args.ignite_y),
                 (args.ignite_x + 10, args.ignite_y),
@@ -604,18 +563,16 @@ def run_combined_visualization(args):
             for x, y in ignite_points:
                 if 0 <= x < args.width and 0 <= y < args.height:
                     model.ignite(x, y)
-                    # Record additional ignition points
-                    ignition_points_list.append((x, y))  # NEW: Add to tracking list
+                    ignition_points_list.append((x, y))
                     data_collector.simulation_data["spatial_data"][
                         "ignition_points"
                     ].append((x, y))
     else:
         model.ignite(args.ignite_x, args.ignite_y)
-        ignition_points_list.append((args.ignite_x, args.ignite_y))  # NEW: Add single point
+        ignition_points_list.append((args.ignite_x, args.ignite_y))
     model.set_ignition_points(ignition_points_list)
     print(f"Tracking fire spread from {len(ignition_points_list)} ignition points")
 
-    # Initialize variables for animation
     fire_points_3d = None
     frame_count = 0
     last_frame_time = time.time()
@@ -625,16 +582,18 @@ def run_combined_visualization(args):
     progress_bar = None
     show_progress = args.save and TQDM_AVAILABLE
     if show_progress:
-        progress_bar = tqdm(total=args.frames, desc="Simulation Progress", 
-                           unit="frame", ncols=100, 
-                           bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} frames [{elapsed}<{remaining}, {rate_fmt}]')
+        progress_bar = tqdm(
+            total=args.frames,
+            desc="Simulation Progress",
+            unit="frame",
+            ncols=100,
+            bar_format="{l_bar}{bar}| {n_fmt}/{total_fmt} frames [{elapsed}<{remaining}, {rate_fmt}]",
+        )
     elif args.save and not TQDM_AVAILABLE:
         print("Note: Install tqdm for progress bars: pip install tqdm")
 
-    # Function to limit number of particles for performance
     def limit_particles(model, max_particles):
         if len(model.particles) > max_particles:
-            # Sort particles by intensity (keep the most intense ones)
             model.particles.sort(key=lambda p: p.intensity, reverse=True)
             model.particles = model.particles[:max_particles]
             return True
@@ -643,41 +602,36 @@ def run_combined_visualization(args):
     def end_simulation_and_save():
         nonlocal simulation_ended
         if simulation_ended:
-            return  # Already ended and saved
-            
+            return
+
         simulation_ended = True
         if progress_bar:
             progress_bar.close()
         print(f"Simulation ended at time step {frame_count}")
 
-        
-        # Check final state
         final_fuel = np.sum(model.grid == CellState.FUEL.value)
         final_burned = np.sum(model.grid == CellState.BURNED.value)
         final_burning = np.sum(model.grid == CellState.BURNING.value)
-        
-        print(f"Final state: {final_fuel} fuel cells, {final_burned} burned cells, {final_burning} burning cells")
+
+        print(
+            f"Final state: {final_fuel} fuel cells, {final_burned} burned cells, {final_burning} burning cells"
+        )
         print(f"Active particles at end: {len(model.particles)}")
 
-        # Collect final data and save
         data_collector.collect_final_data(model)
         data_file = data_collector.save_data()
         print(f"Simulation data saved to: {data_file}")
 
-        # Stop the animation
         anim.event_source.stop()
         print(f"Animaiton stopped")
         sys.exit(0)
 
-    # Run simulation with animation
     def animate(frame):
         nonlocal fire_points_3d, frame_count, last_frame_time, fps_history
 
         if simulation_ended:
             return ax_3d, ax_right
 
-
-        # Calculate FPS
         current_time = time.time()
         elapsed = current_time - last_frame_time
         fps = 1.0 / max(elapsed, 0.001)  # Avoid division by zero
@@ -687,63 +641,57 @@ def run_combined_visualization(args):
         avg_fps = sum(fps_history) / len(fps_history)
         last_frame_time = current_time
 
-        # Limit particles for performance
         particles_limited = limit_particles(model, args.max_particles)
 
-        # Update the model with custom time step size
         active = model.update(dt=args.dt)
         frame_count += 1
 
         data_collector.collect_frame_data(model, frame_count)
 
         if progress_bar and show_progress:
-            # Update progress bar with current status
             active_particles = len(model.particles)
             burning_cells = np.sum(model.grid == CellState.BURNING.value)
             burned_cells = np.sum(model.grid == CellState.BURNED.value)
-            
-            progress_bar.set_postfix({
-                'Particles': active_particles,
-                'Burning': burning_cells, 
-                'Burned': burned_cells,
-                'FPS': f'{avg_fps:.1f}'
-            })
+
+            progress_bar.set_postfix(
+                {
+                    "Particles": active_particles,
+                    "Burning": burning_cells,
+                    "Burned": burned_cells,
+                    "FPS": f"{avg_fps:.1f}",
+                }
+            )
             progress_bar.update(1)
 
         active_particles = len(model.particles)
         active_burning = np.sum(model.grid == CellState.BURNING.value)
 
-        fire_completely_out = (active_particles == 0 and active_burning == 0)
+        fire_completely_out = active_particles == 0 and active_burning == 0
         max_frames_reached = frame_count >= args.frames
-        
+
         if fire_completely_out or max_frames_reached:
             if fire_completely_out:
                 print(f"Fire completely extinguished at frame {frame_count}")
             else:
                 print(f"Maximum frames ({args.frames}) reached")
-            
+
             end_simulation_and_save()
             return ax_3d, ax_right
 
-        # Clear right axis and redraw with fuel types and particles
         ax_right.clear()
         visualize_with_fuel_colors(model, ax_right, show_particles=True)
 
-        # Combined legend in top left (fuel types + fire states)
         combined_legend_elements = [
-            # Fuel Types
             Patch(facecolor=[0.5, 0.3, 0.1], label="Dry Brush"),
             Patch(facecolor=[0.0, 0.3, 0.0], label="Dense Forest"),
             Patch(facecolor=[0.1, 0.4, 0.1], label="Mixed Forest"),
             Patch(facecolor=[0.4, 0.6, 0.2], label="Light Forest"),
             Patch(facecolor=[0.6, 0.8, 0.2], label="Grassland"),
-            # Fire States
             Patch(facecolor=[1.0, 0.0, 0.0], label="Burning"),
             Patch(facecolor=[0.0, 0.0, 0.0], label="Burned"),
             Patch(facecolor=[0.7, 0.7, 0.9], label="Buildings/Water"),
         ]
 
-        # Add combined legend to top left
         ax_right.legend(
             handles=combined_legend_elements,
             loc="upper left",
@@ -756,7 +704,6 @@ def run_combined_visualization(args):
         )
         ax_right.get_legend().get_title().set_fontweight("bold")
 
-        # Add FPS counter and parameters to top right
         performance_text = (
             f"FPS: {avg_fps:.1f}\n"
             f"Particles: {len(model.particles)}\n"
@@ -775,21 +722,16 @@ def run_combined_visualization(args):
             bbox=dict(boxstyle="round", facecolor="white", alpha=0.8),
         )
 
-        # Update 3D visualization periodically - show realistic moving particles
         if frame_count % args.skip_3d_update == 0:
-            # Remove old fire points if they exist
             if fire_points_3d:
                 fire_points_3d.remove()
                 fire_points_3d = None
 
-            # Update 3D plot with fire particles (realistic moving visualization)
             if model.particles:
-                # Get subset of particles to display
                 display_particles = model.particles[
                     : min(len(model.particles), args.particle_display_limit)
                 ]
 
-                # Get particle positions and intensities
                 particle_x = [p.position[0] for p in display_particles]
                 particle_y = [p.position[1] for p in display_particles]
                 particle_z = [
@@ -802,11 +744,9 @@ def run_combined_visualization(args):
                 ]
                 intensity = [p.intensity for p in display_particles]
 
-                # Use intensity for point size and color
                 sizes = [i * 30 for i in intensity]
                 colors = [(1.0, min(1.0, i * 0.5 + 0.5), 0.0) for i in intensity]
 
-                # Create realistic fire particles visualization
                 fire_points_3d = ax_3d.scatter(
                     particle_x,
                     particle_y,
@@ -817,13 +757,11 @@ def run_combined_visualization(args):
                     alpha=0.7,
                 )
 
-            # Add burned areas as black dots (less frequently for performance)
             burned_indices = np.where(model.grid == CellState.BURNED.value)
             if (
                 burned_indices[0].size > 0
                 and frame_count % (args.skip_3d_update * 2) == 0
             ):
-                # Sample burned areas for performance
                 sample_size = min(1000, burned_indices[0].size)
                 if burned_indices[0].size > sample_size:
                     sample_indices = np.random.choice(
@@ -850,7 +788,6 @@ def run_combined_visualization(args):
                     label="Burned",
                 )
 
-            # Update title with fire information
             ax_3d.set_title(
                 f"3D {args.map_type.title()} - Time: {frame_count}, Active Fires: {len(model.particles)}"
             )
@@ -859,17 +796,14 @@ def run_combined_visualization(args):
 
     plt.tight_layout()
 
-    # Create animation
     anim = FuncAnimation(
         fig, animate, frames=args.frames, interval=args.interval, blit=False
     )
 
-    # Save animation if requested
     if args.save:
         try:
             from matplotlib.animation import FFMpegWriter
 
-            # print(f"Saving animation to {args.output}...")
             writer = FFMpegWriter(
                 fps=15, metadata=dict(artist="ForestFireModel"), bitrate=1800
             )
